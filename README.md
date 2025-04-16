@@ -1,9 +1,9 @@
 # PI Programacao - Show do Milhão Acadêmico
 
 ## Tecnologias
-|<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original-wordmark.svg" width="40"/>|<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original-wordmark.svg" />|<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg" />|
-|-----------------------------------------------------------------------------------------------------------------|----------------------------------------------------------|                                                                                                |
-|JAVA                                                                                                             |MYSQL                                                     |FIGMA                                                                                           |
+|<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original-wordmark.svg" width="40"/>|<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original-wordmark.svg" width="40"/>|<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg" width="40"/>|
+|-----------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
+|JAVA                                                                                                             |MYSQL                                                                                                              |FIGMA                                                                                                     |
 
 ## Participantes
 |Nomes                        |RA        |
