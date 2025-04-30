@@ -1,51 +1,53 @@
 package src.br.com.showdomilhao.service;
-import java.sql.SQLException;
 
-import BusinessException;
-import src.br.com.showdomilhao.dao.interfac.ProfessorDAOInterface;
+import src.br.com.showdomilhao.dao.impl.ProfessorDAO;
 import src.br.com.showdomilhao.model.Professor;
+import java.sql.SQLException;
+import java.util.List;
 
 public class ProfessorService {
-    private final ProfessorDAOInterface professorDAO;
-    
 
-    public ProfessorService(ProfessorDAOInterface professorDAO) {
-        this.professorDAO = professorDAO;
+    private ProfessorDAO professorDAO;
+
+    public ProfessorService() {
+        this.professorDAO = new ProfessorDAO();
     }
 
-    public void cadastrarProfessor(Professor professor) 
-            throws BusinessException, SQLException {
-        
-        // Validações
-        if (professor == null || professor.getEmail() == null) {
-            throw new BusinessException("Dados inválidos");
+    public void cadastrarProfessor(Professor professor) throws SQLException {
+        if (professor.getNome() == null || professor.getEmail() == null || professor.getSenha() == null) {
+            throw new IllegalArgumentException("Nome, email e senha são obrigatórios");
         }
 
         if (professorDAO.existeComEmail(professor.getEmail())) {
-            throw new BusinessException("Email já existe");
+            throw new IllegalArgumentException("Já existe um professor com esse email");
         }
 
         professorDAO.inserir(professor);
     }
 
-    public Professor buscarProfessorPorEmail(String email) 
-            throws BusinessException, SQLException {
-        
-        if (email == null || email.trim().isEmpty()) {
-            throw new BusinessException("Email inválido");
+    public boolean autenticarProfessor(String email, String senha) throws SQLException {
+        if (email == null || senha == null) {
+            throw new IllegalArgumentException("Email e senha são obrigatórios");
         }
-
-        Professor professor = professorDAO.buscarPorEmail(email);
-        if (professor == null) {
-            throw new BusinessException("Professor não encontrado");
-        }
-
-        return professor;
+        return professorDAO.autenticar(email, senha);
     }
 
+    public Professor buscarProfessorPorEmail(String email) throws SQLException {
+        if (email == null || email.isEmpty()) {
+            throw new IllegalArgumentException("Email é obrigatório");
+        }
+        return professorDAO.buscarPorEmail(email);
+    }
 
-    private boolean isEmailValido(String email) {
-        return email != null && email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
+    public List<Professor> listarTodosOsProfessores() throws SQLException {
+        return professorDAO.listarTodos();
+    }
+
+    public void deletarProfessorPorEmail(String email) throws SQLException {
+        if (email == null || email.isEmpty()) {
+            throw new IllegalArgumentException("Email é obrigatório");
+        }
+        professorDAO.deletarPorEmail(email);
     }
 }
-
+//essa classe lida com as regras de negocio, validação de dados, processamento das informações...

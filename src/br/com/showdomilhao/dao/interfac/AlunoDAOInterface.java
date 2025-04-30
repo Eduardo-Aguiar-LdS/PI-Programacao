@@ -12,10 +12,10 @@ public interface AlunoDAOInterface {
     boolean autenticar(String email, String senha) throws SQLException;
     boolean existeComEmail(String email) throws SQLException;
     Aluno buscarPorEmail(String email) throws SQLException;
-    void incrementarPontuacao(int id, int pontos);
-    void incrementarAcertos(int id);
-    void incrementarErros(int id);
-    List<Aluno> listarRanking();
+    void incrementarPontuacao(int id, int pontos); //se precisar, implemento depois
+    void incrementarAcertos(int id); //se precisar, implemento depois
+    void incrementarErros(int id);//se precisar, implemento depois
+    List<Aluno> listarRanking();//se precisar, implemento depois
 
 }
-
+//classe interface serve para definir os metodos, onde serão implementados de fato, na classe DAO normal

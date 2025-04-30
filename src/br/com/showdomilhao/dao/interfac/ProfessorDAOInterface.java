@@ -7,7 +7,7 @@ import java.util.List;
 public interface ProfessorDAOInterface {
     void inserir(Professor professor) throws SQLException;
     void cadastrarProfessor(Professor professor, String senha) throws SQLException, BusinessException;
-    Professor buscarPorId(int id) throws SQLException;
+    // Professor buscarPorId(int id) throws SQLException;
     List<Professor> listarTodos() throws SQLException;
     void atualizar(Professor professor) throws SQLException;
     void deletar(int id) throws SQLException;
@@ -17,3 +17,4 @@ public interface ProfessorDAOInterface {
 
 
 }
+//classe interface serve para definir os metodos, onde serão implementados de fato, na classe DAO normal
