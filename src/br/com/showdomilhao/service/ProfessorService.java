@@ -3,11 +3,11 @@ package src.br.com.showdomilhao.service;
 import src.br.com.showdomilhao.dao.impl.ProfessorDAO;
 import src.br.com.showdomilhao.model.Professor;
 import java.sql.SQLException;
-import java.util.List;
+// import java.util.List;
 
 public class ProfessorService {
 
-    private ProfessorDAO professorDAO;
+    private ProfessorDAO professorDAO = new ProfessorDAO();
 
     public ProfessorService() {
         this.professorDAO = new ProfessorDAO();
@@ -18,7 +18,7 @@ public class ProfessorService {
             throw new IllegalArgumentException("Nome, email e senha são obrigatórios");
         }
 
-        if (professorDAO.existeComEmail(professor.getEmail())) {
+        if (professorDAO.existeComEmail(professor, professor.getEmail())) {
             throw new IllegalArgumentException("Já existe um professor com esse email");
         }
 
@@ -32,22 +32,22 @@ public class ProfessorService {
         return professorDAO.autenticar(email, senha);
     }
 
-    public Professor buscarProfessorPorEmail(String email) throws SQLException {
-        if (email == null || email.isEmpty()) {
-            throw new IllegalArgumentException("Email é obrigatório");
-        }
-        return professorDAO.buscarPorEmail(email);
-    }
+//     public Professor buscarProfessorPorEmail(String email) throws SQLException {
+//         if (email == null || email.isEmpty()) {
+//             throw new IllegalArgumentException("Email é obrigatório");
+//         }
+//         return professorDAO.buscarPorEmail(email);
+//     }
 
-    public List<Professor> listarTodosOsProfessores() throws SQLException {
-        return professorDAO.listarTodos();
-    }
+//     public List<Professor> listarTodosOsProfessores() throws SQLException {
+//         return professorDAO.listarTodos();
+//     }
 
-    public void deletarProfessorPorEmail(String email) throws SQLException {
-        if (email == null || email.isEmpty()) {
-            throw new IllegalArgumentException("Email é obrigatório");
-        }
-        professorDAO.deletarPorEmail(email);
-    }
+//     public void deletarProfessorPorEmail(String email) throws SQLException {
+//         if (email == null || email.isEmpty()) {
+//             throw new IllegalArgumentException("Email é obrigatório");
+//         }
+//         professorDAO.deletarPorEmail(email);
+//     }
 }
 //essa classe lida com as regras de negocio, validação de dados, processamento das informações...

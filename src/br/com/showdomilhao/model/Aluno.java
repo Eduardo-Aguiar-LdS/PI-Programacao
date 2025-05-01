@@ -1,6 +1,5 @@
 package src.br.com.showdomilhao.model;
 public class Aluno {
-    private int id;
     private String nome;
     private String email;
     private String senha;
@@ -8,20 +7,12 @@ public class Aluno {
     private int respostasCorretas;
     private int respostasErradas;
     
-    public Aluno() {
+    public Aluno(String nome, String email) {
         this.pontuacao = 0;
         this.respostasCorretas = 0;
         this.respostasErradas = 0;
     }
-    
-    public int getId() {
-        return id;
-    }
-    
-    public void setId(int id) {
-        this.id = id;
-    }
-    
+
     public String getNome() {
         return nome;
     }
