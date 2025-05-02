@@ -1,50 +1,49 @@
-package src.br.com.showdomilhao.dao.impl;
+// package rafa.dao.impl;
 
-import src.br.com.showdomilhao.model.Aluno;
-import src.br.com.showdomilhao.util.ConnectionFactory;
-import java.sql.*;
-// import java.util.ArrayList;
-// import java.util.List;
+// import codigo.*;
+// // import java.sql.*;
+// // import java.util.ArrayList;
+// // import java.util.List;
 
-public class AlunoDAO{//depois posso fazer herdando da classe interface
-    public void inserir(Aluno aluno) throws SQLException {
-        String sql = "INSERT INTO Aluno (nome_aluno, email, senha, pontuacao, respostas_corretas, respostas_erradas) VALUES (?, ?, ?, ?, ?, ?)";
-        try (Connection conn = ConnectionFactory.obtemConexao();
-                PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, aluno.getNome());
-            ps.setString(2, aluno.getEmail());
-            ps.setString(3, aluno.getSenha());
-            ps.setInt(4, aluno.getPontuacao());
-            ps.setInt(5, aluno.getRespostasCorretas());
-            ps.setInt(6, aluno.getRespostasErradas());
-            ps.executeUpdate();
-        }
-    }
+// public class AlunoDAO{//depois posso fazer herdando da classe interface
+//     public void inserir(Aluno aluno) throws SQLException {
+//         String sql = "INSERT INTO Aluno (nome_aluno, email, senha, pontuacao, respostas_corretas, respostas_erradas) VALUES (?, ?, ?, ?, ?, ?)";
+//         try (Connection conn = ConnectionFactory.obtemConexao();
+//                 PreparedStatement ps = conn.prepareStatement(sql)) {
+//             ps.setString(1, aluno.getNome());
+//             ps.setString(2, aluno.getEmail());
+//             ps.setString(3, aluno.getSenha());
+//             ps.setInt(4, aluno.getPontuacao());
+//             ps.setInt(5, aluno.getRespostasCorretas());
+//             ps.setInt(6, aluno.getRespostasErradas());
+//             ps.executeUpdate();
+//         }
+//     }
 
-    public boolean autenticar(String email, String senha) throws SQLException {
-        String sql = "SELECT 1 FROM Aluno WHERE email = ? AND senha = ?";
-        try (Connection conn = ConnectionFactory.obtemConexao();
-                PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, email);
-            ps.setString(2, senha);
-            try (ResultSet rs = ps.executeQuery()) {
-                return rs.next();
-            }
-        }
-    }
+//     public boolean autenticar(String email, String senha) throws SQLException {
+//         String sql = "SELECT 1 FROM Aluno WHERE email = ? AND senha = ?";
+//         try (Connection conn = ConnectionFactory.obtemConexao();
+//                 PreparedStatement ps = conn.prepareStatement(sql)) {
+//             ps.setString(1, email);
+//             ps.setString(2, senha);
+//             try (ResultSet rs = ps.executeQuery()) {
+//                 return rs.next();
+//             }
+//         }
+//     }
 
-    public boolean existeComEmail(Aluno aluno, String email) throws SQLException {
-        String sql = "SELECT 1 FROM Aluno WHERE nome = ? and email = ?";
-        try (Connection conn = ConnectionFactory.obtemConexao();
-                PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, aluno.getNome());
-            ps.setString(2, aluno.getEmail());
-            try (ResultSet rs = ps.executeQuery()) {
-                return rs.next();
-            }
-        }
-    }
-}
+//     public boolean existeComEmail(Aluno aluno, String email) throws SQLException {
+//         String sql = "SELECT 1 FROM Aluno WHERE nome = ? and email = ?";
+//         try (Connection conn = ConnectionFactory.obtemConexao();
+//                 PreparedStatement ps = conn.prepareStatement(sql)) {
+//             ps.setString(1, aluno.getNome());
+//             ps.setString(2, aluno.getEmail());
+//             try (ResultSet rs = ps.executeQuery()) {
+//                 return rs.next();
+//             }
+//         }
+//     }
+// }
 
     // public Aluno buscarPorEmail() throws SQLException {
     //     String sql = "SELECT * FROM Aluno WHERE email = ?";

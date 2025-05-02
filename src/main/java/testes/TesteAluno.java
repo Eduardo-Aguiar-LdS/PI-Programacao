@@ -1,7 +1,8 @@
 package testes;
 
 import java.sql.Connection;
-import codigo.*;
+
+import show_milhao.*;
 
 public class TesteAluno {
     public static void main(String[] args) {

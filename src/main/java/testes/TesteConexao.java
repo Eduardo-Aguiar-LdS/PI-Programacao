@@ -2,7 +2,8 @@
 package testes;
 
 import java.sql.Connection;
-import codigo.*;
+
+import show_milhao.*;
 
 public class TesteConexao {
     public static void main(String[] args) {

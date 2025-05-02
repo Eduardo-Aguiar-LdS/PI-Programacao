@@ -1,4 +1,4 @@
-package codigo;
+package show_milhao;
 
 public class Aluno {
     private String nome;
