@@ -1,6 +1,7 @@
-package codigo;
+package testes;
 
 import java.sql.Connection;
+import codigo.*;
 
 public class TesteProfessor {
     public static void main(String[] args) {

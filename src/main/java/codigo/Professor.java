@@ -16,6 +16,11 @@ public class Professor { // Testar herança da classe aluno com extends
         this.nome = nome;
         this.email = email;
     }
+    public Professor(String nome, String email, String senha) {
+        this.nome = nome;
+        this.email = email;
+        this.senha = senha;
+    }
 
     // Função de administrador - cadastrar aluno
     public String cadastrarAluno(Aluno aluno) throws Exception {
@@ -25,9 +30,14 @@ public class Professor { // Testar herança da classe aluno com extends
             ps.setString(1, aluno.getNome());
             ps.setString(2, aluno.getEmail());
             ps.setString(3, aluno.getSenha());
-            ps.execute();
-            String cadastro = "Cadastro realizado com sucesso\nAluno: "+aluno.getNome()+"\nEmail: "+aluno.getEmail()+"\nSenha: "+aluno.getSenha();
-            return cadastro;
+            try {
+                ps.execute();
+                String cadastro = "Cadastro realizado com sucesso\nAluno: "+aluno.getNome()+"\nEmail: "+aluno.getEmail()+"\nSenha: "+aluno.getSenha();
+                return cadastro;
+            } catch (Exception e) {
+                String cadastro = "Aluno "+aluno.getNome()+" já possui cadastro com o e-mail "+aluno.getEmail();
+                return cadastro;
+            }
         }
     }
 
