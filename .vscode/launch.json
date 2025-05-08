@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "java",
+        "name": "Executar TesteConexao",
+        "request": "launch",
+        "mainClass": "testes.TesteConexao",
+        "cwd": "${workspaceFolder}",
+        "vmArgs": "-cp lib/dotenv-java-2.2.0.jar;bin"
+      }
+    ]
+  }
+  

@@ -11,7 +11,6 @@ public class Professor { // Testar herança da classe aluno com extends
     private int respostas_corretas;
     private int respostas_erradas;
 
-    // Construtor
     public Professor(String nome, String email) {
         this.nome = nome;
         this.email = email;
@@ -22,7 +21,6 @@ public class Professor { // Testar herança da classe aluno com extends
         this.senha = senha;
     }
 
-    // Função de administrador - cadastrar aluno
     public String cadastrarAluno(Aluno aluno) throws Exception {
         String sql = "insert into Aluno (nome_aluno, email, senha) values (?, ?, ?);";
         try (Connection conexao = ConnectionFactory.obterConexao();
@@ -41,7 +39,6 @@ public class Professor { // Testar herança da classe aluno com extends
         }
     }
 
-    // Getters e Setters
     public String getNome() {
         return nome;
     }

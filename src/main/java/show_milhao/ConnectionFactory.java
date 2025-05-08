@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import io.github.cdimascio.dotenv.Dotenv;
 
 public class ConnectionFactory {
-    // Criação das variáveis de conexão
+
     private static final Dotenv dotenv = Dotenv.load();
     private static String usuario = dotenv.get("USUARIO");
     private static String senha = dotenv.get("SENHA");
@@ -15,7 +15,6 @@ public class ConnectionFactory {
 
     public static Connection obterConexao() {
         try {
-            // Criação da url para requisição
             Connection c = DriverManager.getConnection("jdbc:mysql://" + host + ":" + porta + "/" + db, usuario, senha);
             return c;
         } catch (Exception e) {

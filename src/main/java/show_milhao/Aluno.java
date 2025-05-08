@@ -1,46 +1,52 @@
 package show_milhao;
 
 public class Aluno {
-    private String nome;
-    private String email;
-    private String senha;
-    private int pontuacao;
-    private int respostas_corretas;
-    private int respostas_erradas;
+   private String nome;
+   private String email;
+   private String senha;
+   private int pontuacao;
+   private int respostas_corretas;
+   private int respostas_erradas;
 
-    // Construtores
-    public Aluno(String nome, String email) {
-        this.nome = nome;
-        this.email = email;
-    }
-    public Aluno(String nome, String email, String senha) {
-        this.nome = nome;
-        this.email = email;
-        this.senha = senha;
-    }
+   public Aluno(String var1, String var2) {
+      this.nome = var1;
+      this.email = var2;
+   }
 
-    // Getters e Setters
-    public String getNome() {
-        return nome;
-    }
+   public Aluno(String var1, String var2, String var3) {
+      this.nome = var1;
+      this.email = var2;
+      this.senha = var3;
+   }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+   public String getNome() {
+      return this.nome;
+   }
 
-    public String getEmail() {
-        return email;
-    }
+   public void setNome(String var1) {
+      this.nome = var1;
+   }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+   public String getEmail() {
+      return this.email;
+   }
 
-    public String getSenha() {
-        return senha;
-    }
+   public void setEmail(String var1) {
+      this.email = var1;
+   }
 
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
+   public String getSenha() {
+      return this.senha;
+   }
+
+   public void setSenha(String var1) {
+      this.senha = var1;
+   }
+
+   @Override
+   public String toString() {
+       return "Aluno{nome='" + nome + "', email='" + email + "'}";
+   }
+   
 }
+

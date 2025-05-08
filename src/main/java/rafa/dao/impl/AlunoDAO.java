@@ -1,9 +1,17 @@
 // package rafa.dao.impl;
 
 // import codigo.*;
-// // import java.sql.*;
-// // import java.util.ArrayList;
-// // import java.util.List;
+// import java.sql.*;
+// import java.util.ArrayList;
+// import java.util.List;
+// import java.sql.Connection;
+// import java.sql.PreparedStatement;
+// import java.sql.ResultSet;
+// import java.sql.SQLException;
+// import java.util.ArrayList;
+// import java.util.List;
+// import show_milhao.Aluno; // ou o pacote correto onde está a classe Aluno
+// import show_milhao.ConnectionFactory; // ou o pacote correto
 
 // public class AlunoDAO{//depois posso fazer herdando da classe interface
 //     public void inserir(Aluno aluno) throws SQLException {
@@ -43,28 +51,28 @@
 //             }
 //         }
 //     }
-// }
 
-    // public Aluno buscarPorEmail() throws SQLException {
-    //     String sql = "SELECT * FROM Aluno WHERE email = ?";
-    //     try (Connection conn = ConnectionFactory.obtemConexao();
-    //             PreparedStatement ps = conn.prepareStatement(sql)) {
-    //         ps.setString(1, email);
-    //         try (ResultSet rs = ps.executeQuery()) {
-    //             if (rs.next()) {
-    //                 Aluno aluno = new Aluno();
-    //                 aluno.setNome(rs.getString("nome_aluno"));
-    //                 aluno.setEmail(rs.getString("email"));
-    //                 aluno.setSenha(rs.getString("senha"));
-    //                 aluno.setPontuacao(rs.getInt("pontuacao"));
-    //                 aluno.setRespostasCorretas(rs.getInt("respostas_corretas"));
-    //                 aluno.setRespostasErradas(rs.getInt("respostas_erradas"));
-    //                 return aluno;
-    //             }
-    //         }
-    //     }
-    //     return null;
-    // }
+
+//     public Aluno buscarPorEmail() throws SQLException {
+//         String sql = "SELECT * FROM Aluno WHERE email = ?";
+//         try (Connection conn = ConnectionFactory.obtemConexao();
+//                 PreparedStatement ps = conn.prepareStatement(sql)) {
+//             ps.setString(1, email);
+//             try (ResultSet rs = ps.executeQuery()) {
+//                 if (rs.next()) {
+//                     Aluno aluno = new Aluno();
+//                     aluno.setNome(rs.getString("nome_aluno"));
+//                     aluno.setEmail(rs.getString("email"));
+//                     aluno.setSenha(rs.getString("senha"));
+//                     aluno.setPontuacao(rs.getInt("pontuacao"));
+//                     aluno.setRespostasCorretas(rs.getInt("respostas_corretas"));
+//                     aluno.setRespostasErradas(rs.getInt("respostas_erradas"));
+//                     return aluno;
+//                 }
+//             }
+//         }
+//         return null;
+//     }
 
 //     public List<Aluno> listarTodos() throws SQLException {
 //         String sql = "SELECT * FROM Aluno";
