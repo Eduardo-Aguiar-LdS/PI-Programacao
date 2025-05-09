@@ -1,1 +1,10 @@
-codigo\ConnectionFactory.class
+testes\TesteJogo.class
+show_milhao\TesteAluno.class
+show_milhao\Jogo.class
+show_milhao\Pergunta.class
+show_milhao\DAO.class
+show_milhao\Aluno.class
+show_milhao\Professor.class
+show_milhao\BancoDePerguntas.class
+testes\TesteConexao.class
+show_milhao\ConnectionFactory.class

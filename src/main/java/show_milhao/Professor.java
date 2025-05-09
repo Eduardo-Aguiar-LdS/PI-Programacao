@@ -11,18 +11,18 @@ public class Professor { // Testar herança da classe aluno com extends
     private int respostas_corretas;
     private int respostas_erradas;
 
-    // Construtor
-    public Professor(String nome, String email) {
-        this.nome = nome;
-        this.email = email;
-    }
-    public Professor(String nome, String email, String senha) {
+
+    public Professor(String nome, String email, String senha, int pontuacao, int respostas_corretas,
+            int respostas_erradas) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
+        this.pontuacao = pontuacao;
+        this.respostas_corretas = respostas_corretas;
+        this.respostas_erradas = respostas_erradas;
     }
 
-    // Função de administrador - cadastrar aluno
+    // Funcao de administrador - cadastrar aluno
     public String cadastrarAluno(Aluno aluno) throws Exception {
         String sql = "insert into Aluno (nome_aluno, email, senha) values (?, ?, ?);";
         try (Connection conexao = ConnectionFactory.obterConexao();
@@ -56,6 +56,38 @@ public class Professor { // Testar herança da classe aluno com extends
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public int getPontuacao() {
+        return pontuacao;
+    }
+
+    public void setPontuacao(int pontuacao) {
+        this.pontuacao = pontuacao;
+    }
+
+    public int getRespostas_corretas() {
+        return respostas_corretas;
+    }
+
+    public void setRespostas_corretas(int respostas_corretas) {
+        this.respostas_corretas = respostas_corretas;
+    }
+
+    public int getRespostas_erradas() {
+        return respostas_erradas;
+    }
+
+    public void setRespostas_erradas(int respostas_erradas) {
+        this.respostas_erradas = respostas_erradas;
     }
 
 }

@@ -1,5 +1,7 @@
 package show_milhao;
 
+import java.util.Scanner;
+
 public class Aluno {
     private String nome;
     private String email;
@@ -8,15 +10,15 @@ public class Aluno {
     private int respostas_corretas;
     private int respostas_erradas;
 
-    // Construtores
-    public Aluno(String nome, String email) {
-        this.nome = nome;
-        this.email = email;
-    }
-    public Aluno(String nome, String email, String senha) {
+    public Aluno(String nome, String email, String senha, int pontuacao, int respostas_corretas,
+            int respostas_erradas) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
+        this.pontuacao = pontuacao;
+        this.respostas_corretas = respostas_corretas;
+        this.respostas_erradas = respostas_erradas;
+
     }
 
     // Getters e Setters
@@ -43,4 +45,30 @@ public class Aluno {
     public void setSenha(String senha) {
         this.senha = senha;
     }
+
+    public int getPontuacao() {
+        return pontuacao;
+    }
+
+    public void setPontuacao(int pontuacao) {
+        this.pontuacao = 0;
+    }
+
+    public int getRespostas_corretas() {
+        return respostas_corretas;
+    }
+
+    public void setRespostas_corretas(int respostas_corretas) {
+        this.respostas_corretas = respostas_corretas;
+    }
+
+    public int getRespostas_erradas() {
+        return respostas_erradas;
+    }
+
+    public void setRespostas_erradas(int respostas_erradas) {
+        this.respostas_erradas = respostas_erradas;
+    }
+
+
 }
