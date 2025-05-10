@@ -55,7 +55,7 @@ public class TelaInicial extends JFrame {
         logoPanel.setOpaque(false);
         
         try {
-            originalLogoIcon = new ImageIcon("\\src\\main\\game\\img\\poliedro.png");
+            originalLogoIcon = new ImageIcon("\\src\\main\\java\\telas\\img\\poliedro.png");
             logoLabel = new JLabel(originalLogoIcon);
             logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             logoPanel.add(logoLabel);
