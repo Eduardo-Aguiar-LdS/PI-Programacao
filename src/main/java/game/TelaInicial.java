@@ -1,58 +1,82 @@
 package game;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.RenderingHints;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 public class TelaInicial extends JFrame {
     private ImageIcon originalLogoIcon;
-    private JLabel logoLabel;
-    private JButton registerButton;
-    private JButton loginButton;
-    private JButton exitButton;
+    private JLabel logoLabel, titleLabel, subtitleLabel;
+    private JButton loginButton, exitButton;
     private Color buttonColor = new Color(31, 176, 195);
 
     public TelaInicial() {
-        // Configurações básicas da janela
+        // Configuração da janela
         setTitle("Show do Milhão Acadêmico");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
-        setMinimumSize(new Dimension(400, 400));
+        setMinimumSize(new Dimension(400, 500));
         setLocationRelativeTo(null);
         
-        // Painel principal com fundo branco
-        JPanel mainPanel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                g.setColor(Color.WHITE);
-                g.fillRect(0, 0, getWidth(), getHeight());
-            }
-        };
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        // Painel principal com BorderLayout para melhor centralização
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBackground(Color.WHITE);
+        add(mainPanel);
         
-        // Título "Show do Milhão" em preto
-        JLabel titleLabel = new JLabel("Show do Milhão");
+        // Painel central para conteúdo
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+        centerPanel.setBackground(Color.WHITE);
+        centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        
+        // Adiciona painel central ao mainPanel
+        mainPanel.add(centerPanel, BorderLayout.CENTER);
+        
+        // Título
+        titleLabel = new JLabel("Show do Milhão");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 48));
         titleLabel.setForeground(Color.BLACK);
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        titleLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        centerPanel.add(titleLabel);
+        centerPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         
-        // Subtítulo "Acadêmico" em preto
-        JLabel subtitleLabel = new JLabel("Acadêmico");
+        // Subtítulo
+        subtitleLabel = new JLabel("Acadêmico");
         subtitleLabel.setFont(new Font("Arial", Font.PLAIN, 24));
         subtitleLabel.setForeground(Color.BLACK);
         subtitleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        subtitleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 30, 0));
+        centerPanel.add(subtitleLabel);
+        centerPanel.add(Box.createRigidArea(new Dimension(0, 30)));
         
-        // Painel para a imagem do logo
+        // Logo
         JPanel logoPanel = new JPanel();
         logoPanel.setLayout(new BoxLayout(logoPanel, BoxLayout.Y_AXIS));
         logoPanel.setOpaque(false);
+        logoPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         try {
             originalLogoIcon = new ImageIcon("src/main/java/img/poliedro.png");
@@ -60,66 +84,51 @@ public class TelaInicial extends JFrame {
             logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             logoPanel.add(logoLabel);
         } catch (Exception e) {
-            JLabel errorLabel = new JLabel("Imagem não encontrada");
-            errorLabel.setForeground(Color.RED);
-            logoPanel.add(errorLabel);
+            logoLabel = new JLabel("Poliedro Sistema de Ensino");
+            logoLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+            logoLabel.setForeground(Color.BLACK);
+            logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+            logoPanel.add(logoLabel);
         }
         
-        logoPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        logoPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 30, 0));
+        centerPanel.add(logoPanel);
+        centerPanel.add(Box.createRigidArea(new Dimension(0, 40)));
         
-        // Criação dos botões
-        registerButton = createRoundedButton("Fazer cadastro", buttonColor);
-        loginButton = createRoundedButton("Fazer login", buttonColor);
-        exitButton = createRoundedButton("Sair", buttonColor);
-        
-        // Configuração dos ActionListeners
-        registerButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                TelaInicial.this.dispose();
-                TelaCadastroAluno telaCadastro = new TelaCadastroAluno();
-                telaCadastro.setVisible(true);
-            }
-        });
-        
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Funcionalidade de login será implementada aqui!");
-            }
-        });
-        
-        exitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
-        
-        // Painel para os botões
+        // Painel de botões
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
         buttonPanel.setOpaque(false);
-        buttonPanel.add(registerButton);
-        buttonPanel.add(Box.createRigidArea(new Dimension(0, 15)));
-        buttonPanel.add(loginButton);
-        buttonPanel.add(Box.createRigidArea(new Dimension(0, 15)));
-        buttonPanel.add(exitButton);
         buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         
-        // Adiciona todos os componentes ao painel principal
-        mainPanel.add(Box.createVerticalGlue());
-        mainPanel.add(titleLabel);
-        mainPanel.add(subtitleLabel);
-        mainPanel.add(logoPanel);
-        mainPanel.add(buttonPanel);
-        mainPanel.add(Box.createVerticalGlue());
+        // Botões com tamanho fixo adequado
+        loginButton = createRoundedButton("Fazer login", buttonColor);
+        exitButton = createRoundedButton("Sair", buttonColor);
         
-        // Adiciona o painel principal à janela
-        add(mainPanel);
+        // Define tamanho preferencial para os botões
+        Dimension buttonSize = new Dimension(300, 50);
+        loginButton.setPreferredSize(buttonSize);
+        loginButton.setMinimumSize(buttonSize);
+        loginButton.setMaximumSize(buttonSize);
         
-        // Listener para redimensionamento responsivo
+        exitButton.setPreferredSize(buttonSize);
+        exitButton.setMinimumSize(buttonSize);
+        exitButton.setMaximumSize(buttonSize);
+        
+        buttonPanel.add(loginButton);
+        buttonPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+        buttonPanel.add(exitButton);
+        
+        centerPanel.add(buttonPanel);
+        centerPanel.add(Box.createVerticalGlue());
+        
+        // Ações dos botões
+        loginButton.addActionListener(e -> {
+            JOptionPane.showMessageDialog(null, "Funcionalidade de login será implementada aqui!");
+        });
+        
+        exitButton.addActionListener(e -> System.exit(0));
+        
+        // Listener para redimensionamento
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -129,63 +138,54 @@ public class TelaInicial extends JFrame {
     }
     
     private void adjustComponents() {
-        // Ajusta o tamanho da imagem do logo
-        if (logoLabel != null && originalLogoIcon != null) {
-            int maxLogoWidth = (int) (getWidth() * 0.6);
-            int maxLogoHeight = (int) (getHeight() * 0.3);
+        // Ajuste responsivo do título
+        int titleFontSize = Math.max(24, Math.min(48, getWidth() / 20));
+        titleLabel.setFont(new Font("Arial", Font.BOLD, titleFontSize));
+        
+        // Ajuste responsivo do subtítulo
+        int subtitleFontSize = Math.max(14, Math.min(24, getWidth() / 40));
+        subtitleLabel.setFont(new Font("Arial", Font.PLAIN, subtitleFontSize));
+        
+        // Ajuste responsivo do logo
+        if (originalLogoIcon != null) {
+            int maxLogoWidth = (int)(getWidth() * 0.6);
+            int maxLogoHeight = (int)(getHeight() * 0.3);
             
-            double widthRatio = (double) maxLogoWidth / originalLogoIcon.getIconWidth();
-            double heightRatio = (double) maxLogoHeight / originalLogoIcon.getIconHeight();
-            double ratio = Math.min(widthRatio, heightRatio);
+            double ratio = Math.min(
+                (double)maxLogoWidth / originalLogoIcon.getIconWidth(),
+                (double)maxLogoHeight / originalLogoIcon.getIconHeight()
+            );
             
-            int newWidth = (int) (originalLogoIcon.getIconWidth() * ratio);
-            int newHeight = (int) (originalLogoIcon.getIconHeight() * ratio);
+            int newWidth = (int)(originalLogoIcon.getIconWidth() * ratio);
+            int newHeight = (int)(originalLogoIcon.getIconHeight() * ratio);
             
             Image scaledImage = originalLogoIcon.getImage().getScaledInstance(
                 newWidth, newHeight, Image.SCALE_SMOOTH);
             logoLabel.setIcon(new ImageIcon(scaledImage));
+        } else {
+            int logoFontSize = Math.max(14, Math.min(24, getWidth() / 50));
+            logoLabel.setFont(new Font("Arial", Font.PLAIN, logoFontSize));
         }
         
-        // Ajusta o tamanho da fonte dos títulos
-        Component[] components = getContentPane().getComponents();
-        for (Component comp : components) {
-            if (comp instanceof JPanel) {
-                Component[] panelComps = ((JPanel) comp).getComponents();
-                for (Component panelComp : panelComps) {
-                    if (panelComp instanceof JLabel) {
-                        JLabel label = (JLabel) panelComp;
-                        if (label.getText().equals("Show do Milhão")) {
-                            int fontSize = Math.max(24, Math.min(48, getWidth() / 20));
-                            label.setFont(new Font("Arial", Font.BOLD, fontSize));
-                        } else if (label.getText().equals("Acadêmico")) {
-                            int fontSize = Math.max(12, Math.min(24, getWidth() / 40));
-                            label.setFont(new Font("Arial", Font.PLAIN, fontSize));
-                        }
-                    }
-                }
-            }
-        }
+        revalidate();
+        repaint();
     }
     
     private JButton createRoundedButton(String text, Color color) {
         JButton button = new JButton(text) {
             @Override
             protected void paintComponent(Graphics g) {
-                if (!isOpaque() && getBorder() instanceof RoundedBorder) {
-                    Graphics2D g2 = (Graphics2D) g.create();
-                    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                    g2.setColor(color);
-                    g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
-                    g2.setColor(Color.WHITE);
-                    g2.setFont(getFont().deriveFont(Font.BOLD, 18f));
-                    FontMetrics fm = g2.getFontMetrics();
-                    int x = (getWidth() - fm.stringWidth(getText())) / 2;
-                    int y = (getHeight() - fm.getHeight()) / 2 + fm.getAscent();
-                    g2.drawString(getText(), x, y);
-                    g2.dispose();
-                } else {
-                    super.paintComponent(g);
-                }
+                Graphics2D g2 = (Graphics2D)g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(color);
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
+                g2.setColor(Color.WHITE);
+                g2.setFont(getFont());
+                FontMetrics fm = g2.getFontMetrics();
+                int x = (getWidth() - fm.stringWidth(getText())) / 2;
+                int y = (getHeight() - fm.getHeight()) / 2 + fm.getAscent();
+                g2.drawString(getText(), x, y);
+                g2.dispose();
             }
         };
         
@@ -193,14 +193,13 @@ public class TelaInicial extends JFrame {
         button.setBorder(new RoundedBorder(20));
         button.setContentAreaFilled(false);
         button.setFocusPainted(false);
-        button.setPreferredSize(new Dimension(250, 50));
-        button.setMaximumSize(new Dimension(400, 60));
+        button.setFont(new Font("Arial", Font.BOLD, 18));
         
-        button.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
+        button.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent evt) {
                 button.setCursor(new Cursor(Cursor.HAND_CURSOR));
             }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
+            public void mouseExited(MouseEvent evt) {
                 button.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             }
         });
@@ -229,13 +228,9 @@ public class TelaInicial extends JFrame {
     }
     
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                TelaInicial frame = new TelaInicial();
-                frame.setVisible(true);
-                frame.adjustComponents();
-            }
+        SwingUtilities.invokeLater(() -> {
+            TelaInicial frame = new TelaInicial();
+            frame.setVisible(true);
         });
     }
 }
