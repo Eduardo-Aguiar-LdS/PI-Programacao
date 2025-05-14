@@ -110,7 +110,7 @@ public class TelaPrincipalAdmin extends JFrame {
         // Botões com tamanho fixo
         playButton = createRoundedButton("Jogar", buttonColor);
         statsButton = createRoundedButton("Estatística", buttonColor);
-        manageButton = createRoundedButton("Serenciar", buttonColor);
+        manageButton = createRoundedButton("Gerenciar", buttonColor);
         exitButton = createRoundedButton("Sair da conta", buttonColor);
         
         Dimension buttonSize = new Dimension(300, 50);
