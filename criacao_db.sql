@@ -26,24 +26,20 @@ id_professor int primary key auto_increment,
 nome_professor varchar(50) not null,
 email varchar(50) not null unique,
 senha varchar(50) not null,
-pontuacao int,
-respostas_corretas int,
-respostas_erradas int);
+pontuacao int);
 
 -- describe Professor;
 
 create table Pergunta (
 id_pergunta int primary key auto_increment,
-materia varchar(20) not null,
 pergunta varchar(70) not null unique,
-dificuldade varchar(7) not null,
 id_professor int,
 foreign key(id_professor) references Professor(id_professor));
 
 -- describe Pergunta;
 
 create table Resposta(
-id_reposta int primary key auto_increment,
+id_resposta int primary key auto_increment,
 resposta_correta varchar(50) not null,
 resposta_um varchar(50) not null,
 resposta_dois varchar(50) not null,
@@ -52,4 +48,3 @@ id_pergunta int not null,
 foreign key(id_pergunta) references Pergunta(id_pergunta));
 
 -- describe Resposta;
-
