@@ -6,18 +6,27 @@ import java.sql.ResultSet;
 
 import javax.swing.JOptionPane;
 
-public class Professor extends Aluno{ 
+public class Professor extends Aluno {
+    private int id_professor;
     // Herda atributos, getters e setters dos alunos
 
     // Construtor
     public Professor(String email, String senha) {
         super(email, senha);
     }
+
     public Professor(String nome, String email, String senha) {
         super(nome, email, senha);
     }
-    public Professor(String nome, String email, String senha, int pontuacao) {
+
+    public Professor(String nome, String email, String senha, int id_professor) {
+        super(nome, email, senha);
+        this.id_professor = id_professor;
+    }
+
+    public Professor(String nome, String email, String senha, int id_professor, int pontuacao) {
         super(nome, email, senha, pontuacao);
+        this.id_professor = id_professor;
     }
 
     // Fazer login
@@ -30,7 +39,7 @@ public class Professor extends Aluno{
             try {
                 ps.execute();
                 JOptionPane.showMessageDialog(null,
-                        "Login realizado com sucesso!"+ "\nE-mail: " + professor.getEmail(), "Sucesso",
+                        "Login realizado com sucesso!" + "\nE-mail: " + professor.getEmail(), "Sucesso",
                         JOptionPane.INFORMATION_MESSAGE);
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Professor não possui cadastro", "Erro", JOptionPane.ERROR_MESSAGE);
@@ -38,9 +47,9 @@ public class Professor extends Aluno{
         }
     }
 
-    // Buscar o nome no banco de dados
-     public Professor nomeDB(Professor professor) throws Exception {
-        String sql = "select nome_professor from Professor where email = ? and senha = ?";
+    // Buscar atributos no banco de dados
+    public Professor atributosDB(Professor professor) throws Exception {
+        String sql = "select nome_professor, id_professor from Professor where email = ? and senha = ?";
         try (Connection conexao = ConnectionFactory.obterConexao();
                 PreparedStatement ps = conexao.prepareStatement(sql)) {
             ps.setString(1, professor.getEmail());
@@ -49,6 +58,7 @@ public class Professor extends Aluno{
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
                     professor.setNome(rs.getString("nome_professor"));
+                    professor.setId_professor(rs.getInt("id_professor"));
                 }
                 return professor;
             } catch (Exception e) {
@@ -58,7 +68,7 @@ public class Professor extends Aluno{
             }
         }
     }
-    
+
     // Função de administrador - cadastrar aluno
     public void cadastrarAluno(Aluno aluno) throws Exception {
         String sql = "insert into Aluno (nome_aluno, email, senha) values (?, ?, ?);";
@@ -74,8 +84,50 @@ public class Professor extends Aluno{
             }
         }
     }
+
+    // Função de administrador - cadastrar pergunta
+    public void cadastrarPergunta(Professor professor, String pergunta) throws Exception {
+        String sql = "insert into Pergunta (pergunta, id_professor) values(?, ?)";
+        try (Connection conexao = ConnectionFactory.obterConexao();
+                PreparedStatement ps = conexao.prepareStatement(sql)) {
+            ps.setString(1, pergunta);
+            ps.setInt(2, professor.getId_professor());
+            try {
+                ps.execute();
+            } catch (Exception e) {
+                throw new RuntimeException("Pergunta já existe");
+            }
+        }
+    }
+
+    public void cadastrarResposta(Pergunta pergunta, String resposta_correta, String resposta_um, String resposta_dois, String resposta_tres) throws Exception {
+        String sql = "insert into Resposta (resposta_correta, resposta_um, resposta_dois, resposta_tres, id_pergunta) values(?, ?, ?, ?, ?)";
+        try (Connection conexao = ConnectionFactory.obterConexao();
+                PreparedStatement ps = conexao.prepareStatement(sql)) {
+            ps.setString(1, resposta_correta);
+            ps.setString(2, resposta_um);
+            ps.setString(3, resposta_dois);
+            ps.setString(4, resposta_tres);
+            ps.setInt(5, pergunta.getId_pergunta());
+            try {
+                ps.execute();
+            } catch (Exception e){
+                throw new RuntimeException("Erro em cadastrar resposta");
+            }
+        }
+    }
+
+    // Getters e Setters
+    public int getId_professor() {
+        return id_professor;
+    }
+
+    public void setId_professor(int id_professor) {
+        this.id_professor = id_professor;
+    }
+
     @Override
     public String toString() {
-        return "Professor\nNome: " + getNome() + "\nEmail: " + getEmail() + "\nSenha: " + getSenha();
+        return "Professor\nNome: " + getNome() + "\nEmail: " + getEmail() + "\nSenha: " + getSenha() + "\nID Professor: " + getId_professor();
     }
 }
