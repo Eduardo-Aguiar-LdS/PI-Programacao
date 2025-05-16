@@ -3,6 +3,48 @@
     "configurations": [
       {
         "type": "java",
+        "name": "TelaGerenciarCadastrarProfessor",
+        "request": "launch",
+        "mainClass": "telas.telas_professor.TelaGerenciarCadastrarProfessor",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
+        "name": "TelaGerenciarEditarProfessor",
+        "request": "launch",
+        "mainClass": "telas.telas_professor.TelaGerenciarEditarProfessor",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
+        "name": "TelaCadastro",
+        "request": "launch",
+        "mainClass": "telas.TelaCadastro",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
+        "name": "TelaGerenciamentoProfessor",
+        "request": "launch",
+        "mainClass": "telas.telas_professor.TelaGerenciamentoProfessor",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
+        "name": "TelaCadastrarAlunoProfessor",
+        "request": "launch",
+        "mainClass": "telas.telas_professor.TelaCadastrarAlunoProfessor",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
+        "name": "TelaPrincipalAdm",
+        "request": "launch",
+        "mainClass": "telas.telas_professor.TelaPrincipalAdm",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
         "name": "Executar TesteConexao",
         "request": "launch",
         "mainClass": "testes.TesteConexao",
