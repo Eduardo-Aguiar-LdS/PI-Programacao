@@ -3,6 +3,13 @@
     "configurations": [
       {
         "type": "java",
+        "name": "TelaCadastroAluno",
+        "request": "launch",
+        "mainClass": "game.TelaCadastroAluno",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
         "name": "TelaGerenciarCadastrarProfessor",
         "request": "launch",
         "mainClass": "telas.telas_professor.TelaGerenciarCadastrarProfessor",

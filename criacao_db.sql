@@ -32,6 +32,7 @@ pontuacao int);
 
 create table Pergunta (
 id_pergunta int primary key auto_increment,
+dificuldade varchar(7) not null,
 pergunta varchar(70) not null unique,
 id_professor int,
 foreign key(id_professor) references Professor(id_professor));
