@@ -8,24 +8,24 @@ call mvn clean compile
 
 if "%ERRORLEVEL%"=="0" (
     echo ====================================
-    echo EXECUTANDO TESTE DE JOGO...
+    echo EXECUTANDO SHOW DO MILHÃO...
     echo ====================================
     
-    call mvn exec:java -Dexec.mainClass="testes.TesteJogo"
+    call mvn exec:java -Dexec.mainClass="show_milhao.Jogo"
     
     if errorlevel 1 (
         echo ====================================
-        echo ERRO NA EXECUCAO!
+        echo ERRO NA EXECUÇÃO!
         echo ====================================
     )
 ) else (
     echo ====================================
-    echo ERRO NA COMPILACAO! CODIGO: %ERRORLEVEL%
+    echo ERRO NA COMPILAÇÃO! CÓDIGO: %ERRORLEVEL%
     echo ====================================
 )
 
 echo.
 echo ====================================
-echo FIM DA EXECUCAO
+echo FIM DA EXECUÇÃO
 echo ====================================
 pause

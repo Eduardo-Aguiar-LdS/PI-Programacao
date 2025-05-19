@@ -32,7 +32,6 @@ public class DAO {
     // System.out.println("\nOpções de ajuda:");
     // System.out.println("1) Eliminar duas opções (50/50)");
     // System.out.println("2) Pular pergunta");
-    // System.out.println("3) Obter dica");
     // implementar logica
 
     public boolean salvarProgresso(Aluno aluno) {
