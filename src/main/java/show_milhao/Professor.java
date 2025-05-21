@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import javax.swing.JOptionPane;
+import telas.telas_gerais.TelaLogin;
 
 public class Professor extends Aluno {
     private int id_professor;
@@ -30,18 +31,19 @@ public class Professor extends Aluno {
     }
 
     // Fazer login
-    public void fazerLogin(Professor professor) throws Exception {
+    public void fazerLogin(Professor professor, TelaLogin tela) throws Exception {
         String sql = "select * from Professor where email = ? and senha = ?";
         try (Connection conexao = ConnectionFactory.obterConexao();
                 PreparedStatement ps = conexao.prepareStatement(sql)) {
             ps.setString(1, professor.getEmail());
             ps.setString(2, professor.getSenha());
-            try {
-                ps.execute();
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
                 JOptionPane.showMessageDialog(null,
-                        "Login realizado com sucesso!" + "\nE-mail: " + professor.getEmail(), "Sucesso",
+                        "Login de professor realizado com sucesso!" + "\nE-mail: " + professor.getEmail(), "Sucesso",
                         JOptionPane.INFORMATION_MESSAGE);
-            } catch (Exception e) {
+                tela.irTelaPrincipalAdmin(professor);
+            } else {
                 JOptionPane.showMessageDialog(null, "Professor não possui cadastro", "Erro", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -71,14 +73,16 @@ public class Professor extends Aluno {
 
     // Função de administrador - cadastrar aluno
     public void cadastrarAluno(Aluno aluno) throws Exception {
-        String sql = "insert into Aluno (nome_aluno, email, senha) values (?, ?, ?);";
+        String sql = "insert into Aluno (nome_aluno, email, senha, id_turma) select ?, ?, ?, t.id_turma FROM Turma t WHERE t.nome_turma = ?;";
         try (Connection conexao = ConnectionFactory.obterConexao();
                 PreparedStatement ps = conexao.prepareStatement(sql)) {
             ps.setString(1, aluno.getNome());
             ps.setString(2, aluno.getEmail());
             ps.setString(3, aluno.getSenha());
+            ps.setString(4, aluno.getTurma());
             try {
                 ps.execute();
+                JOptionPane.showMessageDialog(null, "Aluno cadastrado");
             } catch (Exception e) {
                 throw new RuntimeException("Aluno já possui cadastro");
             }
@@ -100,7 +104,8 @@ public class Professor extends Aluno {
         }
     }
 
-    public void cadastrarResposta(Pergunta pergunta, String resposta_correta, String resposta_um, String resposta_dois, String resposta_tres) throws Exception {
+    public void cadastrarResposta(Pergunta pergunta, String resposta_correta, String resposta_um, String resposta_dois,
+            String resposta_tres) throws Exception {
         String sql = "insert into Resposta (resposta_correta, resposta_um, resposta_dois, resposta_tres, id_pergunta) values(?, ?, ?, ?, ?)";
         try (Connection conexao = ConnectionFactory.obterConexao();
                 PreparedStatement ps = conexao.prepareStatement(sql)) {
@@ -111,7 +116,7 @@ public class Professor extends Aluno {
             ps.setInt(5, pergunta.getId_pergunta());
             try {
                 ps.execute();
-            } catch (Exception e){
+            } catch (Exception e) {
                 throw new RuntimeException("Erro em cadastrar resposta");
             }
         }
@@ -128,6 +133,7 @@ public class Professor extends Aluno {
 
     @Override
     public String toString() {
-        return "Professor\nNome: " + getNome() + "\nEmail: " + getEmail() + "\nSenha: " + getSenha() + "\nID Professor: " + getId_professor();
+        return "Professor\nNome: " + getNome() + "\nEmail: " + getEmail() + "\nSenha: " + getSenha()
+                + "\nID Professor: " + getId_professor();
     }
 }

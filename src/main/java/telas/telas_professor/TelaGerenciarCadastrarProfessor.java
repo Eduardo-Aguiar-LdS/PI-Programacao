@@ -6,10 +6,13 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.*;
 
+import show_milhao.Professor;
+
 public class TelaGerenciarCadastrarProfessor extends JFrame {
+    private Professor professor_tela;
     private static final Dimension NOTEBOOK_SIZE = new Dimension(1366, 768);
 
-    public TelaGerenciarCadastrarProfessor() {
+    public TelaGerenciarCadastrarProfessor(Professor professor) {
         super("Show do Milhão Acadêmico");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -18,30 +21,30 @@ public class TelaGerenciarCadastrarProfessor extends JFrame {
         if (iconURL != null) {
             ImageIcon rawIcon = new ImageIcon(iconURL);
             Image scaledIcon = rawIcon.getImage()
-                                      .getScaledInstance(64, 64, Image.SCALE_SMOOTH);
+                    .getScaledInstance(64, 64, Image.SCALE_SMOOTH);
             setIconImage(scaledIcon);
         }
 
         // --- Imagem principal (acima do título) ---
         URL imgURL = getClass().getResource("/telas/img/poliedro_logo.png");
         ImageIcon ico = (imgURL != null)
-            ? new ImageIcon(imgURL)
-            : new ImageIcon();
+                ? new ImageIcon(imgURL)
+                : new ImageIcon();
 
         // --- Painel central ---
         JPanel content = new JPanel(new GridBagLayout());
         content.setBackground(Color.WHITE);
         content.setBorder(new EmptyBorder(20, 20, 20, 20));
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx  = 0;
+        gbc.gridx = 0;
         gbc.anchor = GridBagConstraints.CENTER;
 
         Insets defaultInsets = new Insets(10, 0, 10, 0);
-        Insets titleInsets   = new Insets(0, 0, 0, 0);
+        Insets titleInsets = new Insets(0, 0, 0, 0);
 
         // 1) Ícone acima
         gbc.insets = defaultInsets;
-        gbc.gridy  = 0;
+        gbc.gridy = 0;
         content.add(new JLabel(ico), gbc);
 
         // 2) Título "Cadastrar"
@@ -50,7 +53,7 @@ public class TelaGerenciarCadastrarProfessor extends JFrame {
             titleFont = new Font("SansSerif", Font.PLAIN, 32);
         }
         gbc.insets = titleInsets;
-        gbc.gridy  = 1;
+        gbc.gridy = 1;
         JLabel lblCadastrar = new JLabel("Cadastrar");
         lblCadastrar.setFont(titleFont);
         lblCadastrar.setHorizontalAlignment(SwingConstants.CENTER);
@@ -58,19 +61,39 @@ public class TelaGerenciarCadastrarProfessor extends JFrame {
 
         // 3) Botões
         Color btnColor = new Color(0x1FB0C3);
-        Font  btnFont  = new Font("Inter", Font.PLAIN, 24);
+        Font btnFont = new Font("Inter", Font.PLAIN, 24);
         if (!"Inter".equalsIgnoreCase(btnFont.getFamily())) {
             btnFont = new Font("SansSerif", Font.PLAIN, 24);
         }
 
-        int sairWidth  = 320;
+        int sairWidth = 320;
         int otherWidth = sairWidth - 70; // 250
 
-        RoundedButton btnAlunos    = new RoundedButton("Alunos");
+        RoundedButton btnAlunos = new RoundedButton("Alunos");
         RoundedButton btnPerguntas = new RoundedButton("Perguntas");
-        RoundedButton btnVoltar    = new RoundedButton("Voltar");
+        RoundedButton btnVoltar = new RoundedButton("Voltar");
 
-        for (RoundedButton btn : new RoundedButton[]{ btnAlunos, btnPerguntas, btnVoltar }) {
+        btnAlunos.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ((JFrame) SwingUtilities.getWindowAncestor(btnAlunos)).dispose();
+                try {
+                    new TelaCadastrarAlunoProfessor(professor).setVisible(true);
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+        btnVoltar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ((JFrame) SwingUtilities.getWindowAncestor(btnVoltar)).dispose();
+                new TelaGerenciamentoProfessor(professor).setVisible(true);
+            }
+        });
+
+        for (RoundedButton btn : new RoundedButton[] { btnAlunos, btnPerguntas, btnVoltar }) {
             int w = btn.getText().equals("Voltar") ? sairWidth : otherWidth;
             btn.setPreferredSize(new Dimension(w, 50));
             btn.setBackground(btnColor);
@@ -81,23 +104,30 @@ public class TelaGerenciarCadastrarProfessor extends JFrame {
 
             Color hover = adjustColorBrightness(btnColor, 1.2f);
             btn.addMouseListener(new MouseAdapter() {
-                @Override public void mouseEntered(MouseEvent e) { btn.setBackground(hover); }
-                @Override public void mouseExited(MouseEvent e)  { btn.setBackground(btnColor); }
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    btn.setBackground(hover);
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    btn.setBackground(btnColor);
+                }
             });
         }
 
         // 4) Espaçamento antes do primeiro botão
         gbc.insets = new Insets(60, 0, 10, 0);
-        gbc.gridy  = 2;
+        gbc.gridy = 2;
         content.add(btnAlunos, gbc);
 
         // 5) Botão "Perguntas"
         gbc.insets = defaultInsets;
-        gbc.gridy  = 3;
+        gbc.gridy = 3;
         content.add(btnPerguntas, gbc);
 
         // 6) Botão "Voltar"
-        gbc.gridy  = 4;
+        gbc.gridy = 4;
         content.add(btnVoltar, gbc);
 
         // --- Finaliza janela ---
@@ -115,7 +145,10 @@ public class TelaGerenciarCadastrarProfessor extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(TelaGerenciarCadastrarProfessor::new);
+        SwingUtilities.invokeLater(() -> {
+            TelaGerenciarCadastrarProfessor frame = new TelaGerenciarCadastrarProfessor(null);
+            frame.setVisible(true); 
+        });
     }
 }
 
@@ -137,6 +170,12 @@ class RoundedButton extends JButton {
         g2.dispose();
     }
 
-    @Override protected void paintBorder(Graphics g) { }
-    @Override public boolean isContentAreaFilled() { return false; }
+    @Override
+    protected void paintBorder(Graphics g) {
+    }
+
+    @Override
+    public boolean isContentAreaFilled() {
+        return false;
+    }
 }

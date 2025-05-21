@@ -1,4 +1,4 @@
-package game;
+package telas.telas_gerais;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -31,6 +31,9 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import show_milhao.*;
+import telas.telas_professor.TelaPrincipalAdmin;
+
 public class TelaLogin extends JFrame {
     private JTextField emailField;
     private JPasswordField senhaField;
@@ -44,82 +47,80 @@ public class TelaLogin extends JFrame {
         setSize(800, 600);
         setMinimumSize(new Dimension(400, 500));
         setLocationRelativeTo(null);
-        
+
         // Painel principal
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(Color.WHITE);
         add(mainPanel);
-        
+
         // Painel de conteúdo centralizado
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setBackground(Color.WHITE);
         centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         mainPanel.add(centerPanel, BorderLayout.CENTER);
-        
+
         // Título dividido em duas linhas
         JPanel titlePanel = new JPanel();
         titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.Y_AXIS));
         titlePanel.setOpaque(false);
-        
+
         JLabel titlePart1 = new JLabel("Fazer Login");
         titlePart1.setFont(new Font("Arial", Font.BOLD, 36));
         titlePart1.setForeground(Color.BLACK);
         titlePart1.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
-        
-        
+
         titlePanel.add(titlePart1);
         centerPanel.add(titlePanel);
         centerPanel.add(Box.createRigidArea(new Dimension(0, 40)));
-        
+
         // Painel do formulário
         JPanel formPanel = new JPanel();
         formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
         formPanel.setBackground(Color.WHITE);
         formPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         formPanel.setMaximumSize(new Dimension(400, Integer.MAX_VALUE));
-        
+
         // Campo de e-mail
         emailField = createRoundedTextField();
         emailField.setText("Digite seu e-mail");
         addPlaceholderBehavior(emailField, "Digite seu e-mail");
-        
+
         // Campo de senha
         senhaField = createRoundedPasswordField();
         senhaField.setText("Digite sua senha");
         addPlaceholderBehavior(senhaField, "Digite sua senha");
-        
+
         // Adiciona campos com rótulos
         formPanel.add(createFieldWithLabel("E-mail", emailField));
         formPanel.add(Box.createRigidArea(new Dimension(0, 25)));
         formPanel.add(createFieldWithLabel("Senha", senhaField));
-        
+
         centerPanel.add(formPanel);
         centerPanel.add(Box.createRigidArea(new Dimension(0, 40)));
-        
+
         // Painel de botões - agora ambos iguais
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
         buttonPanel.setOpaque(false);
         buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         buttonPanel.setMaximumSize(new Dimension(300, Integer.MAX_VALUE));
-        
+
         // Botões idênticos
         acessarButton = createRoundedButton("Acessar", buttonColor);
         voltarButton = createRoundedButton("Voltar", buttonColor); // Mesma cor do botão Acessar
-        
+
         buttonPanel.add(acessarButton);
         buttonPanel.add(Box.createRigidArea(new Dimension(0, 20)));
         buttonPanel.add(voltarButton);
-        
+
         centerPanel.add(buttonPanel);
         centerPanel.add(Box.createVerticalGlue());
-        
+
         // Ações dos botões
         acessarButton.addActionListener(e -> realizarLogin());
         voltarButton.addActionListener(e -> voltarTelaAnterior());
-        
+
         // Listener para redimensionamento responsivo
         addComponentListener(new ComponentAdapter() {
             @Override
@@ -132,22 +133,21 @@ public class TelaLogin extends JFrame {
     private void adjustComponents(JLabel titlePart1) {
         // Ajuste responsivo do título
         int titleFontSize = Math.max(24, Math.min(48, getWidth() / 20));
-        
+
         titlePart1.setFont(new Font("Arial", Font.BOLD, titleFontSize));
-    
-        
+
         // Ajuste responsivo dos campos
-        int fieldWidth = Math.min(400, (int)(getWidth() * 0.8));
+        int fieldWidth = Math.min(400, (int) (getWidth() * 0.8));
         Dimension fieldSize = new Dimension(fieldWidth, 50);
         emailField.setMaximumSize(fieldSize);
         senhaField.setMaximumSize(fieldSize);
-        
+
         // Ajuste responsivo dos botões
-        int buttonWidth = Math.min(300, (int)(getWidth() * 0.7));
+        int buttonWidth = Math.min(300, (int) (getWidth() * 0.7));
         Dimension buttonSize = new Dimension(buttonWidth, 50);
         acessarButton.setMaximumSize(buttonSize);
         voltarButton.setMaximumSize(buttonSize);
-        
+
         // Ajuste de fonte dos botões
         int buttonFontSize = Math.max(16, Math.min(20, getWidth() / 40));
         Font buttonFont = new Font("Arial", Font.BOLD, buttonFontSize);
@@ -172,23 +172,24 @@ public class TelaLogin extends JFrame {
                 g2.dispose();
             }
         };
-        
+
         button.setOpaque(false);
         button.setBorder(new RoundedBorder(20));
         button.setContentAreaFilled(false);
         button.setFocusPainted(false);
         button.setPreferredSize(new Dimension(250, 50));
         button.setMaximumSize(new Dimension(300, 60));
-        
+
         button.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent evt) {
                 button.setCursor(new Cursor(Cursor.HAND_CURSOR));
             }
+
             public void mouseExited(MouseEvent evt) {
                 button.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             }
         });
-        
+
         return button;
     }
 
@@ -201,12 +202,12 @@ public class TelaLogin extends JFrame {
                 g2.setColor(getBackground());
                 g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
                 g2.setColor(Color.GRAY);
-                g2.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, 15, 15);
+                g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 15, 15);
                 g2.dispose();
                 super.paintComponent(g);
             }
         };
-        
+
         field.setOpaque(false);
         field.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
         field.setForeground(Color.GRAY);
@@ -224,16 +225,16 @@ public class TelaLogin extends JFrame {
                 g2.setColor(getBackground());
                 g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
                 g2.setColor(Color.GRAY);
-                g2.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, 15, 15);
+                g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 15, 15);
                 g2.dispose();
                 super.paintComponent(g);
             }
         };
-        
+
         field.setOpaque(false);
         field.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
         field.setForeground(Color.GRAY);
-        field.setEchoChar((char)0);
+        field.setEchoChar((char) 0);
         field.setPreferredSize(new Dimension(400, 50));
         field.setMaximumSize(new Dimension(400, 50));
         return field;
@@ -243,12 +244,12 @@ public class TelaLogin extends JFrame {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(Color.WHITE);
         panel.setMaximumSize(new Dimension(400, 80));
-        
+
         JLabel label = new JLabel(labelText);
         label.setFont(new Font("Arial", Font.PLAIN, 18));
         label.setBorder(BorderFactory.createEmptyBorder(0, 5, 10, 0));
         panel.add(label, BorderLayout.NORTH);
-        
+
         panel.add(field, BorderLayout.CENTER);
         return panel;
     }
@@ -260,16 +261,17 @@ public class TelaLogin extends JFrame {
                     field.setText("");
                     field.setForeground(Color.BLACK);
                     if (field instanceof JPasswordField) {
-                        ((JPasswordField)field).setEchoChar('*');
+                        ((JPasswordField) field).setEchoChar('*');
                     }
                 }
             }
+
             public void focusLost(FocusEvent evt) {
                 if (field.getText().isEmpty()) {
                     field.setText(placeholder);
                     field.setForeground(Color.GRAY);
                     if (field instanceof JPasswordField) {
-                        ((JPasswordField)field).setEchoChar((char)0);
+                        ((JPasswordField) field).setEchoChar((char) 0);
                     }
                 }
             }
@@ -279,15 +281,54 @@ public class TelaLogin extends JFrame {
     private void realizarLogin() {
         String email = emailField.getText();
         String senha = new String(senhaField.getPassword());
-        
-        if (email.isEmpty() || email.equals("Digite seu e-mail") || 
-            senha.isEmpty() || senha.equals("Digite sua senha")) {
-            JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos!", "Erro", JOptionPane.ERROR_MESSAGE);
+
+        if (email.isEmpty() || email.equals("Digite seu e-mail") ||
+                senha.isEmpty() || senha.equals("Digite sua senha")) {
+            JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos!", "Erro",
+                    JOptionPane.ERROR_MESSAGE);
             return;
+        } else {
+            // Fazer verificação de aluno, professor ou coordenador
+            if (email.contains("@coordenador.com")) {
+                // Coordenador
+                try {
+                    Coordenador coordenador = new Coordenador(email, senha);
+                    coordenador.fazerLogin(coordenador, this);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else if (email.contains("@sistemapoliedro.com.br")) {
+                // Professor
+                try {
+                    Professor professor = new Professor(email, senha);
+                    professor.fazerLogin(professor, this);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else if (email.contains("@p4ed.com")) {
+                // Aluno
+                Aluno aluno = new Aluno(email, senha);
+                try {
+                    aluno.fazerLogin(aluno);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Usuário não tem cadastro", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
         }
-        
-        // Lógica de autenticação aqui
-        JOptionPane.showMessageDialog(this, "Login realizado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public void irTelaPrincipalAdmin(Professor professor) throws Exception {
+        this.dispose();
+        professor.atributosDB(professor);
+        new TelaPrincipalAdmin(professor, null).setVisible(true);
+    }
+
+    public void irTelaPrincipalAdmin(Coordenador coordenador) throws Exception {
+        this.dispose();
+        coordenador.atributosDB(coordenador);
+        new TelaPrincipalAdmin(null, coordenador).setVisible(true);
     }
 
     private void voltarTelaAnterior() {
@@ -297,21 +338,21 @@ public class TelaLogin extends JFrame {
 
     private static class RoundedBorder implements javax.swing.border.Border {
         private int radius;
-        
+
         RoundedBorder(int radius) {
             this.radius = radius;
         }
-        
+
         public Insets getBorderInsets(Component c) {
-            return new Insets(this.radius+1, this.radius+1, this.radius+2, this.radius);
+            return new Insets(this.radius + 1, this.radius + 1, this.radius + 2, this.radius);
         }
-        
+
         public boolean isBorderOpaque() {
             return true;
         }
-        
+
         public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-            g.drawRoundRect(x, y, width-1, height-1, radius, radius);
+            g.drawRoundRect(x, y, width - 1, height - 1, radius, radius);
         }
     }
 

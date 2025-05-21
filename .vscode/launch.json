@@ -3,6 +3,83 @@
     "configurations": [
       {
         "type": "java",
+        "name": "TelaPrincipalAluno",
+        "request": "launch",
+        "mainClass": "telas.telas_aluno.TelaPrincipalAluno",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
+        "name": "TelaCadastroProf",
+        "request": "launch",
+        "mainClass": "telas.TelaCadastroProf",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
+        "name": "TelaPrincipalAdmin",
+        "request": "launch",
+        "mainClass": "telas.telas_professor.TelaPrincipalAdmin",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
+        "name": "TelaPrincipalAdmin",
+        "request": "launch",
+        "mainClass": "telas.TelaPrincipalAdmin",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
+        "name": "TelaLogin",
+        "request": "launch",
+        "mainClass": "telas.telas_gerais.TelaLogin",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
+        "name": "TelaInicial",
+        "request": "launch",
+        "mainClass": "telas.telas_gerais.TelaInicial",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
+        "name": "TelaCadastroAluno",
+        "request": "launch",
+        "mainClass": "telas.TelaCadastroAluno",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
+        "name": "TelaLogin",
+        "request": "launch",
+        "mainClass": "game.TelaLogin",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
+        "name": "TelaLogin",
+        "request": "launch",
+        "mainClass": "telas.TelaLogin",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
+        "name": "TelaInicial",
+        "request": "launch",
+        "mainClass": "telas.TelaInicial",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
+        "name": "TelaInicial",
+        "request": "launch",
+        "mainClass": "game.TelaInicial",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
         "name": "TelaCadastroAluno",
         "request": "launch",
         "mainClass": "game.TelaCadastroAluno",

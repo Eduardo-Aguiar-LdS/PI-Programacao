@@ -1,4 +1,4 @@
-package game;
+package telas.telas_professor;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -30,34 +30,48 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-public class TelaPrincipalAluno extends JFrame {
+import show_milhao.*;
+import telas.telas_gerais.TelaInicial;
+
+public class TelaPrincipalAdmin extends JFrame {
     private ImageIcon originalLogoIcon;
-    private JLabel logoLabel, titleLabel, subtitleLabel, silharLabel;
-    private JButton playButton, statsButton, exitButton;
+    private JLabel logoLabel, titleLabel, subtitleLabel;
+    private JButton playButton, statsButton, manageButton, exitButton;
     private Color buttonColor = new Color(31, 176, 195);
 
-    public TelaPrincipalAluno() {
+    private Professor professor_tela;
+    private Coordenador coordenador_tela;
+
+    public TelaPrincipalAdmin(Professor professor, Coordenador coordenador) {
+        this.professor_tela = professor;
+        this.coordenador_tela = coordenador;
+
         // Configuração da janela
-        setTitle("Show do Milhão Acadêmico");
+        setTitle("Show do Milhão Acadêmico - Admin");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
         setMinimumSize(new Dimension(400, 500));
         setLocationRelativeTo(null);
-        
-        // Painel principal com BorderLayout para melhor centralização
+
+        // Painel principal com BorderLayout
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(Color.WHITE);
         add(mainPanel);
-        
-        // Painel central para conteúdo
+
+        // Painel de conteúdo centralizado
+        JPanel centerWrapper = new JPanel(new BorderLayout());
+        centerWrapper.setBackground(Color.WHITE);
+        centerWrapper.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        mainPanel.add(centerWrapper, BorderLayout.CENTER);
+
+        // Painel central para conteúdo (agora com BoxLayout Y_AXIS)
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setBackground(Color.WHITE);
-        centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        
-        // Adiciona painel central ao mainPanel
-        mainPanel.add(centerPanel, BorderLayout.CENTER);
-        
+
+        // Adiciona painel central ao wrapper (centralizado)
+        centerWrapper.add(centerPanel, BorderLayout.CENTER);
+
         // Título
         titleLabel = new JLabel("Show do Milhão");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 48));
@@ -65,7 +79,7 @@ public class TelaPrincipalAluno extends JFrame {
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         centerPanel.add(titleLabel);
         centerPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-        
+
         // Subtítulo
         subtitleLabel = new JLabel("Acadêmico");
         subtitleLabel.setFont(new Font("Arial", Font.PLAIN, 24));
@@ -73,15 +87,15 @@ public class TelaPrincipalAluno extends JFrame {
         subtitleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         centerPanel.add(subtitleLabel);
         centerPanel.add(Box.createRigidArea(new Dimension(0, 30)));
-        
-        // Logo e texto "Poliedro"
+
+        // Logo e texto "Poliedro Sistema de Ensino"
         JPanel logoPanel = new JPanel();
         logoPanel.setLayout(new BoxLayout(logoPanel, BoxLayout.Y_AXIS));
         logoPanel.setOpaque(false);
         logoPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
+
         try {
-            originalLogoIcon = new ImageIcon("src/main/java/img/poliedro.png");
+            originalLogoIcon = new ImageIcon("src/main/java/telas/img/poliedro.png");
             logoLabel = new JLabel(originalLogoIcon);
             logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             logoPanel.add(logoLabel);
@@ -92,66 +106,88 @@ public class TelaPrincipalAluno extends JFrame {
             logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             logoPanel.add(logoLabel);
         }
-        
+
         centerPanel.add(logoPanel);
         centerPanel.add(Box.createRigidArea(new Dimension(0, 40)));
-        
+
         // Painel de botões
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
         buttonPanel.setOpaque(false);
         buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
-        // Botões com tamanho fixo adequado
+
+        // Botões com tamanho fixo
         playButton = createRoundedButton("Jogar", buttonColor);
-        statsButton = createRoundedButton("Estatísticas", buttonColor);
+        statsButton = createRoundedButton("Estatística", buttonColor);
+        manageButton = createRoundedButton("Gerenciar", buttonColor);
         exitButton = createRoundedButton("Sair da conta", buttonColor);
-        
-        // Define tamanho preferencial para os botões
+
         Dimension buttonSize = new Dimension(300, 50);
         playButton.setPreferredSize(buttonSize);
         playButton.setMinimumSize(buttonSize);
         playButton.setMaximumSize(buttonSize);
-        
+
         statsButton.setPreferredSize(buttonSize);
         statsButton.setMinimumSize(buttonSize);
         statsButton.setMaximumSize(buttonSize);
-        
+
+        manageButton.setPreferredSize(buttonSize);
+        manageButton.setMinimumSize(buttonSize);
+        manageButton.setMaximumSize(buttonSize);
+
         exitButton.setPreferredSize(buttonSize);
         exitButton.setMinimumSize(buttonSize);
         exitButton.setMaximumSize(buttonSize);
-        
+
         buttonPanel.add(playButton);
         buttonPanel.add(Box.createRigidArea(new Dimension(0, 20)));
         buttonPanel.add(statsButton);
         buttonPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+        buttonPanel.add(manageButton);
+        buttonPanel.add(Box.createRigidArea(new Dimension(0, 20)));
         buttonPanel.add(exitButton);
-        
+
         centerPanel.add(buttonPanel);
-        centerPanel.add(Box.createVerticalGlue());
-        
+
+        // Adiciona espaço flexível antes e depois do conteúdo para centralização
+        // vertical
+        centerPanel.add(Box.createVerticalGlue(), 0); // No início
+        centerPanel.add(Box.createVerticalGlue()); // No final
+
         // Ações dos botões
         playButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Iniciando jogo...");
+                JOptionPane.showMessageDialog(null, "Iniciando jogo como administrador...");
             }
         });
-        
+
         statsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Exibindo estatísticas...");
+                JOptionPane.showMessageDialog(null, "Exibindo estatísticas do sistema...");
             }
         });
-        
+
+        manageButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ((JFrame) SwingUtilities.getWindowAncestor(exitButton)).dispose();
+                if (professor!=null){
+                    new TelaGerenciamentoProfessor(professor).setVisible(true);
+                } // Criar tela coordenador
+            }
+        });
+
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.exit(0);
+                System.out.println(professor);
+                ((JFrame) SwingUtilities.getWindowAncestor(exitButton)).dispose();
+                new TelaInicial().setVisible(true);
             }
         });
-        
+
         // Listener para redimensionamento
         addComponentListener(new ComponentAdapter() {
             @Override
@@ -160,50 +196,45 @@ public class TelaPrincipalAluno extends JFrame {
             }
         });
     }
-    
+
     private void adjustComponents() {
         // Ajuste responsivo do título
         int titleFontSize = Math.max(24, Math.min(48, getWidth() / 20));
         titleLabel.setFont(new Font("Arial", Font.BOLD, titleFontSize));
-        
+
         // Ajuste responsivo do subtítulo
         int subtitleFontSize = Math.max(14, Math.min(24, getWidth() / 40));
         subtitleLabel.setFont(new Font("Arial", Font.PLAIN, subtitleFontSize));
-        
+
         // Ajuste responsivo do logo
         if (originalLogoIcon != null) {
-            int maxLogoWidth = (int)(getWidth() * 0.6);
-            int maxLogoHeight = (int)(getHeight() * 0.3);
-            
+            int maxLogoWidth = (int) (getWidth() * 0.6);
+            int maxLogoHeight = (int) (getHeight() * 0.3);
+
             double ratio = Math.min(
-                (double)maxLogoWidth / originalLogoIcon.getIconWidth(),
-                (double)maxLogoHeight / originalLogoIcon.getIconHeight()
-            );
-            
-            int newWidth = (int)(originalLogoIcon.getIconWidth() * ratio);
-            int newHeight = (int)(originalLogoIcon.getIconHeight() * ratio);
-            
+                    (double) maxLogoWidth / originalLogoIcon.getIconWidth(),
+                    (double) maxLogoHeight / originalLogoIcon.getIconHeight());
+
+            int newWidth = (int) (originalLogoIcon.getIconWidth() * ratio);
+            int newHeight = (int) (originalLogoIcon.getIconHeight() * ratio);
+
             Image scaledImage = originalLogoIcon.getImage().getScaledInstance(
-                newWidth, newHeight, Image.SCALE_SMOOTH);
+                    newWidth, newHeight, Image.SCALE_SMOOTH);
             logoLabel.setIcon(new ImageIcon(scaledImage));
         } else {
             int logoFontSize = Math.max(14, Math.min(24, getWidth() / 50));
             logoLabel.setFont(new Font("Arial", Font.PLAIN, logoFontSize));
         }
-        
-        // Ajuste responsivo do texto "SILHAR A CASA"
-        int silharFontSize = Math.max(12, Math.min(18, getWidth() / 60));
-        silharLabel.setFont(new Font("Arial", Font.BOLD, silharFontSize));
-        
+
         revalidate();
         repaint();
     }
-    
+
     private JButton createRoundedButton(String text, Color color) {
         JButton button = new JButton(text) {
             @Override
             protected void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D)g.create();
+                Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 g2.setColor(color);
                 g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
@@ -216,48 +247,49 @@ public class TelaPrincipalAluno extends JFrame {
                 g2.dispose();
             }
         };
-        
+
         button.setOpaque(false);
         button.setBorder(new RoundedBorder(20));
         button.setContentAreaFilled(false);
         button.setFocusPainted(false);
         button.setFont(new Font("Arial", Font.BOLD, 18));
-        
+
         button.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent evt) {
                 button.setCursor(new Cursor(Cursor.HAND_CURSOR));
             }
+
             public void mouseExited(MouseEvent evt) {
                 button.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             }
         });
-        
+
         return button;
     }
-    
+
     private static class RoundedBorder implements javax.swing.border.Border {
         private int radius;
-        
+
         RoundedBorder(int radius) {
             this.radius = radius;
         }
-        
+
         public Insets getBorderInsets(Component c) {
-            return new Insets(this.radius+1, this.radius+1, this.radius+2, this.radius);
+            return new Insets(this.radius + 1, this.radius + 1, this.radius + 2, this.radius);
         }
-        
+
         public boolean isBorderOpaque() {
             return true;
         }
-        
+
         public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-            g.drawRoundRect(x, y, width-1, height-1, radius, radius);
+            g.drawRoundRect(x, y, width - 1, height - 1, radius, radius);
         }
     }
-    
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            TelaPrincipalAluno frame = new TelaPrincipalAluno();
+            TelaPrincipalAdmin frame = new TelaPrincipalAdmin(null, null);
             frame.setVisible(true);
         });
     }

@@ -4,12 +4,16 @@ import java.awt.*;
 import java.net.URL;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+
+import show_milhao.Professor;
+
 import java.awt.event.*;
 
 public class TelaGerenciamentoProfessor extends JFrame {
+    private Professor professor_tela;
     private static final Dimension NOTEBOOK_SIZE = new Dimension(1366, 768);
 
-    public TelaGerenciamentoProfessor() {
+    public TelaGerenciamentoProfessor(Professor professor) {
         super("Show do Milhão Acadêmico");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -74,6 +78,39 @@ public class TelaGerenciamentoProfessor extends JFrame {
         RoundedButton btnEditar    = new RoundedButton("Editar");
         RoundedButton btnVoltar    = new RoundedButton("Voltar");
 
+        // Ação dos botões
+        btnCadastrar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ((JFrame) SwingUtilities.getWindowAncestor(btnCadastrar)).dispose();
+                try {
+                    new TelaGerenciarCadastrarProfessor(professor).setVisible(true);
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+        btnEditar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ((JFrame) SwingUtilities.getWindowAncestor(btnEditar)).dispose();
+                try {
+                    new TelaGerenciarEditarProfessor(professor).setVisible(true);
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+        btnVoltar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ((JFrame) SwingUtilities.getWindowAncestor(btnVoltar)).dispose();
+                new TelaPrincipalAdmin(professor, null).setVisible(true);
+            }
+        });
+
         for (RoundedButton btn : new RoundedButton[]{ btnCadastrar, btnEditar, btnVoltar }) {
             int w = btn.getText().equals("Voltar") ? sairWidth : otherWidth;
             btn.setPreferredSize(new Dimension(w, 50));
@@ -118,7 +155,10 @@ public class TelaGerenciamentoProfessor extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(TelaGerenciamentoProfessor::new);
+        SwingUtilities.invokeLater(() -> {
+            TelaGerenciamentoProfessor frame = new TelaGerenciamentoProfessor(null);
+            frame.setVisible(true); 
+        });
     }
 }
 

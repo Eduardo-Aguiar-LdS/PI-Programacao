@@ -6,7 +6,11 @@ import java.sql.ResultSet;
 
 import javax.swing.JOptionPane;
 
+import telas.*;
+import telas.telas_gerais.TelaLogin;
+
 public class Coordenador extends Professor {
+
     // Construtor
     public Coordenador(String nome, String email) {
         super(nome, email);
@@ -25,20 +29,21 @@ public class Coordenador extends Professor {
     }
 
     // Fazer login
-    public void fazerLogin(Coordenador coordenador) throws Exception {
+    public void fazerLogin(Coordenador coordenador, TelaLogin tela) throws Exception {
         String sql = "select * from Professor where email = ? and senha = ?";
         try (Connection conexao = ConnectionFactory.obterConexao();
                 PreparedStatement ps = conexao.prepareStatement(sql)) {
             ps.setString(1, coordenador.getEmail());
             ps.setString(2, coordenador.getSenha());
-            try {
-                ps.execute();
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
                 JOptionPane.showMessageDialog(null,
-                        "Login realizado com sucesso!" + "\nE-mail: " + coordenador.getEmail(), "Sucesso",
+                        "Login de coordenador realizado com sucesso!" + "\nE-mail: " + coordenador.getEmail(),
+                        "Sucesso",
                         JOptionPane.INFORMATION_MESSAGE);
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Coordenador não possui cadastro", "Erro",
-                        JOptionPane.ERROR_MESSAGE);
+                tela.irTelaPrincipalAdmin(coordenador);
+            } else {
+                JOptionPane.showMessageDialog(null, "Senha inválida", "Erro", JOptionPane.ERROR_MESSAGE);
             }
         }
     }

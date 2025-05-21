@@ -1,15 +1,15 @@
-package telas;
+package telas.telas_coordenador;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.RenderingHints;
 import java.awt.event.ComponentAdapter;
@@ -22,57 +22,51 @@ import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import show_milhao.*;
-
-public class TelaCadastroAluno extends JFrame {
+public class TelaCadastroProf extends JFrame {
     private JTextField nomeField;
     private JTextField emailField;
     private JPasswordField senhaField;
-    private JComboBox<String> turmaComboBox;
     private JButton cadastrarButton;
     private JButton voltarButton;
     private JLabel titleLabel;
     private Color buttonColor = new Color(31, 176, 195);
 
-    public TelaCadastroAluno() {
+    public TelaCadastroProf() {
         // Configurações básicas da janela
-        setTitle("Cadastrar - Aluno");
+        setTitle("Cadastrar - Professor");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
         setMinimumSize(new Dimension(600, 500));
         setLocationRelativeTo(null);
         
-        // Painel principal sem ScrollPane
-        JPanel mainPanel = new JPanel(new BorderLayout());
+        // Painel principal com GridBagLayout para melhor centralização
+        JPanel mainPanel = new JPanel(new GridBagLayout());
         mainPanel.setBackground(Color.WHITE);
         add(mainPanel);
         
         // Painel de conteúdo centralizado
-        JPanel centerPanel = new JPanel();
-        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
-        centerPanel.setBackground(Color.WHITE);
-        mainPanel.add(centerPanel, BorderLayout.CENTER);
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+        contentPanel.setBackground(Color.WHITE);
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
         
         // Título
-        titleLabel = new JLabel("Cadastrar - Aluno");
+        titleLabel = new JLabel("Cadastrar - Professor");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 36));
         titleLabel.setForeground(Color.BLACK);
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        titleLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 30, 0));
-        centerPanel.add(titleLabel);
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 30, 0));
+        contentPanel.add(titleLabel);
         
         // Painel do formulário
         JPanel formPanel = new JPanel();
@@ -81,26 +75,10 @@ public class TelaCadastroAluno extends JFrame {
         formPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         formPanel.setMaximumSize(new Dimension(500, Integer.MAX_VALUE));
         
-        // Criar campos
-        nomeField = createRoundedTextField();
-        emailField = createRoundedTextField();
-        senhaField = createRoundedPasswordField();
-        try {
-            Turma turma = new Turma();
-            String[] turmas = turma.exibirTurma();
-            turmaComboBox = createRoundedComboBox(turmas);
-        } catch (Exception e){
-            e.printStackTrace();
-            turmaComboBox = createRoundedComboBox(new String[] {"Erro ao carregar turmas"});
-        }
-        
-        // Configurar placeholders
-        nomeField.setText("Insira seu nome");
-        emailField.setText("Insira seu e-mail");
-        senhaField.setText("Insira sua senha");
-        addPlaceholderBehavior(nomeField, "Insira seu nome");
-        addPlaceholderBehavior(emailField, "Insira seu e-mail");
-        addPlaceholderBehavior(senhaField, "Insira sua senha");
+        // Criar e configurar campos
+        nomeField = createRoundedTextField("Insira o nome do professor");
+        emailField = createRoundedTextField("Insira o e-mail do professor");
+        senhaField = createRoundedPasswordField("Insira a senha do profesor");
         
         // Adicionar campos com rótulos ao formulário
         formPanel.add(createFieldWithLabel("Nome", nomeField));
@@ -108,15 +86,10 @@ public class TelaCadastroAluno extends JFrame {
         formPanel.add(createFieldWithLabel("E-mail", emailField));
         formPanel.add(Box.createRigidArea(new Dimension(0, 15)));
         formPanel.add(createFieldWithLabel("Senha", senhaField));
-        formPanel.add(Box.createRigidArea(new Dimension(0, 15)));
-        formPanel.add(createFieldWithLabel("Turma", turmaComboBox));
         
-        // Centralizar o formPanel
-        JPanel formContainer = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        formContainer.setBackground(Color.WHITE);
-        formContainer.add(formPanel);
-        centerPanel.add(formContainer);
-
+        contentPanel.add(formPanel);
+        contentPanel.add(Box.createRigidArea(new Dimension(0, 30)));
+        
         // Painel de botões
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
@@ -124,7 +97,7 @@ public class TelaCadastroAluno extends JFrame {
         buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         buttonPanel.setMaximumSize(new Dimension(300, Integer.MAX_VALUE));
         
-        // Criar botões
+        // Criar e configurar botões
         cadastrarButton = createRoundedButton("Cadastrar", buttonColor);
         voltarButton = createRoundedButton("Voltar", buttonColor);
         
@@ -132,16 +105,14 @@ public class TelaCadastroAluno extends JFrame {
         buttonPanel.add(Box.createRigidArea(new Dimension(0, 15)));
         buttonPanel.add(voltarButton);
         
-        // Organizar componentes
-        JPanel buttonContainer = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        buttonContainer.setBackground(Color.WHITE);
-        buttonContainer.add(buttonPanel);
-        centerPanel.add(Box.createRigidArea(new Dimension(0, 30)));
-        centerPanel.add(buttonContainer);
-        centerPanel.add(Box.createVerticalGlue());
+        contentPanel.add(buttonPanel);
+        contentPanel.add(Box.createVerticalGlue());
+        
+        // Adicionar painel de conteúdo ao painel principal
+        mainPanel.add(contentPanel);
         
         // Ações dos botões
-        cadastrarButton.addActionListener(e -> cadastrarAluno());
+        cadastrarButton.addActionListener(e -> cadastrarProfessor());
         voltarButton.addActionListener(e -> voltarParaTelaAnterior());
         
         // Listener para redimensionamento
@@ -153,8 +124,9 @@ public class TelaCadastroAluno extends JFrame {
         });
     }
     
-    // Métodos auxiliares modificados
-    private JTextField createRoundedTextField() {
+    // Métodos auxiliares para criação de componentes
+    
+    private JTextField createRoundedTextField(String placeholder) {
         JTextField field = new JTextField() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -172,12 +144,15 @@ public class TelaCadastroAluno extends JFrame {
         field.setOpaque(false);
         field.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
         field.setForeground(Color.GRAY);
+        field.setText(placeholder);
         field.setPreferredSize(new Dimension(500, 40));
         field.setMaximumSize(new Dimension(500, 40));
+        
+        addPlaceholderBehavior(field, placeholder);
         return field;
     }
     
-    private JPasswordField createRoundedPasswordField() {
+    private JPasswordField createRoundedPasswordField(String placeholder) {
         JPasswordField field = new JPasswordField() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -195,47 +170,13 @@ public class TelaCadastroAluno extends JFrame {
         field.setOpaque(false);
         field.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
         field.setForeground(Color.GRAY);
+        field.setText(placeholder);
         field.setEchoChar((char)0);
         field.setPreferredSize(new Dimension(500, 40));
         field.setMaximumSize(new Dimension(500, 40));
+        
+        addPlaceholderBehavior(field, placeholder);
         return field;
-    }
-    
-    private JComboBox<String> createRoundedComboBox(String[] options) {
-        JComboBox<String> combo = new JComboBox<>(options) {
-            @Override
-            protected void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2.setColor(getBackground());
-                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
-                g2.setColor(Color.GRAY);
-                g2.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, 15, 15);
-                g2.dispose();
-                super.paintComponent(g);
-            }
-        };
-        
-        combo.setOpaque(false);
-        combo.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-        combo.setBackground(Color.WHITE);
-        combo.setFont(new Font("Arial", Font.PLAIN, 14));
-        combo.setPreferredSize(new Dimension(500, 40));
-        combo.setMaximumSize(new Dimension(500, 40));
-        
-        combo.setRenderer(new DefaultListCellRenderer() {
-            @Override
-            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                if (index == -1 && getText().isEmpty()) {
-                    setText("Selecione uma turma");
-                    setForeground(Color.GRAY);
-                }
-                return this;
-            }
-        });
-        
-        return combo;
     }
     
     private JPanel createFieldWithLabel(String labelText, JComponent field) {
@@ -277,9 +218,11 @@ public class TelaCadastroAluno extends JFrame {
     }
     
     private void adjustComponents() {
+        // Ajuste responsivo do título
         int titleFontSize = Math.max(24, Math.min(48, getWidth() / 20));
         titleLabel.setFont(new Font("Arial", Font.BOLD, titleFontSize));
         
+        // Ajuste responsivo dos botões
         int buttonWidth = Math.min(400, (int)(getWidth() * 0.8));
         int buttonHeight = Math.min(50, (int)(getHeight() * 0.08));
         
@@ -293,55 +236,45 @@ public class TelaCadastroAluno extends JFrame {
         voltarButton.setFont(buttonFont);
     }
     
-    private void cadastrarAluno() {
+    private void cadastrarProfessor() {
         String nome = nomeField.getText();
         String email = emailField.getText();
         String senha = new String(senhaField.getPassword());
-        String turma = turmaComboBox.getSelectedItem().toString();
         
-        if (nome.isEmpty() || nome.equals("Insira seu nome") || 
-            email.isEmpty() || email.equals("Insira seu e-mail") || 
-            senha.isEmpty() || senha.equals("Insira sua senha") ||
-            turma.equals("Selecione uma turma")) {
+        if (nome.isEmpty() || nome.equals("Insira o nome do professor") || 
+            email.isEmpty() || email.equals("Insira o e-mail do professor") || 
+            senha.isEmpty() || senha.equals("Insira a senha do profesor")) {
             JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos!", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
-        } else {
-            JOptionPane.showMessageDialog(this, 
-                "Aluno cadastrado com sucesso!\n" +
-                "Nome: " + nome + "\n" +
-                "E-mail: " + email + "\n" +
-                "Turma: " + turma, 
-                "Sucesso", JOptionPane.INFORMATION_MESSAGE);
         }
         
+        JOptionPane.showMessageDialog(this, 
+            "Professor cadastrado com sucesso!\n" +
+            "Nome: " + nome + "\n" +
+            "E-mail: " + email, 
+            "Sucesso", JOptionPane.INFORMATION_MESSAGE);
     }
     
     private void voltarParaTelaAnterior() {
         this.dispose();
-        // Apagar depois, usando para testes
-        new TelaLogin().setVisible(true);
-        // new TelaInicial().setVisible(true);
+        // Implementar navegação para tela anterior
     }
     
     private JButton createRoundedButton(String text, Color color) {
         JButton button = new JButton(text) {
             @Override
             protected void paintComponent(Graphics g) {
-                if (!isOpaque() && getBorder() instanceof RoundedBorder) {
-                    Graphics2D g2 = (Graphics2D) g.create();
-                    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                    g2.setColor(color);
-                    g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
-                    g2.setColor(Color.WHITE);
-                    g2.setFont(getFont().deriveFont(Font.BOLD, getFont().getSize()));
-                    FontMetrics fm = g2.getFontMetrics();
-                    int x = (getWidth() - fm.stringWidth(getText())) / 2;
-                    int y = (getHeight() - fm.getHeight()) / 2 + fm.getAscent();
-                    g2.drawString(getText(), x, y);
-                    g2.dispose();
-                } else {
-                    super.paintComponent(g);
-                }
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(color);
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
+                g2.setColor(Color.WHITE);
+                g2.setFont(getFont().deriveFont(Font.BOLD, getFont().getSize()));
+                FontMetrics fm = g2.getFontMetrics();
+                int x = (getWidth() - fm.stringWidth(getText())) / 2;
+                int y = (getHeight() - fm.getHeight()) / 2 + fm.getAscent();
+                g2.drawString(getText(), x, y);
+                g2.dispose();
             }
         };
         
@@ -386,7 +319,7 @@ public class TelaCadastroAluno extends JFrame {
     
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            TelaCadastroAluno frame = new TelaCadastroAluno();
+            TelaCadastroProf frame = new TelaCadastroProf();
             frame.setVisible(true);
         });
     }

@@ -1,4 +1,4 @@
-package game;
+package telas.telas_aluno;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -30,38 +30,35 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-public class TelaPrincipalAdmin extends JFrame {
+import telas.telas_gerais.TelaInicial;
+
+public class TelaPrincipalAluno extends JFrame {
     private ImageIcon originalLogoIcon;
-    private JLabel logoLabel, titleLabel, subtitleLabel;
-    private JButton playButton, statsButton, manageButton, exitButton;
+    private JLabel logoLabel, titleLabel, subtitleLabel, silharLabel;
+    private JButton playButton, statsButton, exitButton;
     private Color buttonColor = new Color(31, 176, 195);
 
-    public TelaPrincipalAdmin() {
+    public TelaPrincipalAluno() {
         // Configuração da janela
-        setTitle("Show do Milhão Acadêmico - Admin");
+        setTitle("Show do Milhão Acadêmico");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
         setMinimumSize(new Dimension(400, 500));
         setLocationRelativeTo(null);
         
-        // Painel principal com BorderLayout
+        // Painel principal com BorderLayout para melhor centralização
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(Color.WHITE);
         add(mainPanel);
         
-        // Painel de conteúdo centralizado
-        JPanel centerWrapper = new JPanel(new BorderLayout());
-        centerWrapper.setBackground(Color.WHITE);
-        centerWrapper.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        mainPanel.add(centerWrapper, BorderLayout.CENTER);
-        
-        // Painel central para conteúdo (agora com BoxLayout Y_AXIS)
+        // Painel central para conteúdo
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setBackground(Color.WHITE);
+        centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         
-        // Adiciona painel central ao wrapper (centralizado)
-        centerWrapper.add(centerPanel, BorderLayout.CENTER);
+        // Adiciona painel central ao mainPanel
+        mainPanel.add(centerPanel, BorderLayout.CENTER);
         
         // Título
         titleLabel = new JLabel("Show do Milhão");
@@ -79,7 +76,7 @@ public class TelaPrincipalAdmin extends JFrame {
         centerPanel.add(subtitleLabel);
         centerPanel.add(Box.createRigidArea(new Dimension(0, 30)));
         
-        // Logo e texto "Poliedro Sistema de Ensino"
+        // Logo e texto "Poliedro"
         JPanel logoPanel = new JPanel();
         logoPanel.setLayout(new BoxLayout(logoPanel, BoxLayout.Y_AXIS));
         logoPanel.setOpaque(false);
@@ -107,12 +104,12 @@ public class TelaPrincipalAdmin extends JFrame {
         buttonPanel.setOpaque(false);
         buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         
-        // Botões com tamanho fixo
+        // Botões com tamanho fixo adequado
         playButton = createRoundedButton("Jogar", buttonColor);
-        statsButton = createRoundedButton("Estatística", buttonColor);
-        manageButton = createRoundedButton("Gerenciar", buttonColor);
+        statsButton = createRoundedButton("Estatísticas", buttonColor);
         exitButton = createRoundedButton("Sair da conta", buttonColor);
         
+        // Define tamanho preferencial para os botões
         Dimension buttonSize = new Dimension(300, 50);
         playButton.setPreferredSize(buttonSize);
         playButton.setMinimumSize(buttonSize);
@@ -122,10 +119,6 @@ public class TelaPrincipalAdmin extends JFrame {
         statsButton.setMinimumSize(buttonSize);
         statsButton.setMaximumSize(buttonSize);
         
-        manageButton.setPreferredSize(buttonSize);
-        manageButton.setMinimumSize(buttonSize);
-        manageButton.setMaximumSize(buttonSize);
-        
         exitButton.setPreferredSize(buttonSize);
         exitButton.setMinimumSize(buttonSize);
         exitButton.setMaximumSize(buttonSize);
@@ -134,42 +127,31 @@ public class TelaPrincipalAdmin extends JFrame {
         buttonPanel.add(Box.createRigidArea(new Dimension(0, 20)));
         buttonPanel.add(statsButton);
         buttonPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-        buttonPanel.add(manageButton);
-        buttonPanel.add(Box.createRigidArea(new Dimension(0, 20)));
         buttonPanel.add(exitButton);
         
         centerPanel.add(buttonPanel);
-        
-        // Adiciona espaço flexível antes e depois do conteúdo para centralização vertical
-        centerPanel.add(Box.createVerticalGlue(), 0); // No início
-        centerPanel.add(Box.createVerticalGlue());   // No final
+        centerPanel.add(Box.createVerticalGlue());
         
         // Ações dos botões
         playButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Iniciando jogo como administrador...");
+                JOptionPane.showMessageDialog(null, "Iniciando jogo...");
             }
         });
         
         statsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Exibindo estatísticas do sistema...");
-            }
-        });
-        
-        manageButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Abrindo painel de gerenciamento...");
+                JOptionPane.showMessageDialog(null, "Exibindo estatísticas...");
             }
         });
         
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.exit(0);
+                ((JFrame) SwingUtilities.getWindowAncestor(exitButton)).dispose();
+                new TelaInicial().setVisible(true);
             }
         });
         
@@ -211,6 +193,10 @@ public class TelaPrincipalAdmin extends JFrame {
             int logoFontSize = Math.max(14, Math.min(24, getWidth() / 50));
             logoLabel.setFont(new Font("Arial", Font.PLAIN, logoFontSize));
         }
+        
+        // Ajuste responsivo do texto "SILHAR A CASA"
+        int silharFontSize = Math.max(12, Math.min(18, getWidth() / 60));
+        silharLabel.setFont(new Font("Arial", Font.BOLD, silharFontSize));
         
         revalidate();
         repaint();
@@ -274,7 +260,7 @@ public class TelaPrincipalAdmin extends JFrame {
     
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            TelaPrincipalAdmin frame = new TelaPrincipalAdmin();
+            TelaPrincipalAluno frame = new TelaPrincipalAluno();
             frame.setVisible(true);
         });
     }

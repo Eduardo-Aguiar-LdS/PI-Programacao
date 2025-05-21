@@ -26,6 +26,13 @@ public class Aluno {
         this.senha = senha;
     }
 
+    public Aluno(String nome, String email, String senha, String turma) {
+        this.nome = nome;
+        this.email = email;
+        this.senha = senha;
+        this.turma = turma;
+    }
+
     public Aluno(String nome, String email, String senha, int pontuacao) {
         this.nome = nome;
         this.email = email;
@@ -67,12 +74,12 @@ public class Aluno {
                 PreparedStatement ps = conexao.prepareStatement(sql)) {
             ps.setString(1, aluno.getEmail());
             ps.setString(2, aluno.getSenha());
-            try {
-                ps.execute();
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
                 JOptionPane.showMessageDialog(null,
                         "Login realizado com sucesso!" + "\nE-mail: " + aluno.getEmail(), "Sucesso",
                         JOptionPane.INFORMATION_MESSAGE);
-            } catch (Exception e) {
+            } else {
                 JOptionPane.showMessageDialog(null, "Aluno não possui cadastro", "Erro", JOptionPane.ERROR_MESSAGE);
             }
         }

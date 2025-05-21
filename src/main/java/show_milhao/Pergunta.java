@@ -46,7 +46,6 @@ public class Pergunta {
     // Função de exibir Pergunta
 
     // Getters e Setters
-
     public String getPergunta() {
         return pergunta;
     }

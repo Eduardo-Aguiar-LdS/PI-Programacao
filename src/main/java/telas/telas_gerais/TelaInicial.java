@@ -1,4 +1,4 @@
-package game;
+package telas.telas_gerais;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -24,7 +24,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -79,7 +78,7 @@ public class TelaInicial extends JFrame {
         logoPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         try {
-            originalLogoIcon = new ImageIcon("src/main/java/img/poliedro.png");
+            originalLogoIcon = new ImageIcon("src/main/java/telas/img/poliedro_upscaled.png");
             logoLabel = new JLabel(originalLogoIcon);
             logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             logoPanel.add(logoLabel);
@@ -122,10 +121,7 @@ public class TelaInicial extends JFrame {
         centerPanel.add(Box.createVerticalGlue());
         
         // Ações dos botões
-        loginButton.addActionListener(e -> {
-            JOptionPane.showMessageDialog(null, "Funcionalidade de login será implementada aqui!");
-        });
-        
+        loginButton.addActionListener(e -> irTelaLogin());
         exitButton.addActionListener(e -> System.exit(0));
         
         // Listener para redimensionamento
@@ -205,6 +201,11 @@ public class TelaInicial extends JFrame {
         });
         
         return button;
+    }
+
+    public void irTelaLogin(){
+        this.dispose();
+        new TelaLogin().setVisible(true);
     }
     
     private static class RoundedBorder implements javax.swing.border.Border {
