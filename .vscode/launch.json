@@ -3,6 +3,69 @@
     "configurations": [
       {
         "type": "java",
+        "name": "TelaJogar",
+        "request": "launch",
+        "mainClass": "telas.telas_professor.TelaJogar",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
+        "name": "TelaJogar",
+        "request": "launch",
+        "mainClass": "telas.TelaJogar",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
+        "name": "TelaEstatistica",
+        "request": "launch",
+        "mainClass": "telas.TelaEstatistica",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
+        "name": "TelaEstatistica",
+        "request": "launch",
+        "mainClass": "telas.telas_professor.TelaEstatistica",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
+        "name": "TelaEstatisticaAdm",
+        "request": "launch",
+        "mainClass": "telas.telas_professor.TelaEstatisticaAdm",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
+        "name": "TelaEditarPerguntaProfessor",
+        "request": "launch",
+        "mainClass": "telas.telas_professor.TelaEditarPerguntaProfessor",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
+        "name": "TelaEditarAlunoProfessor",
+        "request": "launch",
+        "mainClass": "telas.telas_professor.TelaEditarAlunoProfessor",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
+        "name": "TelaCadastrarPerguntaProfessor",
+        "request": "launch",
+        "mainClass": "telas.telas_professor.TelaCadastrarPerguntaProfessor",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
+        "name": "TelaInicial",
+        "request": "launch",
+        "mainClass": "telas.TelaInicial",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
         "name": "TelaGerenciarCadastrarProfessor",
         "request": "launch",
         "mainClass": "telas.telas_professor.TelaGerenciarCadastrarProfessor",

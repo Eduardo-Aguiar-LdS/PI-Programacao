@@ -10,10 +10,10 @@ import telas.componentes.util.FontUtils;
 import telas.componentes.util.IconUtils;
 import telas.componentes.botoes.ButtonUtils;
 
-public class TelaCadastrarAlunoProfessor extends JFrame {
+public class TelaEditarAlunoProfessor extends JFrame {
     private static final Dimension NOTEBOOK_SIZE = new Dimension(1366, 768);
 
-    public TelaCadastrarAlunoProfessor() {
+    public TelaEditarAlunoProfessor() {
         super("Show do Milhão Acadêmico");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setIconImage(IconUtils.getAppIcon());
@@ -36,15 +36,15 @@ public class TelaCadastrarAlunoProfessor extends JFrame {
 
         RoundedTextField tfAluno = new RoundedTextField(20);
         tfAluno.setFont(fieldFont);
-        tfAluno.setPlaceholder("Inserir nome");
+        tfAluno.setPlaceholder("AAA");
 
         RoundedTextField tfEmail = new RoundedTextField(30);
         tfEmail.setFont(fieldFont);
-        tfEmail.setPlaceholder("Inserir e-mail");
+        tfEmail.setPlaceholder("aaa@p4ed.com");
 
         RoundedTextField tfSenha = new RoundedTextField(20);
         tfSenha.setFont(fieldFont);
-        tfSenha.setPlaceholder("Inserir senha");
+        tfSenha.setPlaceholder("111");
 
         Dimension prefFull = tfEmail.getPreferredSize();
         int fullW = prefFull.width;
@@ -56,9 +56,11 @@ public class TelaCadastrarAlunoProfessor extends JFrame {
         cbTurma.setPreferredSize(new Dimension(halfW, fullH));
         tfAluno.setPreferredSize(new Dimension(halfW, fullH));
 
-        RoundedButton btnCadastrar = new RoundedButton("Cadastrar");
+        RoundedButton btnSalvar = new RoundedButton("Salvar");
+        RoundedButton btnExcluir = new RoundedButton("Excluir");
         RoundedButton btnVoltar = new RoundedButton("Voltar");
-        ButtonUtils.estilizarPadrao(btnCadastrar);
+        ButtonUtils.estilizarPadrao(btnSalvar);
+        ButtonUtils.estilizarPadrao(btnExcluir);
         ButtonUtils.estilizarPadrao(btnVoltar);
 
         JPanel content = new JPanel(new GridBagLayout());
@@ -73,14 +75,14 @@ public class TelaCadastrarAlunoProfessor extends JFrame {
         gbc.insets = new Insets(0, 0, 20, 0);
         content.add(IconUtils.getAppIconLabel(), gbc);
 
-        JLabel title = new JLabel("Cadastrar - Aluno", SwingConstants.CENTER);
+        JLabel title = new JLabel("Editar - Aluno", SwingConstants.CENTER);
         title.setFont(headerFont);
         gbc.gridy = 1;
         gbc.insets = new Insets(0, 0, 30, 0);
         content.add(title, gbc);
 
         gbc.gridwidth = 1;
-        gbc.gridy = 2;
+        gbc.gridy = 3;
         gbc.gridx = 0;
         gbc.insets = new Insets(0, 0, 5, 15);
         content.add(lblTurma, gbc);
@@ -88,7 +90,7 @@ public class TelaCadastrarAlunoProfessor extends JFrame {
         gbc.insets = new Insets(0, 15, 5, 0);
         content.add(lblAluno, gbc);
 
-        gbc.gridy = 3;
+        gbc.gridy = 4;
         gbc.gridx = 0;
         gbc.insets = new Insets(0, 0, 20, 15);
         content.add(cbTurma, gbc);
@@ -96,26 +98,37 @@ public class TelaCadastrarAlunoProfessor extends JFrame {
         gbc.insets = new Insets(0, 15, 20, 0);
         content.add(tfAluno, gbc);
 
-        gbc.gridy = 4;
+        gbc.gridy = 5;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
         gbc.insets = new Insets(0, 0, 5, 0);
         content.add(lblEmail, gbc);
-        gbc.gridy = 5;
+        gbc.gridy = 6;
         gbc.insets = new Insets(0, 0, 20, 0);
         content.add(tfEmail, gbc);
 
-        gbc.gridy = 6;
+        gbc.gridy = 7;
         gbc.insets = new Insets(0, 0, 5, 0);
         content.add(lblSenha, gbc);
-        gbc.gridy = 7;
+        gbc.gridy = 8;
         gbc.insets = new Insets(0, 0, 30, 0);
         content.add(tfSenha, gbc);
 
-        gbc.gridy = 8;
-        gbc.insets = new Insets(0, 75, 10, 75);
-        content.add(btnCadastrar, gbc);
+        gbc.gridwidth = 1;
         gbc.gridy = 9;
+        gbc.gridx = 0;
+        gbc.insets = new Insets(0, 0, 10, 15);
+        content.add(btnSalvar, gbc);
+        gbc.gridx = 1;
+        gbc.insets = new Insets(0, 155, 10, 0);
+        content.add(btnExcluir, gbc);
+
+        gbc.gridy = 10;
+        gbc.gridx = 0;
+        gbc.gridwidth = 5;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.insets = new Insets(0, 0, 0, 0);
         content.add(btnVoltar, gbc);
 
         setContentPane(content);
@@ -127,6 +140,6 @@ public class TelaCadastrarAlunoProfessor extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(TelaCadastrarAlunoProfessor::new);
+        SwingUtilities.invokeLater(TelaEditarAlunoProfessor::new);
     }
 }
