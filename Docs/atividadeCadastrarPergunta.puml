@@ -1,0 +1,26 @@
+
+@startuml CadastrarPergunta
+|Professor|
+start
+:Preencher formulário da pergunta e respostas;
+:Clicar em "Cadastrar";
+
+|View|
+:Enviar dados para controlador;
+
+|Controller|
+:Instanciar objetos Pergunta e Respostas;
+:Validar conteúdo;
+
+|DAO/SGBD|
+:Persistir pergunta no banco;
+:Persistir alternativas;
+
+|Controller|
+:Confirmação;
+
+|View|
+:Exibir mensagem de sucesso;
+|Professor|
+stop
+@enduml

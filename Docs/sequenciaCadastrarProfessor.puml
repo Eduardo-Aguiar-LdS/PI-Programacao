@@ -1,0 +1,20 @@
+
+@startuml sequenciaCadastrarProfessor
+actor Coordenador
+
+participant TelaCadastroProf <<View>>
+participant ControllerCadastroProf <<Controller>>
+participant Professor <<Model>>
+participant DAO
+database SGBD
+
+Coordenador -> TelaCadastroProf : preencherFormulario()
+TelaCadastroProf -> ControllerCadastroProf : enviarDadosCadastro()
+ControllerCadastroProf -> Professor : new Professor(...)
+ControllerCadastroProf -> DAO : salvarProfessor(professor)
+DAO -> SGBD : INSERT INTO professores (...)
+SGBD --> DAO : sucesso
+DAO --> ControllerCadastroProf : confirmação
+ControllerCadastroProf -> TelaCadastroProf : notificarSucesso()
+TelaCadastroProf -> Coordenador : mostrarMensagem("Cadastro realizado")
+@enduml

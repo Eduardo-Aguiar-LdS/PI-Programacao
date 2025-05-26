@@ -1,0 +1,17 @@
+
+@startuml estadoCadastroProfessor
+[*] --> PreenchendoDados
+
+PreenchendoDados --> Validando : clicarCadastrar()
+Validando --> Persistindo : dadosVálidos
+Validando --> ErroValidacao : dadosInválidos
+
+ErroValidacao --> PreenchendoDados : corrigir()
+
+Persistindo --> Cadastrado : sucessoDB()
+Persistindo --> ErroBanco : erroDB()
+
+ErroBanco --> PreenchendoDados : tentarNovamente()
+
+Cadastrado --> [*]
+@enduml
