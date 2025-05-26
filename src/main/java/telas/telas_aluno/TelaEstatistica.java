@@ -1,4 +1,4 @@
-package telas;
+package telas.telas_aluno;
 
 import java.awt.*;
 import javax.swing.*;

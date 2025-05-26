@@ -3,6 +3,27 @@
     "configurations": [
       {
         "type": "java",
+        "name": "TelaCadastroProf",
+        "request": "launch",
+        "mainClass": "telas.telas_coordenador.TelaCadastroProf",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
+        "name": "TelaEditarAlunoProfessor",
+        "request": "launch",
+        "mainClass": "telas.telas_professor.TelaEditarAlunoProfessor",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
+        "name": "TelaCadastrarPerguntaProfessor",
+        "request": "launch",
+        "mainClass": "telas.telas_professor.TelaCadastrarPerguntaProfessor",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
         "name": "TelaPrincipalAluno",
         "request": "launch",
         "mainClass": "telas.telas_aluno.TelaPrincipalAluno",

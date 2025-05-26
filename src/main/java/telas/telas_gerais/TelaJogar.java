@@ -1,4 +1,4 @@
-package telas;
+package telas.telas_gerais;
 
 import java.awt.*;
 import javax.swing.*;
