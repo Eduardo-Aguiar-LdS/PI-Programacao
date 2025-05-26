@@ -90,12 +90,13 @@ public class Professor extends Aluno {
     }
 
     // Função de administrador - cadastrar pergunta
-    public void cadastrarPergunta(Professor professor, String pergunta) throws Exception {
-        String sql = "insert into Pergunta (pergunta, id_professor) values(?, ?)";
+    public void cadastrarPergunta(Professor professor, String pergunta, String dificuldade) throws Exception {
+        String sql = "insert into Pergunta (pergunta, dificuldade, id_professor) values(?, ?, ?)";
         try (Connection conexao = ConnectionFactory.obterConexao();
                 PreparedStatement ps = conexao.prepareStatement(sql)) {
             ps.setString(1, pergunta);
-            ps.setInt(2, professor.getId_professor());
+            ps.setString(2, dificuldade);
+            ps.setInt(3, professor.getId_professor());
             try {
                 ps.execute();
             } catch (Exception e) {

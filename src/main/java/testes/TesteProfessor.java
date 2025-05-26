@@ -17,8 +17,9 @@ public class TesteProfessor {
 
             // Teste de cadastrar pergunta
             String teste_pergunta = "Teste de pergunta";
+            String dificuldade_pergunta = "Fácil";
             Pergunta pergunta = new Pergunta(teste_pergunta);
-            professor.cadastrarPergunta(professor, teste_pergunta);
+            professor.cadastrarPergunta(professor, teste_pergunta, dificuldade_pergunta);
             pergunta.atributosDB(pergunta);
             System.out.println(pergunta);
 
