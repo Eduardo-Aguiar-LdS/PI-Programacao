@@ -1,0 +1,73 @@
+
+@startuml classeGeral
+skinparam classAttributeIconSize 0
+
+class Aluno {
+  -id: int
+  -nome: String
+  -email: String
+  -senha: String
+  +get/set()
+}
+
+class Professor {
+  -id: int
+  -nome: String
+  -email: String
+  -senha: String
+  +get/set()
+}
+
+class Coordenador {
+  -id: int
+  -nome: String
+  -email: String
+  -senha: String
+  +get/set()
+}
+
+class Pergunta {
+  -id: int
+  -enunciado: String
+  -dica: String
+  -dificuldade: String
+  -materia: String
+  +get/set()
+}
+
+class Resposta {
+  -id: int
+  -texto: String
+  -correta: boolean
+  +get/set()
+}
+
+class Jogar {
+  -pontuacao: int
+  +iniciarPartida()
+  +verificarResposta()
+}
+
+class DAO {
+  +salvarPergunta(p: Pergunta, r: List<Resposta>)
+  +buscarPerguntaAleatoria(): Pergunta
+  +buscarRespostas(idPergunta: int): List<Resposta>
+  +salvarProfessor(prof: Professor)
+  +salvarAluno(aluno: Aluno)
+  +login(email: String, senha: String): Object
+}
+
+class ConnectionFactory {
+  +getConnection(): Connection
+}
+
+Pergunta "1" -- "4" Resposta : contém >
+Professor "1" --> "*" Pergunta : cadastra >
+Aluno --> Jogar : usa >
+Coordenador --> Professor : gerencia >
+DAO --> Pergunta
+DAO --> Resposta
+DAO --> Professor
+DAO --> Aluno
+DAO --> ConnectionFactory : usa >
+@enduml

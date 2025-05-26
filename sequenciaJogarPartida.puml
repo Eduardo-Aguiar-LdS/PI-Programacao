@@ -1,0 +1,38 @@
+
+@startuml sequenciaJogarPartida
+actor Aluno
+
+participant TelaPrincipalAluno
+participant Jogar
+participant DAO
+participant Pergunta
+participant Resposta
+database SGBD
+
+Aluno -> TelaPrincipalAluno : iniciarJogo()
+TelaPrincipalAluno -> Jogar : iniciarPartida()
+
+loop para cada pergunta
+    Jogar -> DAO : buscarPerguntaAleatoria()
+    DAO -> SGBD : SELECT * FROM perguntas WHERE dificuldade = atual
+    SGBD --> DAO : dados da pergunta
+    DAO --> Jogar : Pergunta
+
+    Jogar -> DAO : buscarRespostas(questaoId)
+    DAO -> SGBD : SELECT * FROM respostas WHERE id_pergunta = ?
+    SGBD --> DAO : respostas (1 correta + 3 erradas)
+    DAO --> Jogar : List<Resposta>
+
+    Jogar -> TelaPrincipalAluno : exibirPergunta(pergunta, respostas)
+    Aluno -> TelaPrincipalAluno : selecionarResposta(opcao)
+    TelaPrincipalAluno -> Jogar : verificarResposta(opcao)
+
+    alt resposta correta
+        Jogar -> Jogar : incrementarPontuacao()
+    else resposta errada
+        Jogar -> Jogar : registrarErro()
+    end
+end
+
+Jogar -> TelaPrincipalAluno : exibirResultadoFinal()
+@enduml
