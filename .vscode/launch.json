@@ -3,6 +3,13 @@
     "configurations": [
       {
         "type": "java",
+        "name": "TelaEstatisticaAdm",
+        "request": "launch",
+        "mainClass": "telas.telas_professor.TelaEstatisticaAdm",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
         "name": "TelaCadastroProf",
         "request": "launch",
         "mainClass": "telas.telas_coordenador.TelaCadastroProf",

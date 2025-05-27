@@ -307,8 +307,8 @@ public class TelaLogin extends JFrame {
                 }
             } else if (email.contains("@p4ed.com")) {
                 // Aluno
-                Aluno aluno = new Aluno(email, senha);
                 try {
+                    Aluno aluno = new Aluno(email, senha);
                     aluno.fazerLogin(aluno);
                 } catch (Exception e) {
                     e.printStackTrace();

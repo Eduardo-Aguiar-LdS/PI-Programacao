@@ -165,7 +165,12 @@ public class TelaPrincipalAdmin extends JFrame {
         statsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Exibindo estatísticas do sistema...");
+                ((JFrame) SwingUtilities.getWindowAncestor(exitButton)).dispose();
+                if (professor!=null){
+                    new TelaEstatisticaAdm(professor, null).setVisible(true);
+                } else if (coordenador!=null){
+                    new TelaEstatisticaAdm(null, coordenador).setVisible(true);
+                }
             }
         });
 

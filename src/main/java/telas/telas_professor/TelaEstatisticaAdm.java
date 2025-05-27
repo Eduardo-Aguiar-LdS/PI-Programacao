@@ -1,8 +1,14 @@
 package telas.telas_professor;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+
+import show_milhao.Coordenador;
+import show_milhao.Professor;
 import telas.componentes.botoes.RoundedButton;
 import telas.componentes.tabelas.StatTablePanel;
 import telas.componentes.util.FontUtils;
@@ -10,9 +16,11 @@ import telas.componentes.util.IconUtils;
 import telas.componentes.botoes.ButtonUtils;
 
 public class TelaEstatisticaAdm extends JFrame {
+    private Professor professor_tela;
+    private Coordenador coordenador_tela;
     private static final Dimension NOTEBOOK_SIZE = new Dimension(1366, 768);
 
-    public TelaEstatisticaAdm() {
+    public TelaEstatisticaAdm(Professor professor, Coordenador coordenador) {
         super("Show do Milhão Acadêmico");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -61,6 +69,13 @@ public class TelaEstatisticaAdm extends JFrame {
         RoundedButton btnVoltar = new RoundedButton("Voltar");
         ButtonUtils.estilizarPadrao(btnVoltar);
         centerPanel.add(btnVoltar, gbc);
+        btnVoltar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ((JFrame) SwingUtilities.getWindowAncestor(btnVoltar)).dispose();
+                new TelaPrincipalAdmin(professor, coordenador).setVisible(true);
+            }
+        });
 
         setContentPane(centerPanel);
         pack();
@@ -71,6 +86,9 @@ public class TelaEstatisticaAdm extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(TelaEstatisticaAdm::new);
+        SwingUtilities.invokeLater(() -> {
+            TelaEstatisticaAdm frame = new TelaEstatisticaAdm(null, null);
+            frame.setVisible(true); 
+        });
     }
 }

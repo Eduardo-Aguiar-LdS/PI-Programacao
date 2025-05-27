@@ -1,8 +1,14 @@
 package telas.telas_professor;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+
+import show_milhao.Coordenador;
+import show_milhao.Professor;
 import telas.componentes.botoes.RoundedButton;
 import telas.componentes.campos.RoundedTextField;
 import telas.componentes.combos.RoundedComboBox;
@@ -11,12 +17,16 @@ import telas.componentes.util.IconUtils;
 import telas.componentes.botoes.ButtonUtils;
 
 public class TelaEditarAlunoProfessor extends JFrame {
+    private Professor professor_tela;
+    private Coordenador coordenador_tela;
     private static final Dimension NOTEBOOK_SIZE = new Dimension(1366, 768);
 
-    public TelaEditarAlunoProfessor() {
+    public TelaEditarAlunoProfessor(Professor professor, Coordenador coordenador) {
         super("Show do Milhão Acadêmico");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setIconImage(IconUtils.getAppIcon());
+        this.professor_tela = professor;
+        this.coordenador_tela = coordenador;
 
         Font headerFont = FontUtils.interOrSans(32);
         Font textFont = FontUtils.interOrSans(26);
@@ -26,11 +36,11 @@ public class TelaEditarAlunoProfessor extends JFrame {
         JLabel lblAluno = new JLabel("Aluno");
         JLabel lblEmail = new JLabel("Email");
         JLabel lblSenha = new JLabel("Senha");
-        for (JLabel lbl : new JLabel[]{lblTurma, lblAluno, lblEmail, lblSenha}) {
+        for (JLabel lbl : new JLabel[] { lblTurma, lblAluno, lblEmail, lblSenha }) {
             lbl.setFont(textFont);
         }
 
-        RoundedComboBox<String> cbTurma = new RoundedComboBox<>(new String[]{"Turma A", "Turma B", "Turma C"});
+        RoundedComboBox<String> cbTurma = new RoundedComboBox<>(new String[] { "Turma A", "Turma B", "Turma C" });
         cbTurma.setFont(fieldFont);
         cbTurma.setPlaceholder("Selecione a turma");
 
@@ -62,6 +72,16 @@ public class TelaEditarAlunoProfessor extends JFrame {
         ButtonUtils.estilizarPadrao(btnSalvar);
         ButtonUtils.estilizarPadrao(btnExcluir);
         ButtonUtils.estilizarPadrao(btnVoltar);
+
+        btnVoltar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ((JFrame) SwingUtilities.getWindowAncestor(btnVoltar)).dispose();
+                if (professor != null) {
+                    new TelaGerenciarEditarProfessor(professor).setVisible(true);
+                } // Coordenador
+            }
+        });
 
         JPanel content = new JPanel(new GridBagLayout());
         content.setBackground(Color.WHITE);
@@ -140,6 +160,12 @@ public class TelaEditarAlunoProfessor extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(TelaEditarAlunoProfessor::new);
+        SwingUtilities.invokeLater(() -> {
+            try {
+                new TelaEditarAlunoProfessor(null, null);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 }
