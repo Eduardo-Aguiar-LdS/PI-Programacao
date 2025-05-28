@@ -85,31 +85,31 @@ public class TelaEditarProfessor extends JFrame {
         gbc.insets = new Insets(0, 0, 30, 0);
         content.add(title, gbc);
 
-        gbc.gridy = 1;
+        gbc.gridy = 2;
         gbc.gridx = 0;
         gbc.gridwidth = 3;
         gbc.insets = new Insets(0, 0, 5, 0);
         content.add(lblEmail, gbc);
-        gbc.gridy = 4;
+        gbc.gridy = 3;
         gbc.insets = new Insets(0, 0, 20, 0);
         content.add(tfEmail, gbc);
 
-        gbc.gridy = 5;
+        gbc.gridy = 4;
         gbc.insets = new Insets(0, 0, 5, 0);
         content.add(lblNome, gbc);
-        gbc.gridy = 6;
+        gbc.gridy = 5;
         gbc.insets = new Insets(0, 0, 30, 0);
         content.add(tfNome, gbc);
 
-        gbc.gridy = 7;
+        gbc.gridy = 6;
         gbc.insets = new Insets(0, 0, 5, 0);
         content.add(lblSenha, gbc);
-        gbc.gridy = 8;
+        gbc.gridy = 7;
         gbc.insets = new Insets(0, 0, 30, 0);
         content.add(tfSenha, gbc);
 
         gbc.gridwidth = 1;
-        gbc.gridy = 9;
+        gbc.gridy = 8;
         gbc.gridx = 0;
         gbc.insets = new Insets(0, 0, 10, 15);
         content.add(btnSalvar, gbc);
@@ -117,7 +117,7 @@ public class TelaEditarProfessor extends JFrame {
         gbc.insets = new Insets(0, 155, 10, 0);
         content.add(btnExcluir, gbc);
 
-        gbc.gridy = 10;
+        gbc.gridy = 9;
         gbc.gridx = 0;
         gbc.gridwidth = 5;
         gbc.fill = GridBagConstraints.NONE;
