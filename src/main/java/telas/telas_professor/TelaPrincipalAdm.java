@@ -20,10 +20,10 @@ import telas.componentes.botoes.RoundedButton;
 import telas.componentes.util.FontUtils;
 import telas.componentes.util.IconUtils;
 
-public class TelaGerenciamentoProfessor extends JFrame {
+public class TelaPrincipalAdm extends JFrame {
     private static final Dimension NOTEBOOK_SIZE = new Dimension(1366, 768);
 
-    public TelaGerenciamentoProfessor() {
+    public TelaPrincipalAdm() {
         super("Show do Milhão Acadêmico");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setIconImage(IconUtils.getAppIcon());
@@ -43,34 +43,34 @@ public class TelaGerenciamentoProfessor extends JFrame {
 
         gbc.insets = defaultInsets;
         gbc.gridy = 0;
-        JLabel iconMain = new JLabel(new ImageIcon(IconUtils.getAppIcon()));
-        content.add(iconMain, gbc);
+        JLabel icon = new JLabel(new ImageIcon(IconUtils.getAppIcon()));
+        content.add(icon, gbc);
 
         gbc.insets = titleInsets;
         gbc.gridy = 1;
-        JLabel line1 = new JLabel("Show do Milhão", SwingConstants.CENTER);
-        line1.setFont(titleFont);
-        content.add(line1, gbc);
-        gbc.gridy = 2;
-        JLabel line2 = new JLabel("Acadêmico", SwingConstants.CENTER);
-        line2.setFont(titleFont);
-        content.add(line2, gbc);
+        JLabel lblCadastrar = new JLabel("Show do Milhão Acadêmico", SwingConstants.CENTER);
+        lblCadastrar.setFont(titleFont);
+        content.add(lblCadastrar, gbc);
 
-        RoundedButton btnCadastrar = new RoundedButton("Cadastrar");
-        RoundedButton btnEditar    = new RoundedButton("Editar");
-        RoundedButton btnVoltar    = new RoundedButton("Voltar");
-        ButtonUtils.estilizarPadrao(btnCadastrar, new Dimension(250, 50));
-        ButtonUtils.estilizarPadrao(btnEditar,    new Dimension(250, 50));
-        ButtonUtils.estilizarPadrao(btnVoltar,    new Dimension(320, 50));
-        btnCadastrar.setFont(btnFont);
-        btnEditar.setFont(btnFont);
-        btnVoltar.setFont(btnFont);
+        RoundedButton btnJogar    = new RoundedButton("Jogar");
+        RoundedButton btnStats   = new RoundedButton("Estatísticas");
+        RoundedButton btnGerenciar   = new RoundedButton("Gerenciar");
+        RoundedButton btnSair    = new RoundedButton("Sair da Conta");
+        ButtonUtils.estilizarPadrao(btnJogar,    new Dimension(250, 50));
+        ButtonUtils.estilizarPadrao(btnStats,    new Dimension(250, 50));
+        ButtonUtils.estilizarPadrao(btnGerenciar,    new Dimension(250, 50));
+        ButtonUtils.estilizarPadrao(btnSair,    new Dimension(320, 50));
+        btnJogar.setFont(btnFont);
+        btnStats.setFont(btnFont);
+        btnGerenciar.setFont(btnFont);
+        btnSair.setFont(btnFont);
 
         gbc.insets = new Insets(60,0,10,0);
-        gbc.gridy = 3; content.add(btnCadastrar, gbc);
+        gbc.gridy = 2; content.add(btnJogar, gbc);
         gbc.insets = defaultInsets;
-        gbc.gridy = 4; content.add(btnEditar,    gbc);
-        gbc.gridy = 5; content.add(btnVoltar,    gbc);
+        gbc.gridy = 3; content.add(btnStats, gbc);
+        gbc.gridy = 4; content.add(btnGerenciar, gbc);
+        gbc.gridy = 5; content.add(btnSair, gbc);
 
         setContentPane(content);
         pack();
@@ -81,6 +81,6 @@ public class TelaGerenciamentoProfessor extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(TelaGerenciamentoProfessor::new);
+        SwingUtilities.invokeLater(TelaPrincipalAdm::new);
     }
 }

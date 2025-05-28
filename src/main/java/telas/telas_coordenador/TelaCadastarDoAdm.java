@@ -1,4 +1,4 @@
-package telas.telas_professor;
+package telas.telas_coordenador;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -20,11 +20,11 @@ import telas.componentes.botoes.RoundedButton;
 import telas.componentes.util.FontUtils;
 import telas.componentes.util.IconUtils;
 
-public class TelaGerenciamentoProfessor extends JFrame {
+public class TelaCadastarDoAdm extends JFrame {
     private static final Dimension NOTEBOOK_SIZE = new Dimension(1366, 768);
 
-    public TelaGerenciamentoProfessor() {
-        super("Show do Milhão Acadêmico");
+    public TelaCadastarDoAdm() {
+        super("Cadastrar");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setIconImage(IconUtils.getAppIcon());
 
@@ -48,28 +48,28 @@ public class TelaGerenciamentoProfessor extends JFrame {
 
         gbc.insets = titleInsets;
         gbc.gridy = 1;
-        JLabel line1 = new JLabel("Show do Milhão", SwingConstants.CENTER);
+        JLabel line1 = new JLabel("Cadastrar", SwingConstants.CENTER);
         line1.setFont(titleFont);
         content.add(line1, gbc);
-        gbc.gridy = 2;
-        JLabel line2 = new JLabel("Acadêmico", SwingConstants.CENTER);
-        line2.setFont(titleFont);
-        content.add(line2, gbc);
 
-        RoundedButton btnCadastrar = new RoundedButton("Cadastrar");
-        RoundedButton btnEditar    = new RoundedButton("Editar");
+        RoundedButton btnAlunos = new RoundedButton("Alunos");
+        RoundedButton btnProfessores    = new RoundedButton("Professores");
+         RoundedButton btnPerguntas    = new RoundedButton("Perguntas");
         RoundedButton btnVoltar    = new RoundedButton("Voltar");
-        ButtonUtils.estilizarPadrao(btnCadastrar, new Dimension(250, 50));
-        ButtonUtils.estilizarPadrao(btnEditar,    new Dimension(250, 50));
+        ButtonUtils.estilizarPadrao(btnAlunos, new Dimension(250, 50));
+        ButtonUtils.estilizarPadrao(btnProfessores,    new Dimension(250, 50));
+        ButtonUtils.estilizarPadrao(btnPerguntas,    new Dimension(250, 50));
         ButtonUtils.estilizarPadrao(btnVoltar,    new Dimension(320, 50));
-        btnCadastrar.setFont(btnFont);
-        btnEditar.setFont(btnFont);
+        btnAlunos.setFont(btnFont);
+        btnProfessores.setFont(btnFont);
+        btnPerguntas.setFont(btnFont);
         btnVoltar.setFont(btnFont);
 
         gbc.insets = new Insets(60,0,10,0);
-        gbc.gridy = 3; content.add(btnCadastrar, gbc);
+        gbc.gridy = 2; content.add(btnAlunos, gbc);
         gbc.insets = defaultInsets;
-        gbc.gridy = 4; content.add(btnEditar,    gbc);
+        gbc.gridy = 3; content.add(btnProfessores,    gbc);
+        gbc.gridy = 4; content.add(btnPerguntas,    gbc);
         gbc.gridy = 5; content.add(btnVoltar,    gbc);
 
         setContentPane(content);
@@ -81,6 +81,6 @@ public class TelaGerenciamentoProfessor extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(TelaGerenciamentoProfessor::new);
+        SwingUtilities.invokeLater(TelaCadastarDoAdm::new);
     }
 }

@@ -3,6 +3,62 @@
     "configurations": [
       {
         "type": "java",
+        "name": "TelaCadastroProfessor",
+        "request": "launch",
+        "mainClass": "telas.telas_coordenador.TelaCadastroProfessor",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
+        "name": "TelaJogar",
+        "request": "launch",
+        "mainClass": "telas.telas_gerais.TelaJogar",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
+        "name": "TelaEditarProfessor",
+        "request": "launch",
+        "mainClass": "telas.telas_coordenador.TelaEditarProfessor",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
+        "name": "TelaEditarDoAdm",
+        "request": "launch",
+        "mainClass": "telas.telas_coordenador.TelaEditarDoAdm",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
+        "name": "TelaCadastarDoAdm",
+        "request": "launch",
+        "mainClass": "telas.telas_coordenador.TelaCadastarDoAdm",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
+        "name": "TelaCadastarProfessorEALuno",
+        "request": "launch",
+        "mainClass": "telas.telas_coordenador.TelaCadastarProfessorEALuno",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
+        "name": "TelaGerenciamentoProfessor",
+        "request": "launch",
+        "mainClass": "telas.telas_coordenador.TelaGerenciamentoProfessor",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
+        "name": "TelaEstatisticaAdm",
+        "request": "launch",
+        "mainClass": "telas.telas_professor.TelaEstatisticaAdm",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
         "name": "TelaCadastroProf",
         "request": "launch",
         "mainClass": "telas.telas_coordenador.TelaCadastroProf",
