@@ -1,18 +1,28 @@
 package telas.telas_aluno;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+
+import show_milhao.Aluno;
 import telas.componentes.botoes.RoundedButton;
 import telas.componentes.util.FontUtils;
 import telas.componentes.util.IconUtils;
+import telas.telas_professor.TelaGerenciarCadastrarProfessor;
+import telas.telas_professor.TelaPrincipalAdmin;
 import telas.componentes.botoes.ButtonUtils;
 
 public class TelaEstatistica extends JFrame {
     private static final Dimension NOTEBOOK_SIZE = new Dimension(1366, 768);
 
-    public TelaEstatistica(int total, int corretas, int erradas) {
-        super("Show do Milhão Acadêmico");
+    private Aluno aluno_tela;
+
+    public TelaEstatistica(Aluno aluno) {
+        this.aluno_tela = aluno;
+
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setIconImage(IconUtils.getAppIcon());
 
@@ -50,7 +60,7 @@ public class TelaEstatistica extends JFrame {
         lblTotal.setFont(labelFont);
         content.add(lblTotal, gbc);
         gbc.gridy = 3;
-        JLabel valTotal = new JLabel(total + " perguntas", SwingConstants.LEFT);
+        JLabel valTotal = new JLabel((aluno.getRespostas_corretas()+aluno.getRespostas_erradas()) + " perguntas", SwingConstants.LEFT);
         valTotal.setFont(valueFont);
         content.add(valTotal, gbc);
 
@@ -61,7 +71,7 @@ public class TelaEstatistica extends JFrame {
         lblCorretas.setFont(labelFont);
         content.add(lblCorretas, gbc);
         gbc.gridy = 5;
-        JLabel valCorretas = new JLabel(corretas + " perguntas", SwingConstants.LEFT);
+        JLabel valCorretas = new JLabel(aluno.getRespostas_corretas() + " perguntas", SwingConstants.LEFT);
         valCorretas.setFont(valueFont);
         content.add(valCorretas, gbc);
 
@@ -72,7 +82,7 @@ public class TelaEstatistica extends JFrame {
         lblErradas.setFont(labelFont);
         content.add(lblErradas, gbc);
         gbc.gridy = 7;
-        JLabel valErradas = new JLabel(erradas + " perguntas", SwingConstants.LEFT);
+        JLabel valErradas = new JLabel(aluno.getRespostas_erradas() + " perguntas", SwingConstants.LEFT);
         valErradas.setFont(valueFont);
         content.add(valErradas, gbc);
 
@@ -89,9 +99,20 @@ public class TelaEstatistica extends JFrame {
         setMinimumSize(NOTEBOOK_SIZE);
         setLocationRelativeTo(null);
         setVisible(true);
+
+        btnVoltar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ((JFrame) SwingUtilities.getWindowAncestor(btnVoltar)).dispose();
+                    new TelaPrincipalAluno(aluno).setVisible(true);
+            }
+        });
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new TelaEstatistica(100, 80, 20));
+        SwingUtilities.invokeLater(() -> {
+            TelaPrincipalAluno frame = new TelaPrincipalAluno(null);
+            frame.setVisible(true);
+        });
     }
 }

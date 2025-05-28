@@ -15,6 +15,9 @@ public class Resposta {
     private int id_resposta;
 
     // Construtor
+    public Resposta(){
+    }
+
     public Resposta(int id_pergunta){
         this.id_pergunta = id_pergunta;
     }
@@ -121,7 +124,7 @@ public class Resposta {
 
     @Override
     public String toString() {
-        return "Resposta\nID Pergunta: "+getId_pergunta()+"\nID Resposta: "+getId_resposta()+"\nResposta correta: "+getResposta_correta()+"\nResposta um: "+getResposta_um()+"\nResposta dois: "+getResposta_dois()+"\nResposta tres:"+getResposta_tres();
+        return "Resposta"+"\nResposta correta: "+getResposta_correta()+"\nResposta um: "+getResposta_um()+"\nResposta dois: "+getResposta_dois()+"\nResposta tres: "+getResposta_tres();
     }
 
 }

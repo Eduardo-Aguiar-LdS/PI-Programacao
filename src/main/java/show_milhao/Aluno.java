@@ -3,7 +3,15 @@ package show_milhao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
+import telas.componentes.botoes.RoundedButton;
+import telas.telas_aluno.TelaPrincipalAluno;
+import telas.telas_gerais.TelaJogar;
+import telas.telas_gerais.TelaLogin;
 
 public class Aluno {
     private String nome;
@@ -13,6 +21,8 @@ public class Aluno {
     private int pontuacao;
     private int respostas_corretas;
     private int respostas_erradas;
+    private boolean usouDica;
+    private boolean usouPular;
 
     // Construtores
     public Aluno(String email, String senha) {
@@ -68,7 +78,7 @@ public class Aluno {
     }
 
     // Fazer login
-    public void fazerLogin(Aluno aluno) throws Exception {
+    public void fazerLogin(Aluno aluno, TelaLogin tela) throws Exception {
         String sql = "select * from Aluno where email = ? and senha = ?";
         try (Connection conexao = ConnectionFactory.obterConexao();
                 PreparedStatement ps = conexao.prepareStatement(sql)) {
@@ -79,6 +89,7 @@ public class Aluno {
                 JOptionPane.showMessageDialog(null,
                         "Login realizado com sucesso!" + "\nE-mail: " + aluno.getEmail(), "Sucesso",
                         JOptionPane.INFORMATION_MESSAGE);
+                tela.irTelaPrincipalAluno(aluno);
             } else {
                 JOptionPane.showMessageDialog(null, "Aluno não possui cadastro", "Erro", JOptionPane.ERROR_MESSAGE);
             }
@@ -109,28 +120,21 @@ public class Aluno {
         }
     }
 
-    // Verificar se este método é necessário após implementar a tela de estatística
-    /* Exibir perguntas respondidas (corretas e erradas)
-    public Aluno exibirPerguntasRespondidas(Aluno aluno) throws Exception {
-        String sql = "select respostas_corretas, respostas_erradas from Aluno where email = ? and senha = ?";
-        try (Connection conexao = ConnectionFactory.obterConexao();
-                PreparedStatement ps = conexao.prepareStatement(sql)) {
-            ps.setString(1, aluno.getEmail());
-            ps.setString(2, aluno.getSenha());
-            try {
-                ResultSet rs = ps.executeQuery();
-                if (rs.next()) {
-                    aluno.setRespostas_corretas(rs.getInt("respostas_corretas"));
-                    aluno.setRespostas_erradas(rs.getInt("respostas_erradas"));
-                }
-                return aluno;
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Erro em exibir perguntas respondidas", "Erro",
-                        JOptionPane.ERROR_MESSAGE);
-                throw new RuntimeException("Erro em exibir perguntas respondidas");
-            }
+    public void jogar(Pergunta pergunta, Resposta resposta, int cont, RoundedButton btn) throws Exception {
+        if (cont >= 30) {
+            JOptionPane.showMessageDialog(null,
+                    "Pontuacao: " + this.getPontuacao(), "Venceu",
+                    JOptionPane.INFORMATION_MESSAGE);
+            ((JFrame) SwingUtilities.getWindowAncestor(btn)).dispose();
+            new TelaPrincipalAluno(this).setVisible(true);
+
+        } else {
+            cont++;
+            pergunta.exibir(pergunta, resposta, cont);
+            ((JFrame) SwingUtilities.getWindowAncestor(btn)).dispose();
+            new TelaJogar(this, null, null, cont, false).setVisible(true);
         }
-    } */
+    }
 
     // Getters e Setters
     public String getNome() {
@@ -182,6 +186,30 @@ public class Aluno {
         this.respostas_erradas = respostas_erradas;
     }
 
+    public int getPontuacao() {
+        return pontuacao;
+    }
+
+    public void setPontuacao(int pontuacao) {
+        this.pontuacao = pontuacao;
+    }
+
+    public boolean isUsouDica() {
+        return usouDica;
+    }
+
+    public void setUsouDica(boolean usouDica) {
+        this.usouDica = usouDica;
+    }
+
+    public boolean isUsouPular() {
+        return usouPular;
+    }
+
+    public void setUsouPular(boolean usouPular) {
+        this.usouPular = usouPular;
+    }
+
     @Override
     public String toString() {
         return "Aluno\nNome: " + nome + "\nEmail: " + email + "\nSenha: " + senha + "\nTurma: " + turma
@@ -189,5 +217,4 @@ public class Aluno {
                 + pontuacao + "\nRespostas_corretas: " + respostas_corretas + "\nRespostas_erradas: "
                 + respostas_erradas;
     }
-
 }

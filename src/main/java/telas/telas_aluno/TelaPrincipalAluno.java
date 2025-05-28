@@ -26,11 +26,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import show_milhao.*;
 import telas.telas_gerais.TelaInicial;
+import telas.telas_gerais.TelaJogar;
 
 public class TelaPrincipalAluno extends JFrame {
     private ImageIcon originalLogoIcon;
@@ -38,28 +39,32 @@ public class TelaPrincipalAluno extends JFrame {
     private JButton playButton, statsButton, exitButton;
     private Color buttonColor = new Color(31, 176, 195);
 
-    public TelaPrincipalAluno() {
+    private Aluno aluno_tela;
+
+    public TelaPrincipalAluno(Aluno aluno) {
+        this.aluno_tela = aluno;
+
         // Configuração da janela
         setTitle("Show do Milhão Acadêmico");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
         setMinimumSize(new Dimension(400, 500));
         setLocationRelativeTo(null);
-        
+
         // Painel principal com BorderLayout para melhor centralização
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(Color.WHITE);
         add(mainPanel);
-        
+
         // Painel central para conteúdo
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         centerPanel.setBackground(Color.WHITE);
         centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        
+
         // Adiciona painel central ao mainPanel
         mainPanel.add(centerPanel, BorderLayout.CENTER);
-        
+
         // Título
         titleLabel = new JLabel("Show do Milhão");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 48));
@@ -67,7 +72,7 @@ public class TelaPrincipalAluno extends JFrame {
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         centerPanel.add(titleLabel);
         centerPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-        
+
         // Subtítulo
         subtitleLabel = new JLabel("Acadêmico");
         subtitleLabel.setFont(new Font("Arial", Font.PLAIN, 24));
@@ -75,15 +80,15 @@ public class TelaPrincipalAluno extends JFrame {
         subtitleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         centerPanel.add(subtitleLabel);
         centerPanel.add(Box.createRigidArea(new Dimension(0, 30)));
-        
+
         // Logo e texto "Poliedro"
         JPanel logoPanel = new JPanel();
         logoPanel.setLayout(new BoxLayout(logoPanel, BoxLayout.Y_AXIS));
         logoPanel.setOpaque(false);
         logoPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
+
         try {
-            originalLogoIcon = new ImageIcon("src/main/java/img/poliedro.png");
+            originalLogoIcon = new ImageIcon("src/main/java/telas/img/poliedro.png");
             logoLabel = new JLabel(originalLogoIcon);
             logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             logoPanel.add(logoLabel);
@@ -94,59 +99,61 @@ public class TelaPrincipalAluno extends JFrame {
             logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
             logoPanel.add(logoLabel);
         }
-        
+
         centerPanel.add(logoPanel);
         centerPanel.add(Box.createRigidArea(new Dimension(0, 40)));
-        
+
         // Painel de botões
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
         buttonPanel.setOpaque(false);
         buttonPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
+
         // Botões com tamanho fixo adequado
         playButton = createRoundedButton("Jogar", buttonColor);
         statsButton = createRoundedButton("Estatísticas", buttonColor);
         exitButton = createRoundedButton("Sair da conta", buttonColor);
-        
+
         // Define tamanho preferencial para os botões
         Dimension buttonSize = new Dimension(300, 50);
         playButton.setPreferredSize(buttonSize);
         playButton.setMinimumSize(buttonSize);
         playButton.setMaximumSize(buttonSize);
-        
+
         statsButton.setPreferredSize(buttonSize);
         statsButton.setMinimumSize(buttonSize);
         statsButton.setMaximumSize(buttonSize);
-        
+
         exitButton.setPreferredSize(buttonSize);
         exitButton.setMinimumSize(buttonSize);
         exitButton.setMaximumSize(buttonSize);
-        
+
         buttonPanel.add(playButton);
         buttonPanel.add(Box.createRigidArea(new Dimension(0, 20)));
         buttonPanel.add(statsButton);
         buttonPanel.add(Box.createRigidArea(new Dimension(0, 20)));
         buttonPanel.add(exitButton);
-        
+
         centerPanel.add(buttonPanel);
         centerPanel.add(Box.createVerticalGlue());
-        
+
         // Ações dos botões
         playButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Iniciando jogo...");
+                ((JFrame) SwingUtilities.getWindowAncestor(playButton)).dispose();
+                new TelaJogar(aluno, null, null, 1, false).setVisible(true);
             }
         });
-        
+
         statsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Exibindo estatísticas...");
+                ((JFrame) SwingUtilities.getWindowAncestor(statsButton)).dispose();
+                new TelaEstatistica(aluno).setVisible(true);
             }
         });
-        
+
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -154,7 +161,7 @@ public class TelaPrincipalAluno extends JFrame {
                 new TelaInicial().setVisible(true);
             }
         });
-        
+
         // Listener para redimensionamento
         addComponentListener(new ComponentAdapter() {
             @Override
@@ -163,50 +170,53 @@ public class TelaPrincipalAluno extends JFrame {
             }
         });
     }
-    
+
     private void adjustComponents() {
         // Ajuste responsivo do título
         int titleFontSize = Math.max(24, Math.min(48, getWidth() / 20));
         titleLabel.setFont(new Font("Arial", Font.BOLD, titleFontSize));
-        
+
         // Ajuste responsivo do subtítulo
         int subtitleFontSize = Math.max(14, Math.min(24, getWidth() / 40));
         subtitleLabel.setFont(new Font("Arial", Font.PLAIN, subtitleFontSize));
-        
+
         // Ajuste responsivo do logo
         if (originalLogoIcon != null) {
-            int maxLogoWidth = (int)(getWidth() * 0.6);
-            int maxLogoHeight = (int)(getHeight() * 0.3);
-            
+            int maxLogoWidth = (int) (getWidth() * 0.6);
+            int maxLogoHeight = (int) (getHeight() * 0.3);
+
             double ratio = Math.min(
-                (double)maxLogoWidth / originalLogoIcon.getIconWidth(),
-                (double)maxLogoHeight / originalLogoIcon.getIconHeight()
-            );
-            
-            int newWidth = (int)(originalLogoIcon.getIconWidth() * ratio);
-            int newHeight = (int)(originalLogoIcon.getIconHeight() * ratio);
-            
+                    (double) maxLogoWidth / originalLogoIcon.getIconWidth(),
+                    (double) maxLogoHeight / originalLogoIcon.getIconHeight());
+
+            int newWidth = (int) (originalLogoIcon.getIconWidth() * ratio);
+            int newHeight = (int) (originalLogoIcon.getIconHeight() * ratio);
+
             Image scaledImage = originalLogoIcon.getImage().getScaledInstance(
-                newWidth, newHeight, Image.SCALE_SMOOTH);
+                    newWidth, newHeight, Image.SCALE_SMOOTH);
             logoLabel.setIcon(new ImageIcon(scaledImage));
         } else {
             int logoFontSize = Math.max(14, Math.min(24, getWidth() / 50));
             logoLabel.setFont(new Font("Arial", Font.PLAIN, logoFontSize));
         }
-        
+
         // Ajuste responsivo do texto "SILHAR A CASA"
+        silharLabel = new JLabel("SILHAR A CASA");
+        silharLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        silharLabel.setForeground(Color.BLACK);
+        silharLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         int silharFontSize = Math.max(12, Math.min(18, getWidth() / 60));
         silharLabel.setFont(new Font("Arial", Font.BOLD, silharFontSize));
-        
+
         revalidate();
         repaint();
     }
-    
+
     private JButton createRoundedButton(String text, Color color) {
         JButton button = new JButton(text) {
             @Override
             protected void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D)g.create();
+                Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 g2.setColor(color);
                 g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
@@ -219,48 +229,49 @@ public class TelaPrincipalAluno extends JFrame {
                 g2.dispose();
             }
         };
-        
+
         button.setOpaque(false);
         button.setBorder(new RoundedBorder(20));
         button.setContentAreaFilled(false);
         button.setFocusPainted(false);
         button.setFont(new Font("Arial", Font.BOLD, 18));
-        
+
         button.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent evt) {
                 button.setCursor(new Cursor(Cursor.HAND_CURSOR));
             }
+
             public void mouseExited(MouseEvent evt) {
                 button.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
             }
         });
-        
+
         return button;
     }
-    
+
     private static class RoundedBorder implements javax.swing.border.Border {
         private int radius;
-        
+
         RoundedBorder(int radius) {
             this.radius = radius;
         }
-        
+
         public Insets getBorderInsets(Component c) {
-            return new Insets(this.radius+1, this.radius+1, this.radius+2, this.radius);
+            return new Insets(this.radius + 1, this.radius + 1, this.radius + 2, this.radius);
         }
-        
+
         public boolean isBorderOpaque() {
             return true;
         }
-        
+
         public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-            g.drawRoundRect(x, y, width-1, height-1, radius, radius);
+            g.drawRoundRect(x, y, width - 1, height - 1, radius, radius);
         }
     }
-    
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            TelaPrincipalAluno frame = new TelaPrincipalAluno();
+            TelaPrincipalAluno frame = new TelaPrincipalAluno(null);
             frame.setVisible(true);
         });
     }

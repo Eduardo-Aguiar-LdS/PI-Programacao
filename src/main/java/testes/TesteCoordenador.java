@@ -12,7 +12,7 @@ public class TesteCoordenador {
             String email = dotenv.get("EMAIL_COORDENADOR");
             String senha = "adm";
             Coordenador coordenador = new Coordenador(email, senha);
-            coordenador.fazerLogin(coordenador);
+            coordenador.fazerLogin(coordenador, null);
             coordenador.atributosDB(coordenador);
             System.out.println(coordenador);
             

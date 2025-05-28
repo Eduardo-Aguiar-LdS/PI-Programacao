@@ -3,6 +3,34 @@
     "configurations": [
       {
         "type": "java",
+        "name": "TelaJogar",
+        "request": "launch",
+        "mainClass": "telas.telas_gerais.TelaJogar",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
+        "name": "TesteJogo",
+        "request": "launch",
+        "mainClass": "testes.TesteJogo",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
+        "name": "TesteAluno",
+        "request": "launch",
+        "mainClass": "testes.TesteAluno",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
+        "name": "TelaEstatistica",
+        "request": "launch",
+        "mainClass": "telas.telas_aluno.TelaEstatistica",
+        "projectName": "PI-Programacao"
+      },
+      {
+        "type": "java",
         "name": "TelaEstatisticaAdm",
         "request": "launch",
         "mainClass": "telas.telas_professor.TelaEstatisticaAdm",

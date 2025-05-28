@@ -32,6 +32,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import show_milhao.*;
+import telas.telas_aluno.TelaPrincipalAluno;
 import telas.telas_professor.TelaPrincipalAdmin;
 
 public class TelaLogin extends JFrame {
@@ -309,7 +310,7 @@ public class TelaLogin extends JFrame {
                 // Aluno
                 try {
                     Aluno aluno = new Aluno(email, senha);
-                    aluno.fazerLogin(aluno);
+                    aluno.fazerLogin(aluno, this);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -317,6 +318,12 @@ public class TelaLogin extends JFrame {
                 JOptionPane.showMessageDialog(null, "Usuário não tem cadastro", "Erro", JOptionPane.ERROR_MESSAGE);
             }
         }
+    }
+
+    public void irTelaPrincipalAluno(Aluno aluno) throws Exception {
+        this.dispose();
+        aluno.atributosDB(aluno);
+        new TelaPrincipalAluno(aluno).setVisible(true);
     }
 
     public void irTelaPrincipalAdmin(Professor professor) throws Exception {

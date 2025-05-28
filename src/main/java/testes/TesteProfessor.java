@@ -11,7 +11,7 @@ public class TesteProfessor {
             String email_professor = "testeP@sistemapoliedro.com.br";
             String senha = "professor";
             Professor professor = new Professor(email_professor, senha);
-            professor.fazerLogin(professor);
+            professor.fazerLogin(professor, null);
             professor.atributosDB(professor);
             System.out.println(professor);
 

@@ -7,17 +7,20 @@ import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 
 public class Pergunta {
-    private String pergunta;
+    private String questao;
     private int id_professor;
     private int id_pergunta;
 
     // Construtor
-    public Pergunta(String pergunta) {
-        this.pergunta = pergunta;
+    public Pergunta() {
     }
 
-    public Pergunta(String pergunta, int id_professor, int id_pergunta) {
-        this.pergunta = pergunta;
+    public Pergunta(String questao) {
+        this.questao = questao;
+    }
+
+    public Pergunta(String questao, int id_professor, int id_pergunta) {
+        this.questao = questao;
         this.id_professor = id_professor;
         this.id_pergunta = id_pergunta;
     }
@@ -27,7 +30,7 @@ public class Pergunta {
         String sql = "select pe.id_pergunta, pe.id_professor from Professor as pr join Pergunta as pe on pr.id_professor = pe.id_professor where pergunta = ?";
         try (Connection conexao = ConnectionFactory.obterConexao();
                 PreparedStatement ps = conexao.prepareStatement(sql)) {
-            ps.setString(1, pergunta.getPergunta());
+            ps.setString(1, pergunta.getQuestao());
             try {
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
@@ -44,14 +47,35 @@ public class Pergunta {
     }
 
     // Função de exibir Pergunta
-
-    // Getters e Setters
-    public String getPergunta() {
-        return pergunta;
+    public void exibir(Pergunta p, Resposta r, int contadorPergunta) throws Exception {
+        try {
+            String sql = "select p.pergunta, r.resposta_correta, r.resposta_um, r.resposta_dois, r.resposta_tres from Pergunta as p join Resposta as r on p.id_pergunta = r.id_pergunta where p.id_pergunta = ?";
+            try (Connection conexao = ConnectionFactory.obterConexao();
+                    PreparedStatement ps = conexao.prepareStatement(sql)) {
+                ps.setInt(1, contadorPergunta);
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    p.setQuestao(rs.getString("pergunta"));
+                    r.setResposta_correta(rs.getString("resposta_correta"));
+                    r.setResposta_um(rs.getString("resposta_um"));
+                    r.setResposta_dois(rs.getString("resposta_dois"));
+                    r.setResposta_tres(rs.getString("resposta_tres"));
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro em exibir pergunta", "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+            throw new RuntimeException("Erro em exibir pergunta fácil do DB");
+        }
     }
 
-    public void setPergunta(String pergunta) {
-        this.pergunta = pergunta;
+    // Getters e Setters
+    public String getQuestao() {
+        return questao;
+    }
+
+    public void setQuestao(String questao) {
+        this.questao = questao;
     }
 
     public int getId_professor() {
@@ -72,6 +96,6 @@ public class Pergunta {
 
     @Override
     public String toString() {
-        return "Pergunta\n"+getPergunta()+"\nID Pergunta: "+getId_pergunta()+"\nID Professor: "+getId_professor();
+        return "Pergunta\n" + getQuestao();
     }
 }
