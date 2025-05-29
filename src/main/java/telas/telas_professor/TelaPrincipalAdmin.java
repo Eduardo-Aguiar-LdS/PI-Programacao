@@ -20,10 +20,10 @@ import telas.componentes.botoes.RoundedButton;
 import telas.componentes.util.FontUtils;
 import telas.componentes.util.IconUtils;
 
-public class TelaPrincipalAdm extends JFrame {
+public class TelaPrincipalAdmin extends JFrame {
     private static final Dimension NOTEBOOK_SIZE = new Dimension(1366, 768);
 
-    public TelaPrincipalAdm() {
+    public TelaPrincipalAdmin() {
         super("Show do Milhão Acadêmico");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setIconImage(IconUtils.getAppIcon());
@@ -81,6 +81,6 @@ public class TelaPrincipalAdm extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(TelaPrincipalAdm::new);
+        SwingUtilities.invokeLater(TelaPrincipalAdmin::new);
     }
 }

@@ -1,11 +1,25 @@
 package telas.telas_gerais;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextPane;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
-import javax.swing.text.*;
-import telas.componentes.botoes.RoundedButton;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
+
 import telas.componentes.botoes.ButtonUtils;
+import telas.componentes.botoes.RoundedButton;
 import telas.componentes.util.FontUtils;
 import telas.componentes.util.IconUtils;
 
@@ -104,6 +118,8 @@ public class TelaJogar extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
     }
+
+    
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new TelaJogar(

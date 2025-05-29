@@ -29,17 +29,17 @@ public class TelaInicial extends JFrame {
         setIconImage(IconUtils.getAppIcon());
 
         Font titleFont = FontUtils.interOrSans(32);
-        Font btnFont   = FontUtils.interOrSans(24);
+        Font btnFont = FontUtils.interOrSans(24);
 
         JPanel content = new JPanel(new GridBagLayout());
         content.setBackground(Color.WHITE);
-        content.setBorder(new EmptyBorder(20,20,20,20));
+        content.setBorder(new EmptyBorder(20, 20, 20, 20));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.anchor = GridBagConstraints.CENTER;
 
-        Insets defaultInsets = new Insets(10,0,10,0);
-        Insets titleInsets   = new Insets(0,0,0,0);
+        Insets defaultInsets = new Insets(10, 0, 10, 0);
+        Insets titleInsets = new Insets(0, 0, 0, 0);
 
         gbc.insets = defaultInsets;
         gbc.gridy = 0;
@@ -52,17 +52,25 @@ public class TelaInicial extends JFrame {
         lblCadastrar.setFont(titleFont);
         content.add(lblCadastrar, gbc);
 
-        RoundedButton btnLogin    = new RoundedButton("Fazer Login");
-        RoundedButton btnSair    = new RoundedButton("Sair");
-        ButtonUtils.estilizarPadrao(btnLogin,    new Dimension(250, 50));
-        ButtonUtils.estilizarPadrao(btnSair,    new Dimension(250, 50));
+        RoundedButton btnLogin = new RoundedButton("Fazer Login");
+        RoundedButton btnSair = new RoundedButton("Sair");
+        ButtonUtils.estilizarPadrao(btnLogin, new Dimension(250, 50));
+        ButtonUtils.estilizarPadrao(btnSair, new Dimension(250, 50));
         btnLogin.setFont(btnFont);
         btnSair.setFont(btnFont);
 
-        gbc.insets = new Insets(60,0,10,0);
-        gbc.gridy = 2; content.add(btnLogin, gbc);
+        gbc.insets = new Insets(60, 0, 10, 0);
+        gbc.gridy = 2;
+        content.add(btnLogin, gbc);
         gbc.insets = defaultInsets;
-        gbc.gridy = 3; content.add(btnSair, gbc);
+        gbc.gridy = 3;
+        content.add(btnSair, gbc);
+
+        // Ação do botão "Fazer Login"
+        btnLogin.addActionListener(e -> irTelaLogin());
+
+        // Ação do botão "Sair"
+        btnSair.addActionListener(e -> System.exit(0));
 
         setContentPane(content);
         pack();
@@ -70,6 +78,12 @@ public class TelaInicial extends JFrame {
         setMinimumSize(NOTEBOOK_SIZE);
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    // Método para navegar para a TelaLogin
+    private void irTelaLogin() {
+        setVisible(false); // Esconde a TelaInicial
+        new TelaLogin().setVisible(true); // Abre e exibe a TelaLogin
     }
 
     public static void main(String[] args) {

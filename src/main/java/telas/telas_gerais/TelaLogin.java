@@ -6,22 +6,35 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
+import show_milhao.Aluno;
+import show_milhao.Coordenador;
+import show_milhao.Professor;
 import telas.componentes.botoes.ButtonUtils;
 import telas.componentes.botoes.RoundedButton;
 import telas.componentes.campos.RoundedTextField;
 import telas.componentes.util.FontUtils;
 import telas.componentes.util.IconUtils;
+import telas.telas_aluno.TelaPrincipalAluno;
+import telas.telas_professor.TelaPrincipalAdmin;
 
 public class TelaLogin extends JFrame {
     private static final Dimension NOTEBOOK_SIZE = new Dimension(1366, 768);
+
+    // Declara os campos como variáveis de instância para acesso em outros métodos
+    private RoundedTextField tfEmail;
+    private RoundedTextField tfSenha;
 
     public TelaLogin() {
         super("Show do Milhão Acadêmico");
@@ -38,11 +51,11 @@ public class TelaLogin extends JFrame {
             lbl.setFont(textFont);
         }
 
-        RoundedTextField tfEmail = new RoundedTextField(30);
+        tfEmail = new RoundedTextField(30);
         tfEmail.setFont(fieldFont);
         tfEmail.setPlaceholder("Inserir e-mail");
 
-        RoundedTextField tfSenha = new RoundedTextField(20);
+        tfSenha = new RoundedTextField(20);
         tfSenha.setFont(fieldFont);
         tfSenha.setPlaceholder("Inserir senha");
 
@@ -54,8 +67,8 @@ public class TelaLogin extends JFrame {
 
         RoundedButton btnAcessar = new RoundedButton("Acessar");
         RoundedButton btnVoltar = new RoundedButton("Voltar");
-        ButtonUtils.estilizarPadrao(btnAcessar);
-        ButtonUtils.estilizarPadrao(btnVoltar);
+        ButtonUtils.estilizarPadrao(btnAcessar, new Dimension(250, 50));
+        ButtonUtils.estilizarPadrao(btnVoltar, new Dimension(250, 50));
 
         JPanel content = new JPanel(new GridBagLayout());
         content.setBackground(Color.WHITE);
@@ -75,28 +88,30 @@ public class TelaLogin extends JFrame {
         gbc.insets = new Insets(0, 0, 30, 0);
         content.add(title, gbc);
 
-
-        gbc.gridy = 4;
+        gbc.gridy = 2;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
         gbc.insets = new Insets(0, 0, 5, 0);
         content.add(lblEmail, gbc);
-        gbc.gridy = 5;
+        gbc.gridy = 3;
         gbc.insets = new Insets(0, 0, 20, 0);
         content.add(tfEmail, gbc);
 
-        gbc.gridy = 6;
+        gbc.gridy = 4;
         gbc.insets = new Insets(0, 0, 5, 0);
         content.add(lblSenha, gbc);
-        gbc.gridy = 7;
+        gbc.gridy = 5;
         gbc.insets = new Insets(0, 0, 30, 0);
         content.add(tfSenha, gbc);
 
-        gbc.gridy = 8;
+        gbc.gridy = 6;
         gbc.insets = new Insets(0, 75, 10, 75);
         content.add(btnAcessar, gbc);
-        gbc.gridy = 9;
+        gbc.gridy = 7;
         content.add(btnVoltar, gbc);
+
+        btnAcessar.addActionListener(e -> realizarLogin());
+        btnVoltar.addActionListener(e -> voltarTelaAnterior());
 
         setContentPane(content);
         pack();
@@ -106,6 +121,69 @@ public class TelaLogin extends JFrame {
         setVisible(true);
     }
 
+        private void realizarLogin() {
+        String email = emailField.getText();
+        String senha = new String(senhaField.getPassword());
+
+        if (email.isEmpty() || email.equals("Digite seu e-mail") ||
+                senha.isEmpty() || senha.equals("Digite sua senha")) {
+            JOptionPane.showMessageDialog(this, "Por favor, preencha todos os campos!", "Erro",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        } else {
+            // Fazer verificação de aluno, professor ou coordenador
+            if (email.contains("@coordenador.com")) {
+                // Coordenador
+                try {
+                    Coordenador coordenador = new Coordenador(email, senha);
+                    coordenador.fazerLogin(coordenador, this);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else if (email.contains("@sistemapoliedro.com.br")) {
+                // Professor
+                try {
+                    Professor professor = new Professor(email, senha);
+                    professor.fazerLogin(professor, this);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else if (email.contains("@p4ed.com")) {
+                // Aluno
+                try {
+                    Aluno aluno = new Aluno(email, senha);
+                    aluno.fazerLogin(aluno, this);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Usuário não tem cadastro", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    public void irTelaPrincipalAluno(Aluno aluno) throws Exception {
+        this.dispose();
+        aluno.atributosDB(aluno);
+        new TelaPrincipalAluno(aluno).setVisible(true);
+    }
+
+    public void irTelaPrincipalAdmin(Professor professor) throws Exception {
+        this.dispose();
+        professor.atributosDB(professor);
+        new TelaPrincipalAdmin(professor, null).setVisible(true);
+    }
+
+    public void irTelaPrincipalAdmin(Coordenador coordenador) throws Exception {
+        this.dispose();
+        coordenador.atributosDB(coordenador);
+        new TelaPrincipalAdmin(null, coordenador).setVisible(true);
+    }
+
+    private void voltarTelaAnterior() {
+        this.dispose();
+        new TelaInicial().setVisible(true);
+    }
     public static void main(String[] args) {
         SwingUtilities.invokeLater(TelaLogin::new);
     }

@@ -1,14 +1,25 @@
 package telas.telas_professor;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+
+import telas.componentes.botoes.ButtonUtils;
 import telas.componentes.botoes.RoundedButton;
 import telas.componentes.campos.RoundedTextField;
 import telas.componentes.combos.RoundedComboBox;
 import telas.componentes.util.FontUtils;
 import telas.componentes.util.IconUtils;
-import telas.componentes.botoes.ButtonUtils;
 
 public class TelaCadastrarAlunoProfessor extends JFrame {
     private static final Dimension NOTEBOOK_SIZE = new Dimension(1366, 768);
@@ -125,7 +136,6 @@ public class TelaCadastrarAlunoProfessor extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
     }
-
     public static void main(String[] args) {
         SwingUtilities.invokeLater(TelaCadastrarAlunoProfessor::new);
     }
