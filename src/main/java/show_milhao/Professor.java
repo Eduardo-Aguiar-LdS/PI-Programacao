@@ -73,7 +73,7 @@ public class Professor extends Aluno {
 
     // Função de administrador - cadastrar aluno
     public void cadastrarAluno(Aluno aluno) throws Exception {
-        String sql = "insert into Aluno (nome_aluno, email, senha, id_turma) select ?, ?, ?, t.id_turma FROM Turma t WHERE t.nome_turma = ?;";
+        String sql = "insert into Aluno (nome_aluno, email, senha, id_turma) select ?, ?, ?, t.id_turma from Turma t where t.nome_turma = ?;";
         try (Connection conexao = ConnectionFactory.obterConexao();
                 PreparedStatement ps = conexao.prepareStatement(sql)) {
             ps.setString(1, aluno.getNome());

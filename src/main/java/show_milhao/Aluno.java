@@ -18,6 +18,7 @@ public class Aluno {
     private String email;
     private String senha;
     private String turma;
+    private int idAluno;
     private int pontuacao;
     private int respostas_corretas;
     private int respostas_erradas;
@@ -43,11 +44,11 @@ public class Aluno {
         this.turma = turma;
     }
 
-    public Aluno(String nome, String email, String senha, int pontuacao) {
+    public Aluno(String nome, String email, String senha, int idAluno) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
-        this.pontuacao = pontuacao;
+        this.idAluno = idAluno;
     }
 
     public Aluno(String nome, String email, String senha, int respostas_corretas, int respostas_erradas) {
@@ -98,7 +99,7 @@ public class Aluno {
 
     // Buscar todos os atributos do banco de dados
     public Aluno atributosDB(Aluno aluno) throws Exception {
-        String sql = "select a.nome_aluno, t.nome_turma, a.respostas_corretas, a.respostas_erradas from Aluno as a join Turma as t on a.id_turma = t.id_turma where email = ? and senha = ?";
+        String sql = "select a.nome_aluno, a.id_aluno, t.nome_turma, a.respostas_corretas, a.respostas_erradas from Aluno as a join Turma as t on a.id_turma = t.id_turma where email = ? and senha = ?";
         try (Connection conexao = ConnectionFactory.obterConexao();
                 PreparedStatement ps = conexao.prepareStatement(sql)) {
             ps.setString(1, aluno.getEmail());
@@ -107,6 +108,7 @@ public class Aluno {
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
                     aluno.setNome(rs.getString("nome_aluno"));
+                    aluno.setIdAluno(rs.getInt("id_aluno"));
                     aluno.setTurma(rs.getString("nome_turma"));
                     aluno.setRespostas_corretas(rs.getInt("respostas_corretas"));
                     aluno.setRespostas_erradas(rs.getInt("respostas_erradas"));
@@ -134,6 +136,10 @@ public class Aluno {
             ((JFrame) SwingUtilities.getWindowAncestor(btn)).dispose();
             new TelaJogar(this, null, null, cont, false).setVisible(true);
         }
+    }
+
+    public void atualizarPontuacao(){
+        String sql = "update a.nome_aluno, t.nome_turma, a.respostas_corretas, a.respostas_erradas from Aluno as a join Turma as t on a.id_turma = t.id_turma where email = ? and senha = ?";
     }
 
     // Getters e Setters
@@ -167,6 +173,14 @@ public class Aluno {
 
     public void setTurma(String turma) {
         this.turma = turma;
+    }
+
+    public int getIdAluno() {
+        return idAluno;
+    }
+
+    public void setIdAluno(int idAluno) {
+        this.idAluno = idAluno;
     }
 
     public int getRespostas_corretas() {

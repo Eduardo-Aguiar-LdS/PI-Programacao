@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 
 public class Pergunta {
     private String questao;
+    private String dificuldade;
     private int id_professor;
     private int id_pergunta;
 
@@ -27,7 +28,7 @@ public class Pergunta {
 
     // Buscar atributos no banco de dados
     public Pergunta atributosDB(Pergunta pergunta) throws Exception {
-        String sql = "select pe.id_pergunta, pe.id_professor from Professor as pr join Pergunta as pe on pr.id_professor = pe.id_professor where pergunta = ?";
+        String sql = "select pe.id_pergunta, pe.id_professor, pe.dificuldade from Professor as pr join Pergunta as pe on pr.id_professor = pe.id_professor where pergunta = ?";
         try (Connection conexao = ConnectionFactory.obterConexao();
                 PreparedStatement ps = conexao.prepareStatement(sql)) {
             ps.setString(1, pergunta.getQuestao());
@@ -36,6 +37,7 @@ public class Pergunta {
                 if (rs.next()) {
                     pergunta.setId_pergunta(rs.getInt("id_pergunta"));
                     pergunta.setId_professor(rs.getInt("id_professor"));
+                    pergunta.setDificuldade(rs.getString("dificuldade"));
                 }
                 return pergunta;
             } catch (Exception e) {
@@ -76,6 +78,14 @@ public class Pergunta {
 
     public void setQuestao(String questao) {
         this.questao = questao;
+    }
+
+    public String getDificuldade() {
+        return dificuldade;
+    }
+
+    public void setDificuldade(String dificuldade) {
+        this.dificuldade = dificuldade;
     }
 
     public int getId_professor() {

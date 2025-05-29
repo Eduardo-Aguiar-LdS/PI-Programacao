@@ -23,64 +23,34 @@ import telas.telas_aluno.TelaPrincipalAluno;
 
 public class TelaJogar extends JFrame {
     private static final Dimension NOTEBOOK_SIZE = new Dimension(1366, 768);
-
-    private Aluno aluno_tela;
-    private Professor professor_tela;
-    private Coordenador coordenador_tela;
-    private int contador;
+    private Aluno jogadorAtivo;
 
     public TelaJogar(Aluno aluno, Professor professor, Coordenador coordenador, int cont, boolean dicaUsada) {
         Pergunta pergunta = new Pergunta();
         Resposta resposta = new Resposta();
-        this.contador = cont;
         String[] opcoes = new String[4];
+        Object jogadorAtivo = null;
 
         if (aluno != null) {
-            this.aluno_tela = aluno;
-            try {
-                pergunta.exibir(pergunta, resposta, cont);
-                opcoes = new String[] {
-                        resposta.getResposta_correta(),
-                        resposta.getResposta_um(),
-                        resposta.getResposta_dois(),
-                        resposta.getResposta_tres()
-                };
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            this.jogadorAtivo = coordenador;
         } else if (professor != null) {
-            this.professor_tela = professor;
-            try {
-                pergunta.exibir(pergunta, resposta, cont);
-                opcoes = new String[] {
-                        resposta.getResposta_correta(),
-                        resposta.getResposta_um(),
-                        resposta.getResposta_dois(),
-                        resposta.getResposta_tres()
-                };
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            this.jogadorAtivo = professor;
         } else if (coordenador != null) {
-            this.coordenador_tela = coordenador;
-            try {
-                pergunta.exibir(pergunta, resposta, cont);
-                opcoes = new String[] {
-                        resposta.getResposta_correta(),
-                        resposta.getResposta_um(),
-                        resposta.getResposta_dois(),
-                        resposta.getResposta_tres()
-                };
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
+            this.jogadorAtivo = coordenador;
+        }
+        if (this.jogadorAtivo != null){
+            this.jogadorAtivo.setPontuacao(cont);
+        }
+        try {
+            pergunta.exibir(pergunta, resposta, cont);
             opcoes = new String[] {
-                    "Erro em trazer resposta 1",
-                    "Erro em trazer resposta 2",
-                    "Erro em trazer resposta 3",
-                    "Erro em trazer resposta 4"
+                    resposta.getResposta_correta(),
+                    resposta.getResposta_um(),
+                    resposta.getResposta_dois(),
+                    resposta.getResposta_tres()
             };
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -104,7 +74,7 @@ public class TelaJogar extends JFrame {
         gbc.gridwidth = 2;
         gbc.insets = new Insets(0, 0, 10, 0);
         gbc.anchor = GridBagConstraints.EAST;
-        JLabel lblScore = new JLabel("Pontuação: " + aluno.getPontuacao(), SwingConstants.RIGHT);
+        JLabel lblScore = new JLabel("Pontuação: " + cont, SwingConstants.RIGHT);
         lblScore.setFont(scoreFont);
         content.add(lblScore, gbc);
 
@@ -154,14 +124,14 @@ public class TelaJogar extends JFrame {
 
         botoes.add(btnUm);
         botoes.add(btnDois);
-        
+
         btnUm.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(null, "E a alternativa esta...");
+                JOptionPane.showMessageDialog(null, "Correta");
+                aluno.setRespostas_corretas(aluno.getRespostas_corretas() + 1);
                 try {
-                    aluno.setPontuacao(aluno.getPontuacao() + 1);
-                    JOptionPane.showMessageDialog(null, "Correta");
                     aluno.jogar(pergunta, resposta, cont, btnUm);
                 } catch (Exception e1) {
                     e1.printStackTrace();
@@ -175,6 +145,7 @@ public class TelaJogar extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(null, "E a alternativa esta...");
                 JOptionPane.showMessageDialog(null, "Errada");
+                aluno.setRespostas_erradas(aluno.getRespostas_erradas() + 1);
                 JOptionPane.showMessageDialog(null,
                         "Pontuacao: " + aluno.getPontuacao(), "Perdeu",
                         JOptionPane.INFORMATION_MESSAGE);
@@ -183,6 +154,7 @@ public class TelaJogar extends JFrame {
             }
         });
 
+        // Verifica se a dica foi usada para construção dos botões
         if (dicaUsada != true) {
             RoundedButton btnTres = new RoundedButton(opcoes[2]);
             btnTres.setColumns(35);
@@ -197,12 +169,13 @@ public class TelaJogar extends JFrame {
 
             botoes.add(btnTres);
             botoes.add(btnQuatro);
-            
+
             btnTres.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     JOptionPane.showMessageDialog(null, "E a alternativa esta...");
                     JOptionPane.showMessageDialog(null, "Errada");
+                    aluno.setRespostas_erradas(aluno.getRespostas_erradas() + 1);
                     JOptionPane.showMessageDialog(null,
                             "Pontuacao: " + aluno.getPontuacao(), "Perdeu",
                             JOptionPane.INFORMATION_MESSAGE);
@@ -216,6 +189,7 @@ public class TelaJogar extends JFrame {
                 public void actionPerformed(ActionEvent e) {
                     JOptionPane.showMessageDialog(null, "E a alternativa esta...");
                     JOptionPane.showMessageDialog(null, "Errada");
+                    aluno.setRespostas_erradas(aluno.getRespostas_erradas() + 1);
                     JOptionPane.showMessageDialog(null,
                             "Pontuacao: " + aluno.getPontuacao(), "Perdeu",
                             JOptionPane.INFORMATION_MESSAGE);
@@ -262,7 +236,7 @@ public class TelaJogar extends JFrame {
                 }
             });
         }
-        if (aluno.isUsouPular() != true) {
+        if (this.jogadorAtivo.isUsouPular() != true) {
             RoundedButton pular = new RoundedButton("Pular");
             pular.setFont(btnFont);
             pular.setColumns(15);
@@ -273,11 +247,12 @@ public class TelaJogar extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     JOptionPane.showMessageDialog(null,
-                            "Usou pular qestão ", "Pulou",
+                            "Usou pular questão ", "Pulou",
                             JOptionPane.INFORMATION_MESSAGE);
-                    aluno.setUsouPular(true);
+                    jogadorAtivo.setUsouPular(true);
+                    jogadorAtivo.setPontuacao(cont- 1);
                     try {
-                        aluno.jogar(pergunta, resposta, cont, btnUm);
+                        jogadorAtivo.jogar(pergunta, resposta, cont, btnUm); // Chamada polimórfica
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }
