@@ -127,6 +127,7 @@ public class Aluno {
             JOptionPane.showMessageDialog(null,
                     "Pontuacao: " + this.getPontuacao(), "Venceu",
                     JOptionPane.INFORMATION_MESSAGE);
+            atualizarEstatisticas();
             ((JFrame) SwingUtilities.getWindowAncestor(btn)).dispose();
             new TelaPrincipalAluno(this).setVisible(true);
 
@@ -138,8 +139,24 @@ public class Aluno {
         }
     }
 
-    public void atualizarPontuacao(){
-        String sql = "update a.nome_aluno, t.nome_turma, a.respostas_corretas, a.respostas_erradas from Aluno as a join Turma as t on a.id_turma = t.id_turma where email = ? and senha = ?";
+    public void atualizarEstatisticas() {
+        try (Connection conexao = ConnectionFactory.obterConexao()) {
+            String sql = "update Aluno set pontuacao = ?, respostas_corretas = ?, respostas_erradas = ? where id_aluno = ?;";
+            try (PreparedStatement ps = conexao.prepareStatement(sql);) {
+                ps.setInt(1, getPontuacao());
+                ps.setInt(2, getRespostas_corretas());
+                ps.setInt(3, getRespostas_erradas());
+                ps.setInt(4, getIdAluno());
+                try {
+                    ps.executeUpdate();
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "Erro em atualizar pontuação", "Erro",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // Getters e Setters

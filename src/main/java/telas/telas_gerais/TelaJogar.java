@@ -29,17 +29,22 @@ public class TelaJogar extends JFrame {
         Pergunta pergunta = new Pergunta();
         Resposta resposta = new Resposta();
         String[] opcoes = new String[4];
-        Object jogadorAtivo = null;
+        int pontos;
 
         if (aluno != null) {
-            this.jogadorAtivo = coordenador;
+            this.jogadorAtivo = aluno;
         } else if (professor != null) {
             this.jogadorAtivo = professor;
         } else if (coordenador != null) {
             this.jogadorAtivo = coordenador;
         }
+        if(jogadorAtivo.isUsouPular()==true){
+            pontos = cont - 2;
+        } else{
+            pontos = cont - 1;
+        }
         if (this.jogadorAtivo != null){
-            this.jogadorAtivo.setPontuacao(cont);
+            this.jogadorAtivo.setPontuacao(pontos);
         }
         try {
             pergunta.exibir(pergunta, resposta, cont);
@@ -74,7 +79,7 @@ public class TelaJogar extends JFrame {
         gbc.gridwidth = 2;
         gbc.insets = new Insets(0, 0, 10, 0);
         gbc.anchor = GridBagConstraints.EAST;
-        JLabel lblScore = new JLabel("Pontuação: " + cont, SwingConstants.RIGHT);
+        JLabel lblScore = new JLabel("Pontuação: " + pontos, SwingConstants.RIGHT);
         lblScore.setFont(scoreFont);
         content.add(lblScore, gbc);
 
@@ -130,9 +135,9 @@ public class TelaJogar extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(null, "E a alternativa esta...");
                 JOptionPane.showMessageDialog(null, "Correta");
-                aluno.setRespostas_corretas(aluno.getRespostas_corretas() + 1);
+                jogadorAtivo.setRespostas_corretas(jogadorAtivo.getRespostas_corretas() + 1);
                 try {
-                    aluno.jogar(pergunta, resposta, cont, btnUm);
+                    jogadorAtivo.jogar(pergunta, resposta, cont, btnUm);
                 } catch (Exception e1) {
                     e1.printStackTrace();
                 }
@@ -146,8 +151,9 @@ public class TelaJogar extends JFrame {
                 JOptionPane.showMessageDialog(null, "E a alternativa esta...");
                 JOptionPane.showMessageDialog(null, "Errada");
                 aluno.setRespostas_erradas(aluno.getRespostas_erradas() + 1);
+                jogadorAtivo.atualizarEstatisticas();
                 JOptionPane.showMessageDialog(null,
-                        "Pontuacao: " + aluno.getPontuacao(), "Perdeu",
+                        "Pontuacao: " + jogadorAtivo.getPontuacao(), "Perdeu",
                         JOptionPane.INFORMATION_MESSAGE);
                 ((JFrame) SwingUtilities.getWindowAncestor(btnDois)).dispose();
                 new TelaPrincipalAluno(aluno).setVisible(true);
@@ -176,8 +182,9 @@ public class TelaJogar extends JFrame {
                     JOptionPane.showMessageDialog(null, "E a alternativa esta...");
                     JOptionPane.showMessageDialog(null, "Errada");
                     aluno.setRespostas_erradas(aluno.getRespostas_erradas() + 1);
+                    jogadorAtivo.atualizarEstatisticas();
                     JOptionPane.showMessageDialog(null,
-                            "Pontuacao: " + aluno.getPontuacao(), "Perdeu",
+                            "Pontuacao: " + jogadorAtivo.getPontuacao(), "Perdeu",
                             JOptionPane.INFORMATION_MESSAGE);
                     ((JFrame) SwingUtilities.getWindowAncestor(btnTres)).dispose();
                     new TelaPrincipalAluno(aluno).setVisible(true);
@@ -190,8 +197,9 @@ public class TelaJogar extends JFrame {
                     JOptionPane.showMessageDialog(null, "E a alternativa esta...");
                     JOptionPane.showMessageDialog(null, "Errada");
                     aluno.setRespostas_erradas(aluno.getRespostas_erradas() + 1);
+                    jogadorAtivo.atualizarEstatisticas();
                     JOptionPane.showMessageDialog(null,
-                            "Pontuacao: " + aluno.getPontuacao(), "Perdeu",
+                            "Pontuacao: " + jogadorAtivo.getPontuacao(), "Perdeu",
                             JOptionPane.INFORMATION_MESSAGE);
                     ((JFrame) SwingUtilities.getWindowAncestor(btnQuatro)).dispose();
                     new TelaPrincipalAluno(aluno).setVisible(true);
@@ -250,9 +258,9 @@ public class TelaJogar extends JFrame {
                             "Usou pular questão ", "Pulou",
                             JOptionPane.INFORMATION_MESSAGE);
                     jogadorAtivo.setUsouPular(true);
-                    jogadorAtivo.setPontuacao(cont- 1);
+                    jogadorAtivo.setPontuacao(pontos);
                     try {
-                        jogadorAtivo.jogar(pergunta, resposta, cont, btnUm); // Chamada polimórfica
+                        jogadorAtivo.jogar(pergunta, resposta, cont, btnUm);
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }

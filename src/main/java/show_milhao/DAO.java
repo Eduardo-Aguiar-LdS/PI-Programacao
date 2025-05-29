@@ -8,8 +8,6 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import telas.componentes.botoes.RoundedButton;
-
 public class DAO { // Classe criada para exibição nos cadastros e edições
     private String nomeTurma;
     private String perguntaEscolhida;
@@ -127,16 +125,15 @@ public class DAO { // Classe criada para exibição nos cadastros e edições
     }
 
     public void atualizarAluno(Aluno aluno) {
-        try (Connection conexao = ConnectionFactory.obterConexao()){
+        try (Connection conexao = ConnectionFactory.obterConexao()) {
             aluno.atributosDB(aluno);
-            String sql = "update Aluno set nome_aluno = ?, email = ?, senha = ? where id_aluno = ?;";
+            String sql = "update Aluno set email = ?, senha = ? where id_aluno = ?;";
             try (PreparedStatement ps = conexao.prepareStatement(sql);) {
-                ps.setString(1, aluno.getNome());
-                ps.setString(2, aluno.getEmail());
-                ps.setString(3, aluno.getSenha());
-                ps.setInt(4, aluno.getIdAluno());
+                ps.setString(1, aluno.getEmail());
+                ps.setString(2, aluno.getSenha());
+                ps.setInt(3, aluno.getIdAluno());
                 try {
-                    ps.executeQuery();
+                    ps.executeUpdate();
                     JOptionPane.showMessageDialog(null, "Aluno atualizado com sucesso");
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, "Erro em trazer atualizar aluno", "Erro",
@@ -149,7 +146,7 @@ public class DAO { // Classe criada para exibição nos cadastros e edições
     }
 
     public void atualizarPergunta(Pergunta pergunta) {
-        try (Connection conexao = ConnectionFactory.obterConexao()){
+        try (Connection conexao = ConnectionFactory.obterConexao()) {
             pergunta.atributosDB(pergunta);
             String sql = "update Pergunta set dificuldade = ?, id_professor = ? where pergunta = ?;";
             try (PreparedStatement ps = conexao.prepareStatement(sql);) {
@@ -157,10 +154,10 @@ public class DAO { // Classe criada para exibição nos cadastros e edições
                 ps.setInt(2, pergunta.getId_professor());
                 ps.setString(3, pergunta.getQuestao());
                 try {
-                    ps.executeQuery();
+                    ps.executeUpdate();
                     JOptionPane.showMessageDialog(null, "Pergunta atualizada com sucesso");
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Erro em trazer atualizar pergunta", "Erro",
+                    JOptionPane.showMessageDialog(null, "Erro em atualizar pergunta", "Erro",
                             JOptionPane.ERROR_MESSAGE);
                 }
             }
@@ -169,12 +166,62 @@ public class DAO { // Classe criada para exibição nos cadastros e edições
         }
     }
 
-    public void atualizarResposta(Resposta resposta) {
-
+    public void atualizarResposta(Pergunta pergunta, Resposta resposta) {
+        try (Connection conexao = ConnectionFactory.obterConexao()) {
+            pergunta.atributosDB(pergunta);
+            resposta.atributosDB(resposta, pergunta);
+            String sqlPergunta = "update Pergunta set dificuldade = ?, id_professor = ? where pergunta = ?;";
+            try (PreparedStatement psPergunta = conexao.prepareStatement(sqlPergunta);) {
+                psPergunta.setString(1, pergunta.getDificuldade());
+                psPergunta.setInt(2, pergunta.getId_professor());
+                psPergunta.setString(3, pergunta.getQuestao());
+                try {
+                    psPergunta.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "Pergunta atualizada com sucesso");
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "Erro em atualizar pergunta e resposta", "Erro",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            String sqlResposta = "update Resposta set resposta_correta = ?, resposta_um = ?, resposta_dois = ?, resposta_tres = ? where pergunta = ?;";
+            try (PreparedStatement psResposta = conexao.prepareStatement(sqlResposta);) {
+                psResposta.setString(1, resposta.getResposta_correta());
+                psResposta.setString(2, resposta.getResposta_um());
+                psResposta.setString(3, resposta.getResposta_dois());
+                psResposta.setString(4, resposta.getResposta_tres());
+                psResposta.setString(5, pergunta.getQuestao());
+                try {
+                    psResposta.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "Resposta atualizada com sucesso");
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "Erro em atualizar resposta e pergunta", "Erro",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void atualizarProfessor(Professor professor) {
-
+        try (Connection conexao = ConnectionFactory.obterConexao()) {
+            professor.atributosDB(professor);
+            String sql = "update Professor set email = ?, senha = ? where nome_professor = ?;";
+            try (PreparedStatement ps = conexao.prepareStatement(sql);) {
+                ps.setString(1, professor.getEmail());
+                ps.setString(2, professor.getSenha());
+                ps.setString(3, professor.getNome());
+                try {
+                    ps.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "Professor atualizado com sucesso");
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "Erro em trazer atualizar professor", "Erro",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public String getNomeTurma() {

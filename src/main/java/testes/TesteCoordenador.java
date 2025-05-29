@@ -15,7 +15,6 @@ public class TesteCoordenador {
             coordenador.fazerLogin(coordenador, null);
             coordenador.atributosDB(coordenador);
             System.out.println(coordenador);
-            
             //Teste de cadastrar professor
 
         } catch (Exception e) {

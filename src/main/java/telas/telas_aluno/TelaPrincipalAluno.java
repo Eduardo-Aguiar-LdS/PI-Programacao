@@ -38,11 +38,7 @@ public class TelaPrincipalAluno extends JFrame {
     private JLabel logoLabel, titleLabel, subtitleLabel, silharLabel;
     private JButton playButton, statsButton, exitButton;
     private Color buttonColor = new Color(31, 176, 195);
-
-    private Aluno aluno_tela;
-
     public TelaPrincipalAluno(Aluno aluno) {
-        this.aluno_tela = aluno;
 
         // Configuração da janela
         setTitle("Show do Milhão Acadêmico");

@@ -90,13 +90,13 @@ public class Professor extends Aluno {
     }
 
     // Função de administrador - cadastrar pergunta
-    public void cadastrarPergunta(Professor professor, String pergunta, String dificuldade) throws Exception {
+    public void cadastrarPergunta(String pergunta, String dificuldade) throws Exception {
         String sql = "insert into Pergunta (pergunta, dificuldade, id_professor) values(?, ?, ?)";
         try (Connection conexao = ConnectionFactory.obterConexao();
                 PreparedStatement ps = conexao.prepareStatement(sql)) {
             ps.setString(1, pergunta);
             ps.setString(2, dificuldade);
-            ps.setInt(3, professor.getId_professor());
+            ps.setInt(3, this.getId_professor());
             try {
                 ps.execute();
             } catch (Exception e) {
@@ -120,6 +120,25 @@ public class Professor extends Aluno {
             } catch (Exception e) {
                 throw new RuntimeException("Erro em cadastrar resposta");
             }
+        }
+    }
+
+    public void atualizarEstatisticas() {
+        try (Connection conexao = ConnectionFactory.obterConexao()) {
+            String sql = "update Professor set pontuacao = ? where id_professor = ?;";
+            try (PreparedStatement ps = conexao.prepareStatement(sql);) {
+                ps.setInt(1, getPontuacao());
+                ps.setInt(2, getId_professor());
+                try {
+                    ps.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "Pontuação atualizada com sucesso");
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "Erro em trazer atualizar pontuação", "Erro",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
