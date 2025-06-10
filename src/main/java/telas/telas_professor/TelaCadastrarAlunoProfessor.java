@@ -103,6 +103,7 @@ public class TelaCadastrarAlunoProfessor extends JFrame {
         gbc.insets = new Insets(0, 0, 15, 40);
         gbc.gridx = 0;
 
+        // Classe dao para atualizar cadastros
         DAO dao = new DAO();
         String[] turmas = dao.exibirTurma();
         RoundedComboBox<String> cbTurma = new RoundedComboBox<>(turmas);
@@ -198,7 +199,9 @@ public class TelaCadastrarAlunoProfessor extends JFrame {
                 ((JFrame) SwingUtilities.getWindowAncestor(btnVoltar)).dispose();
                 if (professor != null) {
                     new TelaGerenciarCadastrarProfessor(professor).setVisible(true);
-                } // Coordenador
+                } else if (coordenador != null){
+                    // Inserir tela de gerenciamento coordenador
+                }
             }
         });
 

@@ -3,12 +3,19 @@ package telas.telas_professor;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
+import java.sql.SQLException;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+import show_milhao.ConnectionFactory;
 import show_milhao.Coordenador;
+import show_milhao.Pergunta;
 import show_milhao.Professor;
+import show_milhao.Resposta;
 import telas.componentes.botoes.RoundedButton;
 import telas.componentes.campos.RoundedTextField;
 import telas.componentes.combos.RoundedComboBox;
@@ -61,13 +68,74 @@ public class TelaEditarPerguntaProfessor extends JFrame {
         ButtonUtils.estilizarPadrao(btnSalvar);
         ButtonUtils.estilizarPadrao(btnExcluir);
         ButtonUtils.estilizarPadrao(btnVoltar);
+
+        btnSalvar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String dificuldadeSelecionada = cbDificuldade.getSelectedItem().toString();
+                String sqlResposta = "update Resposta set resposta_correta = ?, resposta_um = ?, resposta_dois = ?, resposta_tres = ? where id_pergunta = ?;";
+                String sqlPergunta = "update Pergunta set pergunta = ?, dificuldade = ? where id_pergunta = ?;";
+                try (Connection conexao = ConnectionFactory.obterConexao()) {
+                    Pergunta pergunta = new Pergunta(tfPergunta.getText(), dificuldadeSelecionada);
+                    Resposta resposta = new Resposta(tfAlt1.getText(), tfAlt2.getText(), tfAlt3.getText(), tfAlt4.getText());
+                    try {
+                        pergunta.atributosDB(pergunta);
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                    }
+                    PreparedStatement psResposta = conexao.prepareStatement(sqlResposta);
+                    psResposta.setString(1, resposta.getResposta_correta());
+                    psResposta.setString(2, resposta.getResposta_um());
+                    psResposta.setString(3, resposta.getResposta_dois());
+                    psResposta.setString(4, resposta.getResposta_tres());
+                    psResposta.setInt(5, pergunta.getId_pergunta());
+                    psResposta.executeUpdate();
+                    PreparedStatement psPergunta = conexao.prepareStatement(sqlPergunta);
+                    psPergunta.setString(1, pergunta.getQuestao());
+                    psPergunta.setString(2, dificuldadeSelecionada);
+                    psPergunta.setInt(3, pergunta.getId_pergunta());
+                    psPergunta.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "Pergunta e respostas atualizadas");
+                } catch (SQLException e2) {
+                    e2.printStackTrace();
+                } 
+            }
+        });
+        btnExcluir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String dificuldadeSelecionada = cbDificuldade.getSelectedItem().toString();
+                String sqlResposta = "delete from Resposta where id_pergunta = ?;";
+                String sqlPergunta = "delete from Pergunta where id_pergunta = ?;";
+                try (Connection conexao = ConnectionFactory.obterConexao()) {
+                    Pergunta pergunta = new Pergunta(tfPergunta.getText(), dificuldadeSelecionada);
+                    try {
+                        pergunta.atributosDB(pergunta);
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                    }
+                    PreparedStatement psResposta = conexao.prepareStatement(sqlResposta);
+                    psResposta.setInt(1, pergunta.getId_pergunta());
+                    psResposta.executeUpdate();
+                    PreparedStatement psPergunta = conexao.prepareStatement(sqlPergunta);
+                    psPergunta.setInt(1, pergunta.getId_pergunta());
+                    psPergunta.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "Perguntas e respostas excluídas");
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
         btnVoltar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ((JFrame) SwingUtilities.getWindowAncestor(btnVoltar)).dispose();
                 if (professor != null) {
                     new TelaGerenciarEditarProfessor(professor).setVisible(true);
-                } // Coordenador
+                } else if (coordenador != null) {
+                    new TelaGerenciarEditarProfessor(coordenador).setVisible(true);
+                }
             }
         });
 

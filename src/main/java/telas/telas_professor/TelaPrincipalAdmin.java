@@ -26,12 +26,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import show_milhao.*;
 import telas.telas_gerais.TelaInicial;
+import telas.telas_gerais.TelaJogar;
 
 public class TelaPrincipalAdmin extends JFrame {
     private ImageIcon originalLogoIcon;
@@ -39,13 +39,7 @@ public class TelaPrincipalAdmin extends JFrame {
     private JButton playButton, statsButton, manageButton, exitButton;
     private Color buttonColor = new Color(31, 176, 195);
 
-    private Professor professor_tela;
-    private Coordenador coordenador_tela;
-
     public TelaPrincipalAdmin(Professor professor, Coordenador coordenador) {
-        this.professor_tela = professor;
-        this.coordenador_tela = coordenador;
-
         // Configuração da janela
         setTitle("Show do Milhão Acadêmico - Admin");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -158,18 +152,26 @@ public class TelaPrincipalAdmin extends JFrame {
         playButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Iniciando jogo como administrador...");
+                ((JFrame) SwingUtilities.getWindowAncestor(playButton)).dispose();
+                if (professor != null) {
+                    new TelaJogar(null, professor, null, 1, false).setVisible(true);
+                } else if (coordenador != null) {
+                    new TelaJogar(null, null, coordenador, 1, false).setVisible(true);
+                }
             }
         });
-
         statsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ((JFrame) SwingUtilities.getWindowAncestor(exitButton)).dispose();
-                if (professor!=null){
-                    new TelaEstatisticaAdm(professor, null).setVisible(true);
-                } else if (coordenador!=null){
-                    new TelaEstatisticaAdm(null, coordenador).setVisible(true);
+                try {
+                    if (professor != null) {
+                        new TelaEstatisticaAdm(professor, null, null, false, null).setVisible(true);
+                    } else if (coordenador != null) {
+                        new TelaEstatisticaAdm(null, coordenador, null, false, null).setVisible(true);
+                    }
+                } catch (Exception e1) {
+                    e1.printStackTrace();
                 }
             }
         });
@@ -178,9 +180,11 @@ public class TelaPrincipalAdmin extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ((JFrame) SwingUtilities.getWindowAncestor(exitButton)).dispose();
-                if (professor!=null){
+                if (professor != null) {
                     new TelaGerenciamentoProfessor(professor).setVisible(true);
-                } // Criar tela coordenador
+                } else if (coordenador != null) {
+                    // Tela Coordenador
+                }
             }
         });
 

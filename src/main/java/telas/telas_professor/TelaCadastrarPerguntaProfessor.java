@@ -7,8 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import show_milhao.Coordenador;
-import show_milhao.Professor;
+import show_milhao.*;
 import telas.componentes.botoes.RoundedButton;
 import telas.componentes.campos.RoundedTextField;
 import telas.componentes.combos.RoundedComboBox;
@@ -42,7 +41,7 @@ public class TelaCadastrarPerguntaProfessor extends JFrame {
 
         RoundedTextField tfAlt1 = new RoundedTextField(20);
         tfAlt1.setFont(fieldFont);
-        tfAlt1.setPlaceholder("Alternativa 1");
+        tfAlt1.setPlaceholder("Alternativa Correta");
         RoundedTextField tfAlt2 = new RoundedTextField(20);
         tfAlt2.setFont(fieldFont);
         tfAlt2.setPlaceholder("Alternativa 2");
@@ -62,6 +61,21 @@ public class TelaCadastrarPerguntaProfessor extends JFrame {
         RoundedButton btnVoltar = new RoundedButton("Voltar");
         ButtonUtils.estilizarPadrao(btnCadastrar);
         ButtonUtils.estilizarPadrao(btnVoltar);
+
+        btnCadastrar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    String dificuldadeSelecionada = cbDificuldade.getSelectedItem().toString();
+                    Pergunta pergunta = new Pergunta(tfPergunta.getText(),dificuldadeSelecionada);
+                    professor.cadastrarPergunta(pergunta.getQuestao(), pergunta.getDificuldade());
+                    pergunta.atributosDB(pergunta);
+                    professor.cadastrarResposta(pergunta, tfAlt1.getText(), tfAlt2.getText(), tfAlt3.getText(), tfAlt4.getText());
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
 
         btnVoltar.addActionListener(new ActionListener() {
             @Override

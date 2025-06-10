@@ -26,6 +26,10 @@ public class Aluno {
     private boolean usouPular;
 
     // Construtores
+    public Aluno(String nome){
+        this.nome = nome;
+    }
+
     public Aluno(String email, String senha) {
         this.email = email;
         this.senha = senha;
@@ -99,7 +103,7 @@ public class Aluno {
 
     // Buscar todos os atributos do banco de dados
     public Aluno atributosDB(Aluno aluno) throws Exception {
-        String sql = "select a.nome_aluno, a.id_aluno, t.nome_turma, a.respostas_corretas, a.respostas_erradas from Aluno as a join Turma as t on a.id_turma = t.id_turma where email = ? and senha = ?";
+        String sql = "select a.nome_aluno, a.id_aluno, t.nome_turma, a.respostas_corretas, a.respostas_erradas from Aluno as a join Turma as t on a.id_turma = t.id_turma where email = ? and senha = ?;";
         try (Connection conexao = ConnectionFactory.obterConexao();
                 PreparedStatement ps = conexao.prepareStatement(sql)) {
             ps.setString(1, aluno.getEmail());
@@ -114,6 +118,28 @@ public class Aluno {
                     aluno.setRespostas_erradas(rs.getInt("respostas_erradas"));
                 }
                 return aluno;
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Erro em trazer atributos do DB", "Erro",
+                        JOptionPane.ERROR_MESSAGE);
+                throw new RuntimeException("Erro em trazer atributos do DB");
+            }
+        }
+    }
+
+    // Atributos para exibir a estatística para adms
+    public Aluno atributosDB(String nomeSelecionado) throws Exception {
+        String sql = "select a.respostas_corretas, a.respostas_erradas from Aluno as a join Turma as t on a.id_turma = t.id_turma where nome_aluno = ?;";
+        try (Connection conexao = ConnectionFactory.obterConexao();
+                PreparedStatement ps = conexao.prepareStatement(sql)) {
+            ps.setString(1, nomeSelecionado);
+            try {
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+
+                    setRespostas_corretas(rs.getInt("respostas_corretas"));
+                    setRespostas_erradas(rs.getInt("respostas_erradas"));
+                }
+                return this;
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Erro em trazer atributos do DB", "Erro",
                         JOptionPane.ERROR_MESSAGE);

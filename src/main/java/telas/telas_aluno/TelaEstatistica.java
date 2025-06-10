@@ -11,18 +11,12 @@ import show_milhao.Aluno;
 import telas.componentes.botoes.RoundedButton;
 import telas.componentes.util.FontUtils;
 import telas.componentes.util.IconUtils;
-import telas.telas_professor.TelaGerenciarCadastrarProfessor;
-import telas.telas_professor.TelaPrincipalAdmin;
 import telas.componentes.botoes.ButtonUtils;
 
 public class TelaEstatistica extends JFrame {
     private static final Dimension NOTEBOOK_SIZE = new Dimension(1366, 768);
 
-    private Aluno aluno_tela;
-
     public TelaEstatistica(Aluno aluno) {
-        this.aluno_tela = aluno;
-
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setIconImage(IconUtils.getAppIcon());
 

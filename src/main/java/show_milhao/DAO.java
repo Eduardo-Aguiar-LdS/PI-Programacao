@@ -32,6 +32,24 @@ public class DAO { // Classe criada para exibição nos cadastros e edições
         }
     }
 
+    public String[] exibirAluno() throws Exception {
+        try {
+            String sql = "select * from Aluno as a join Turma as t on a.id_turma = t.id_turma where nome_turma = '1A';";
+            try (Connection conexao = ConnectionFactory.obterConexao();
+                    PreparedStatement ps = conexao.prepareStatement(sql)) {
+                ResultSet rs = ps.executeQuery();
+                List<String> nomesAlunos = new ArrayList<>();
+                while (rs.next()) {
+                    nomesAlunos.add(rs.getString("nome_aluno"));
+                }
+                return nomesAlunos.toArray(new String[0]);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new String[] { "Insira a turma primeiro" };
+        }
+    }
+
     public String[] exibirAluno(String nomeTurma) throws Exception {
         try {
             String sql = "select * from Aluno as a join Turma as t on a.id_turma = t.id_turma where nome_turma = ?";
@@ -47,7 +65,7 @@ public class DAO { // Classe criada para exibição nos cadastros e edições
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return new String[] { "Erro em exibir nomes" };
+            return new String[] { "Insira a turma primeiro" };
         }
     }
 

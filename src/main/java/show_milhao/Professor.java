@@ -117,6 +117,7 @@ public class Professor extends Aluno {
             ps.setInt(5, pergunta.getId_pergunta());
             try {
                 ps.execute();
+                JOptionPane.showMessageDialog(null, "Pergunta cadastrada");
             } catch (Exception e) {
                 throw new RuntimeException("Erro em cadastrar resposta");
             }

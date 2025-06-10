@@ -70,8 +70,6 @@ public class Resposta {
         }
     }
 
-    // Função de exibir Respostas
-
     // Getters e Setters
 
     public String getResposta_correta() {

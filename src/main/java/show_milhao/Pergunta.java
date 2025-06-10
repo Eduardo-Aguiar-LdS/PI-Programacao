@@ -25,6 +25,17 @@ public class Pergunta {
         this.id_professor = id_professor;
         this.id_pergunta = id_pergunta;
     }
+    
+    public Pergunta(String questao, int id_pergunta, String dificuldade) {
+        this.questao = questao;
+        this.id_pergunta = id_pergunta;
+        this.dificuldade = dificuldade;
+    }
+    
+    public Pergunta(String questao, String dificuldade) {
+        this.questao = questao;
+        this.dificuldade = dificuldade;
+    }
 
     // Buscar atributos no banco de dados
     public Pergunta atributosDB(Pergunta pergunta) throws Exception {

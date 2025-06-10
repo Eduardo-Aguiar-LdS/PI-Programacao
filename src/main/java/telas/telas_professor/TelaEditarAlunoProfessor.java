@@ -3,12 +3,14 @@ package telas.telas_professor;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import show_milhao.Coordenador;
-import show_milhao.Professor;
+import show_milhao.*;
 import telas.componentes.botoes.RoundedButton;
 import telas.componentes.campos.RoundedTextField;
 import telas.componentes.combos.RoundedComboBox;
@@ -21,7 +23,7 @@ public class TelaEditarAlunoProfessor extends JFrame {
     private Coordenador coordenador_tela;
     private static final Dimension NOTEBOOK_SIZE = new Dimension(1366, 768);
 
-    public TelaEditarAlunoProfessor(Professor professor, Coordenador coordenador) {
+    public TelaEditarAlunoProfessor(Professor professor, Coordenador coordenador) throws Exception {
         super("Show do Milhão Acadêmico");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setIconImage(IconUtils.getAppIcon());
@@ -40,21 +42,23 @@ public class TelaEditarAlunoProfessor extends JFrame {
             lbl.setFont(textFont);
         }
 
-        RoundedComboBox<String> cbTurma = new RoundedComboBox<>(new String[] { "Turma A", "Turma B", "Turma C" });
+        DAO dao = new DAO();
+        String[] turmas = dao.exibirTurma();
+        RoundedComboBox<String> cbTurma = new RoundedComboBox<>(turmas);
         cbTurma.setFont(fieldFont);
         cbTurma.setPlaceholder("Selecione a turma");
 
         RoundedTextField tfAluno = new RoundedTextField(20);
         tfAluno.setFont(fieldFont);
-        tfAluno.setPlaceholder("AAA");
+        tfAluno.setPlaceholder("Nome");
 
         RoundedTextField tfEmail = new RoundedTextField(30);
         tfEmail.setFont(fieldFont);
-        tfEmail.setPlaceholder("aaa@p4ed.com");
+        tfEmail.setPlaceholder("Email@p4ed.com");
 
         RoundedTextField tfSenha = new RoundedTextField(20);
         tfSenha.setFont(fieldFont);
-        tfSenha.setPlaceholder("111");
+        tfSenha.setPlaceholder("Senha");
 
         Dimension prefFull = tfEmail.getPreferredSize();
         int fullW = prefFull.width;
@@ -73,13 +77,51 @@ public class TelaEditarAlunoProfessor extends JFrame {
         ButtonUtils.estilizarPadrao(btnExcluir);
         ButtonUtils.estilizarPadrao(btnVoltar);
 
+        btnSalvar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String sql = "update Aluno set email = ?, senha = ? where id_aluno = ?;";
+                try (Connection conexao = ConnectionFactory.obterConexao()) {
+                    Aluno aluno = new Aluno(tfAluno.getText());
+                    aluno.atributosDB(tfAluno.getText());
+                    PreparedStatement ps = conexao.prepareStatement(sql);
+                    ps.setString(1, tfEmail.getText());
+                    ps.setString(2, tfSenha.getText());
+                    ps.setInt(3, aluno.getIdAluno());
+                    ps.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "Aluno atualizado");
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+        btnExcluir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String sql = "delete from Aluno where id_aluno = ?;";
+                try (Connection conexao = ConnectionFactory.obterConexao()) {
+                    Aluno aluno = new Aluno(tfAluno.getText());
+                    aluno.atributosDB(tfAluno.getText());
+                    PreparedStatement ps = conexao.prepareStatement(sql);
+                    ps.setInt(1, aluno.getIdAluno());
+                    ps.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "Aluno excluido");
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
         btnVoltar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ((JFrame) SwingUtilities.getWindowAncestor(btnVoltar)).dispose();
                 if (professor != null) {
                     new TelaGerenciarEditarProfessor(professor).setVisible(true);
-                } // Coordenador
+                } else if (coordenador != null) {
+                    new TelaGerenciarEditarProfessor(coordenador).setVisible(true);
+                }
             }
         });
 
