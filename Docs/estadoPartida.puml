@@ -1,0 +1,15 @@
+
+@startuml estadoPartida
+[*] --> Iniciada
+
+Iniciada --> CarregandoPergunta : iniciarPartida()
+CarregandoPergunta --> ExibindoPergunta : perguntaCarregada
+ExibindoPergunta --> AguardandoResposta : exibirAlternativas()
+AguardandoResposta --> VerificandoResposta : respostaSelecionada
+
+VerificandoResposta --> Corrigindo : verificarResposta()
+Corrigindo --> CarregandoPergunta : próximaPergunta()
+Corrigindo --> Finalizada : ultimaPergunta()
+
+Finalizada --> [*]
+@enduml

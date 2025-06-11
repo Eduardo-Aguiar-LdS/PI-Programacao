@@ -1,0 +1,18 @@
+
+    @startuml estadoUsuario
+[*] --> Desconectado
+
+Desconectado --> Autenticando : preencherLogin()
+Autenticando --> Autenticado : credenciaisVálidas
+Autenticando --> ErroLogin : credenciaisInválidas
+
+ErroLogin --> Desconectado : tentarNovamente()
+Autenticado --> SessãoAtiva : redirecionar()
+SessãoAtiva --> Desconectado : logout()
+
+SessãoAtiva --> SessãoInativa : tempoOcioso
+SessãoInativa --> Desconectado : timeout
+SessãoInativa --> SessãoAtiva : interação()
+
+Desconectado --> [*]
+@enduml
