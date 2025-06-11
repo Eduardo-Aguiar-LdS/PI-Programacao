@@ -103,9 +103,9 @@ public class TelaPrincipalAdmin extends JFrame {
                 ((JFrame) SwingUtilities.getWindowAncestor(btnStats)).dispose();
                 try {
                     if (professor != null) {
-                        new TelaEstatisticaAdm(professor, null, null, false, null).setVisible(true);
+                        new TelaEstatisticaAdm(professor, null).setVisible(true);
                     } else if (coordenador != null) {
-                        new TelaEstatisticaAdm(null, coordenador, null, false, null).setVisible(true);
+                        new TelaEstatisticaAdm(null, coordenador).setVisible(true);
                     }
                 } catch (Exception e1) {
                     e1.printStackTrace();

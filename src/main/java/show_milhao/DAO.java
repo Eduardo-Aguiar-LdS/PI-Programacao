@@ -32,6 +32,34 @@ public class DAO { // Classe criada para exibição nos cadastros e edições
         }
     }
 
+    public int contarAcertosPorTurma(String nomeAluno) throws Exception {
+        String sql = "select respostas_corretas from Aluno where nome_aluno = ?";
+        try (
+                Connection conexao = ConnectionFactory.obterConexao();
+                PreparedStatement ps = conexao.prepareStatement(sql)) {
+            ps.setString(1, nomeAluno);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
+        }
+    }
+
+    public int contarErrosPorTurma(String nomeAluno) throws Exception {
+        String sql = "select respostas_erradas from Aluno where nome_aluno = ?";
+        try (
+                Connection conexao = ConnectionFactory.obterConexao();
+                PreparedStatement ps = conexao.prepareStatement(sql)) {
+            ps.setString(1, nomeAluno);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
+        }
+    }
+
     public String[] exibirAluno() throws Exception {
         try {
             String sql = "select * from Aluno as a join Turma as t on a.id_turma = t.id_turma where nome_turma = '1A';";

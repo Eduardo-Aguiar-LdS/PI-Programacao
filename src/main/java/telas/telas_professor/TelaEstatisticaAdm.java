@@ -1,13 +1,9 @@
 package telas.telas_professor;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import show_milhao.Aluno;
 import show_milhao.Coordenador;
 import show_milhao.DAO;
 import show_milhao.Professor;
@@ -15,313 +11,127 @@ import telas.componentes.botoes.RoundedButton;
 import telas.componentes.combos.RoundedComboBox;
 import telas.componentes.util.FontUtils;
 import telas.componentes.util.IconUtils;
-import telas.componentes.botoes.ButtonUtils;
 
 public class TelaEstatisticaAdm extends JFrame {
     private static final Dimension NOTEBOOK_SIZE = new Dimension(1366, 768);
     private Professor jogadorAtivo;
 
-    public TelaEstatisticaAdm(Professor professor, Coordenador coordenador, Object construtorTurmaSelecionada,
-            boolean atualizouPagina, Aluno aluno) throws Exception {
-
+    public TelaEstatisticaAdm(Professor professor, Coordenador coordenador) throws Exception {
         if (professor != null) {
             this.jogadorAtivo = professor;
         } else if (coordenador != null) {
             this.jogadorAtivo = coordenador;
         }
+
+        setTitle("Estatísticas");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setSize(NOTEBOOK_SIZE);
+        setLocationRelativeTo(null);
         setIconImage(IconUtils.getAppIcon());
 
-        // fonts
+        // fontes
         Font headerFont = FontUtils.interOrSans(32);
-        Font comboFont = FontUtils.interOrSans(24);
-        Font textFont = FontUtils.interOrSans(26);
+        Font comboFont = FontUtils.interOrSans(20);
+        Font textFont = FontUtils.interOrSans(18);
 
-        // logo
-        JLabel lblLogo = IconUtils.getAppIconLabel();
+        // DAO e turmas
+        DAO dao = new DAO();
+        String[] turmas = dao.exibirTurma();
 
-        // título
+        // Título
         JLabel title = new JLabel("Estatísticas", SwingConstants.CENTER);
         title.setFont(headerFont);
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Classe dao para atualizar cadastros
-        DAO dao = new DAO();
-        String[] turmas;
-        turmas = dao.exibirTurma();
+        // ComboBox
         RoundedComboBox<String> cbTurma = new RoundedComboBox<>(turmas);
         cbTurma.setFont(comboFont);
-        cbTurma.setPlaceholder("Selecione a turma para ver alunos");
-        cbTurma.setPreferredSize(new Dimension(270, 50));
+        cbTurma.setMaximumSize(new Dimension(270, 35));
+        cbTurma.setAlignmentX(Component.CENTER_ALIGNMENT);
+        cbTurma.setToolTipText("Selecionar turma");
 
-        if (atualizouPagina == true && construtorTurmaSelecionada!=null) {
-            Object turmaSelecionadaObj = construtorTurmaSelecionada;
-            String turmaSelecionada = turmaSelecionadaObj.toString();
-            String[] alunos = dao.exibirAluno(turmaSelecionada);
-            alunos = dao.exibirAluno(turmaSelecionada);
-            RoundedComboBox<String> cbAluno = new RoundedComboBox<>(alunos);
-            cbAluno.setFont(comboFont);
-            cbAluno.setPlaceholder("Selecione o aluno");
-            cbAluno.setPreferredSize(new Dimension(270, 50));
+        // Resultado - lista de alunos
+        JLabel resultado = new JLabel("Selecione uma turma para visualizar estatísticas");
+        resultado.setFont(textFont);
+        resultado.setAlignmentX(Component.CENTER_ALIGNMENT);
+        resultado.setMaximumSize(new Dimension(1000, 50));
 
-            String alunoSelecionado = cbAluno.getSelectedItem().toString();
-            aluno.atributosDB(alunoSelecionado);
+        // Estatísticas
+        JLabel lblAcertos = new JLabel("Acertos: ");
+        lblAcertos.setFont(textFont);
+        lblAcertos.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-            // estatísticas
-            JLabel lblTotal = new JLabel("Perguntas totais:", SwingConstants.CENTER);
-            JLabel lblTotalVal = new JLabel(
-                    (aluno.getRespostas_corretas() + aluno.getRespostas_erradas()) + " perguntas",
-                    SwingConstants.CENTER);
-            JLabel lblCorretas = new JLabel("Perguntas corretas:", SwingConstants.CENTER);
-            JLabel lblCorretasVal = new JLabel(aluno.getRespostas_corretas() + " perguntas", SwingConstants.CENTER);
-            JLabel lblErradas = new JLabel("Perguntas erradas:", SwingConstants.CENTER);
-            JLabel lblErradasVal = new JLabel(aluno.getRespostas_erradas() + " perguntas", SwingConstants.CENTER);
+        JLabel lblErros = new JLabel("Erros: ");
+        lblErros.setFont(textFont);
+        lblErros.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-            for (JLabel lbl : new JLabel[] {
-                    lblTotal, lblTotalVal,
-                    lblCorretas, lblCorretasVal,
-                    lblErradas, lblErradasVal
-            }) {
-                lbl.setFont(textFont);
-            }
+        // Botão voltar
+        RoundedButton btnVoltar = new RoundedButton("Voltar");
+        btnVoltar.setFont(comboFont);
+        btnVoltar.setAlignmentX(Component.CENTER_ALIGNMENT);
+        btnVoltar.addActionListener(e -> {
+            dispose(); // fecha a tela atual
+            // aqui você pode redirecionar para outra tela, se necessário
+        });
 
-            // botão Atualizar página
-            RoundedButton btnAtualizar = new RoundedButton("Atualizar");
-            ButtonUtils.estilizarPadrao(btnAtualizar);
+        // Painel principal
+        JPanel painel = new JPanel();
+        painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
+        painel.setBorder(new EmptyBorder(40, 40, 40, 40));
+        painel.add(title);
+        painel.add(Box.createVerticalStrut(20));
+        painel.add(cbTurma);
+        painel.add(Box.createVerticalStrut(20));
+        painel.add(resultado);
+        painel.add(Box.createVerticalStrut(10));
+        painel.add(lblAcertos);
+        painel.add(Box.createVerticalStrut(5));
+        painel.add(lblErros);
+        painel.add(Box.createVerticalStrut(30));
+        painel.add(btnVoltar);
 
-            btnAtualizar.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    ((JFrame) SwingUtilities.getWindowAncestor(btnAtualizar)).dispose();
-                    try {
-                        new TelaEstatisticaAdm(professor, coordenador, turmaSelecionadaObj, true, aluno)
-                                .setVisible(true);
-                    } catch (Exception e1) {
-                        e1.printStackTrace();
+        add(painel, BorderLayout.CENTER);
+
+        // Lógica de atualização
+        cbTurma.addActionListener(e -> {
+            String turmaSelecionada = (String) cbTurma.getSelectedItem();
+            if (turmaSelecionada != null && !turmaSelecionada.contains("Erro")) {
+                try {
+                    String[] alunos = dao.exibirAluno(turmaSelecionada);
+
+                    if (alunos.length == 0) {
+                        resultado.setText("Nenhum aluno cadastrado na turma " + turmaSelecionada + ".");
+                    } else {
+                        resultado.setText("<html>Alunos da turma <b>" + turmaSelecionada + "</b>:<br>"
+                                + String.join(", ", alunos) + "</html>");
                     }
+
+                    int acertos = dao.contarAcertosPorTurma(turmaSelecionada);
+                    int erros = dao.contarErrosPorTurma(turmaSelecionada);
+
+                    lblAcertos.setText("Acertos: " + acertos);
+                    lblErros.setText("Erros: " + erros);
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    resultado.setText("Erro ao carregar estatísticas.");
+                    lblAcertos.setText("Acertos: -");
+                    lblErros.setText("Erros: -");
                 }
-            });
-
-            // botão Voltar
-            RoundedButton btnVoltar = new RoundedButton("Voltar");
-            ButtonUtils.estilizarPadrao(btnVoltar);
-
-            btnVoltar.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    ((JFrame) SwingUtilities.getWindowAncestor(btnVoltar)).dispose();
-                    new TelaPrincipalAdmin(professor, coordenador).setVisible(true);
-                }
-            });
-
-            // painel principal
-            JPanel content = new JPanel(new GridBagLayout());
-            content.setBackground(Color.WHITE);
-            content.setBorder(new EmptyBorder(20, 20, 20, 20));
-            GridBagConstraints gbc = new GridBagConstraints();
-            gbc.anchor = GridBagConstraints.CENTER;
-            gbc.fill = GridBagConstraints.HORIZONTAL;
-
-            // logo
-            gbc.gridy = 0;
-            gbc.gridx = 1;
-            gbc.gridwidth = 2;
-            gbc.insets = new Insets(0, 0, 20, 0);
-            content.add(lblLogo, gbc);
-
-            // título
-            gbc.gridy = 1;
-            content.add(title, gbc);
-
-            // combos
-            gbc.gridy = 2;
-            gbc.gridwidth = 1;
-            gbc.insets = new Insets(0, 0, 20, 15);
-            gbc.gridx = 0;
-            content.add(cbTurma, gbc);
-            gbc.gridx = 2;
-            gbc.insets = new Insets(0, 15, 20, 0);
-            content.add(cbAluno, gbc);
-
-            // total
-            gbc.gridy = 3;
-            gbc.gridx = 1;
-            gbc.gridwidth = 2;
-            gbc.insets = new Insets(0, 0, 5, 0);
-            content.add(lblTotal, gbc);
-            gbc.gridy = 4;
-            gbc.insets = new Insets(0, 0, 20, 0);
-            content.add(lblTotalVal, gbc);
-
-            // corretas
-            gbc.gridy = 5;
-            gbc.insets = new Insets(0, 0, 5, 0);
-            content.add(lblCorretas, gbc);
-            gbc.gridy = 6;
-            gbc.insets = new Insets(0, 0, 20, 0);
-            content.add(lblCorretasVal, gbc);
-
-            // erradas
-            gbc.gridy = 7;
-            gbc.insets = new Insets(0, 0, 5, 0);
-            content.add(lblErradas, gbc);
-            gbc.gridy = 8;
-            gbc.insets = new Insets(0, 0, 30, 0);
-            content.add(lblErradasVal, gbc);
-
-            // botão Atualizar
-            gbc.gridx = 2;
-            gbc.gridy = 9;
-            gbc.fill = GridBagConstraints.NONE;
-            content.add(btnAtualizar, gbc);
-
-            // botão Voltar
-            gbc.gridx = 1;
-            gbc.gridy = 9;
-            gbc.fill = GridBagConstraints.NONE;
-            content.add(btnVoltar, gbc);
-
-            setContentPane(content);
-            pack();
-            setSize(NOTEBOOK_SIZE);
-            setMinimumSize(NOTEBOOK_SIZE);
-            setLocationRelativeTo(null);
-            setVisible(true);
-        } else {
-            String[] alunos = dao.exibirAluno();
-            RoundedComboBox<String> cbAluno = new RoundedComboBox<>(alunos);
-            cbAluno.setFont(comboFont);
-            cbAluno.setPlaceholder("Suas estatísticas");
-            cbAluno.setPreferredSize(new Dimension(270, 50));
-
-            // estatísticas
-            JLabel lblTotal = new JLabel("Perguntas totais:", SwingConstants.CENTER);
-            JLabel lblTotalVal = new JLabel(
-                    (jogadorAtivo.getRespostas_corretas() + jogadorAtivo.getRespostas_erradas()) + " perguntas",
-                    SwingConstants.CENTER);
-            JLabel lblCorretas = new JLabel("Perguntas corretas:", SwingConstants.CENTER);
-            JLabel lblCorretasVal = new JLabel(jogadorAtivo.getRespostas_corretas() + " perguntas",
-                    SwingConstants.CENTER);
-            JLabel lblErradas = new JLabel("Perguntas erradas:", SwingConstants.CENTER);
-            JLabel lblErradasVal = new JLabel(jogadorAtivo.getRespostas_erradas() + " perguntas",
-                    SwingConstants.CENTER);
-
-            for (JLabel lbl : new JLabel[] {
-                    lblTotal, lblTotalVal,
-                    lblCorretas, lblCorretasVal,
-                    lblErradas, lblErradasVal
-            }) {
-                lbl.setFont(textFont);
+            } else {
+                resultado.setText("Nenhuma turma válida selecionada.");
+                lblAcertos.setText("Acertos: -");
+                lblErros.setText("Erros: -");
             }
-            // botão Atualizar página
-            RoundedButton btnAtualizar = new RoundedButton("Atualizar");
-            ButtonUtils.estilizarPadrao(btnAtualizar);
+        });
 
-            btnAtualizar.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    ((JFrame) SwingUtilities.getWindowAncestor(btnAtualizar)).dispose();
-                    try {
-                        Object turmaSelecionadaObj = cbTurma.getSelectedItem();
-                        new TelaEstatisticaAdm(professor, coordenador, turmaSelecionadaObj, true, aluno)
-                                .setVisible(true);
-                    } catch (Exception e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            });
-
-            // botão Voltar
-            RoundedButton btnVoltar = new RoundedButton("Voltar");
-            ButtonUtils.estilizarPadrao(btnVoltar);
-
-            btnVoltar.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    ((JFrame) SwingUtilities.getWindowAncestor(btnVoltar)).dispose();
-                    new TelaPrincipalAdmin(professor, coordenador).setVisible(true);
-                }
-            });
-
-            // painel principal
-            JPanel content = new JPanel(new GridBagLayout());
-            content.setBackground(Color.WHITE);
-            content.setBorder(new EmptyBorder(20, 20, 20, 20));
-            GridBagConstraints gbc = new GridBagConstraints();
-            gbc.anchor = GridBagConstraints.CENTER;
-            gbc.fill = GridBagConstraints.HORIZONTAL;
-
-            // logo
-            gbc.gridy = 0;
-            gbc.gridx = 1;
-            gbc.gridwidth = 2;
-            gbc.insets = new Insets(0, 0, 20, 0);
-            content.add(lblLogo, gbc);
-
-            // título
-            gbc.gridy = 1;
-            content.add(title, gbc);
-
-            // combos
-            gbc.gridy = 2;
-            gbc.gridwidth = 1;
-            gbc.insets = new Insets(0, 0, 20, 15);
-            gbc.gridx = 0;
-            content.add(cbTurma, gbc);
-            gbc.gridx = 2;
-            gbc.insets = new Insets(0, 15, 20, 0);
-            content.add(cbAluno, gbc);
-
-            // total
-            gbc.gridy = 3;
-            gbc.gridx = 1;
-            gbc.gridwidth = 2;
-            gbc.insets = new Insets(0, 0, 5, 0);
-            content.add(lblTotal, gbc);
-            gbc.gridy = 4;
-            gbc.insets = new Insets(0, 0, 20, 0);
-            content.add(lblTotalVal, gbc);
-
-            // corretas
-            gbc.gridy = 5;
-            gbc.insets = new Insets(0, 0, 5, 0);
-            content.add(lblCorretas, gbc);
-            gbc.gridy = 6;
-            gbc.insets = new Insets(0, 0, 20, 0);
-            content.add(lblCorretasVal, gbc);
-
-            // erradas
-            gbc.gridy = 7;
-            gbc.insets = new Insets(0, 0, 5, 0);
-            content.add(lblErradas, gbc);
-            gbc.gridy = 8;
-            gbc.insets = new Insets(0, 0, 30, 0);
-            content.add(lblErradasVal, gbc);
-
-            // botão Atualizar
-            gbc.gridx = 2;
-            gbc.gridy = 9;
-            gbc.fill = GridBagConstraints.NONE;
-            content.add(btnAtualizar, gbc);
-
-            // botão Voltar
-            gbc.gridx = 1;
-            gbc.gridy = 9;
-            gbc.fill = GridBagConstraints.NONE;
-            content.add(btnVoltar, gbc);
-
-            setContentPane(content);
-            pack();
-            setSize(NOTEBOOK_SIZE);
-            setMinimumSize(NOTEBOOK_SIZE);
-            setLocationRelativeTo(null);
-            setVisible(true);
-        }
+        setVisible(true);
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             try {
-                new TelaEstatisticaAdm(null, null, null, false, null);
+                new TelaEstatisticaAdm(null, null);
             } catch (Exception e) {
                 e.printStackTrace();
             }
