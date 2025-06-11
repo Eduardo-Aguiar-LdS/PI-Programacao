@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -16,19 +15,16 @@ import telas.componentes.campos.RoundedTextField;
 import telas.componentes.combos.RoundedComboBox;
 import telas.componentes.util.FontUtils;
 import telas.componentes.util.IconUtils;
+import telas.telas_coordenador.TelaEditarDoAdm;
 import telas.componentes.botoes.ButtonUtils;
 
 public class TelaEditarAlunoProfessor extends JFrame {
-    private Professor professor_tela;
-    private Coordenador coordenador_tela;
     private static final Dimension NOTEBOOK_SIZE = new Dimension(1366, 768);
 
     public TelaEditarAlunoProfessor(Professor professor, Coordenador coordenador) throws Exception {
         super("Show do Milhão Acadêmico");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setIconImage(IconUtils.getAppIcon());
-        this.professor_tela = professor;
-        this.coordenador_tela = coordenador;
 
         Font headerFont = FontUtils.interOrSans(32);
         Font textFont = FontUtils.interOrSans(26);
@@ -120,7 +116,7 @@ public class TelaEditarAlunoProfessor extends JFrame {
                 if (professor != null) {
                     new TelaGerenciarEditarProfessor(professor).setVisible(true);
                 } else if (coordenador != null) {
-                    new TelaGerenciarEditarProfessor(coordenador).setVisible(true);
+                    new TelaEditarDoAdm(coordenador).setVisible(true);
                 }
             }
         });

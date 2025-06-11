@@ -101,7 +101,7 @@ public class TelaGerenciarEditarProfessor extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ((JFrame) SwingUtilities.getWindowAncestor(btnVoltar)).dispose();
-                new TelaGerenciamentoProfessor(professor).setVisible(true);
+                new TelaGerenciamentoProfessor(professor, null).setVisible(true);
             }
         });
 

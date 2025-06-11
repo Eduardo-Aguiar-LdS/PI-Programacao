@@ -135,7 +135,6 @@ public class Aluno {
             try {
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
-
                     setRespostas_corretas(rs.getInt("respostas_corretas"));
                     setRespostas_erradas(rs.getInt("respostas_erradas"));
                 }

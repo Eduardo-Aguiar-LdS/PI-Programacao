@@ -181,9 +181,9 @@ public class TelaPrincipalAdmin extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 ((JFrame) SwingUtilities.getWindowAncestor(exitButton)).dispose();
                 if (professor != null) {
-                    new TelaGerenciamentoProfessor(professor).setVisible(true);
+                    new TelaGerenciamentoProfessor(professor, null).setVisible(true);
                 } else if (coordenador != null) {
-                    // Tela Coordenador
+                    new TelaGerenciamentoProfessor(null, coordenador).setVisible(true);
                 }
             }
         });

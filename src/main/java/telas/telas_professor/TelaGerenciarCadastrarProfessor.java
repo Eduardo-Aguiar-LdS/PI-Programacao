@@ -9,7 +9,6 @@ import java.awt.event.*;
 import show_milhao.Professor;
 
 public class TelaGerenciarCadastrarProfessor extends JFrame {
-    private Professor professor_tela;
     private static final Dimension NOTEBOOK_SIZE = new Dimension(1366, 768);
 
     public TelaGerenciarCadastrarProfessor(Professor professor) {
@@ -101,7 +100,7 @@ public class TelaGerenciarCadastrarProfessor extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ((JFrame) SwingUtilities.getWindowAncestor(btnVoltar)).dispose();
-                new TelaGerenciamentoProfessor(professor).setVisible(true);
+                new TelaGerenciamentoProfessor(professor, null).setVisible(true);
             }
         });
 

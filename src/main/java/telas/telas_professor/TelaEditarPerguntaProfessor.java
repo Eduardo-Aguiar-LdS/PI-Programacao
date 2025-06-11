@@ -21,6 +21,7 @@ import telas.componentes.campos.RoundedTextField;
 import telas.componentes.combos.RoundedComboBox;
 import telas.componentes.util.FontUtils;
 import telas.componentes.util.IconUtils;
+import telas.telas_coordenador.TelaEditarDoAdm;
 import telas.componentes.botoes.ButtonUtils;
 
 public class TelaEditarPerguntaProfessor extends JFrame {
@@ -134,7 +135,7 @@ public class TelaEditarPerguntaProfessor extends JFrame {
                 if (professor != null) {
                     new TelaGerenciarEditarProfessor(professor).setVisible(true);
                 } else if (coordenador != null) {
-                    new TelaGerenciarEditarProfessor(coordenador).setVisible(true);
+                    new TelaEditarDoAdm(coordenador).setVisible(true);
                 }
             }
         });

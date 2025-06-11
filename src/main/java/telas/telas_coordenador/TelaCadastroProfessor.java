@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -14,6 +16,7 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
+import show_milhao.*;
 import telas.componentes.botoes.ButtonUtils;
 import telas.componentes.botoes.RoundedButton;
 import telas.componentes.campos.RoundedTextField;
@@ -23,7 +26,7 @@ import telas.componentes.util.IconUtils;
 public class TelaCadastroProfessor extends JFrame {
     private static final Dimension NOTEBOOK_SIZE = new Dimension(1366, 768);
 
-    public TelaCadastroProfessor() {
+    public TelaCadastroProfessor(Coordenador coordenador) {
         super("Show do Milhão Acadêmico");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setIconImage(IconUtils.getAppIcon());
@@ -32,12 +35,10 @@ public class TelaCadastroProfessor extends JFrame {
         Font textFont = FontUtils.interOrSans(26);
         Font fieldFont = FontUtils.interOrSans(22);
 
-        
-       
         JLabel lblEmail = new JLabel("Email");
         JLabel lblNome = new JLabel("Nome");
         JLabel lblSenha = new JLabel("Senha");
-        for (JLabel lbl : new JLabel[]{ lblEmail, lblNome, lblSenha}) {
+        for (JLabel lbl : new JLabel[] { lblEmail, lblNome, lblSenha }) {
             lbl.setFont(textFont);
         }
 
@@ -112,6 +113,26 @@ public class TelaCadastroProfessor extends JFrame {
         gbc.gridy = 11;
         content.add(btnVoltar, gbc);
 
+        btnCadastrar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Professor professor = new Professor(tfNome.getText(), tfEmail.getText(), tfSenha.getText());
+                    coordenador.cadastrarProfessor(professor);
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+        btnVoltar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ((JFrame) SwingUtilities.getWindowAncestor(btnVoltar)).dispose();
+                new TelaCadastarDoAdm(coordenador).setVisible(true);
+            }
+        });
+
         setContentPane(content);
         pack();
         setSize(NOTEBOOK_SIZE);
@@ -121,6 +142,9 @@ public class TelaCadastroProfessor extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(TelaCadastroProfessor::new);
+        SwingUtilities.invokeLater(() -> {
+            TelaCadastroProfessor frame = new TelaCadastroProfessor(null);
+            frame.setVisible(true);
+        });
     }
 }

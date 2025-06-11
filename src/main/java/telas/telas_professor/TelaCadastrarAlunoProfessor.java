@@ -11,6 +11,7 @@ import show_milhao.Aluno;
 import show_milhao.Coordenador;
 import show_milhao.DAO;
 import show_milhao.Professor;
+import telas.telas_coordenador.TelaCadastarDoAdm;
 
 public class TelaCadastrarAlunoProfessor extends JFrame {
     private Professor professor_tela;
@@ -200,7 +201,7 @@ public class TelaCadastrarAlunoProfessor extends JFrame {
                 if (professor != null) {
                     new TelaGerenciarCadastrarProfessor(professor).setVisible(true);
                 } else if (coordenador != null){
-                    // Inserir tela de gerenciamento coordenador
+                    new TelaCadastarDoAdm(coordenador).setVisible(true);
                 }
             }
         });

@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -15,31 +17,35 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
+import show_milhao.Coordenador;
 import telas.componentes.botoes.ButtonUtils;
 import telas.componentes.botoes.RoundedButton;
 import telas.componentes.util.FontUtils;
 import telas.componentes.util.IconUtils;
+import telas.telas_professor.TelaCadastrarAlunoProfessor;
+import telas.telas_professor.TelaCadastrarPerguntaProfessor;
+import telas.telas_professor.TelaGerenciamentoProfessor;
 
 public class TelaCadastarDoAdm extends JFrame {
     private static final Dimension NOTEBOOK_SIZE = new Dimension(1366, 768);
 
-    public TelaCadastarDoAdm() {
+    public TelaCadastarDoAdm(Coordenador coordenador) {
         super("Cadastrar");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setIconImage(IconUtils.getAppIcon());
 
         Font titleFont = FontUtils.interOrSans(32);
-        Font btnFont   = FontUtils.interOrSans(24);
+        Font btnFont = FontUtils.interOrSans(24);
 
         JPanel content = new JPanel(new GridBagLayout());
         content.setBackground(Color.WHITE);
-        content.setBorder(new EmptyBorder(20,20,20,20));
+        content.setBorder(new EmptyBorder(20, 20, 20, 20));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.anchor = GridBagConstraints.CENTER;
 
-        Insets defaultInsets = new Insets(10,0,10,0);
-        Insets titleInsets   = new Insets(0,0,0,0);
+        Insets defaultInsets = new Insets(10, 0, 10, 0);
+        Insets titleInsets = new Insets(0, 0, 0, 0);
 
         gbc.insets = defaultInsets;
         gbc.gridy = 0;
@@ -53,24 +59,72 @@ public class TelaCadastarDoAdm extends JFrame {
         content.add(line1, gbc);
 
         RoundedButton btnAlunos = new RoundedButton("Alunos");
-        RoundedButton btnProfessores    = new RoundedButton("Professores");
-         RoundedButton btnPerguntas    = new RoundedButton("Perguntas");
-        RoundedButton btnVoltar    = new RoundedButton("Voltar");
+        RoundedButton btnProfessores = new RoundedButton("Professores");
+        RoundedButton btnPerguntas = new RoundedButton("Perguntas");
+        RoundedButton btnVoltar = new RoundedButton("Voltar");
         ButtonUtils.estilizarPadrao(btnAlunos, new Dimension(250, 50));
-        ButtonUtils.estilizarPadrao(btnProfessores,    new Dimension(250, 50));
-        ButtonUtils.estilizarPadrao(btnPerguntas,    new Dimension(250, 50));
-        ButtonUtils.estilizarPadrao(btnVoltar,    new Dimension(320, 50));
+        ButtonUtils.estilizarPadrao(btnProfessores, new Dimension(250, 50));
+        ButtonUtils.estilizarPadrao(btnPerguntas, new Dimension(250, 50));
+        ButtonUtils.estilizarPadrao(btnVoltar, new Dimension(320, 50));
         btnAlunos.setFont(btnFont);
         btnProfessores.setFont(btnFont);
         btnPerguntas.setFont(btnFont);
         btnVoltar.setFont(btnFont);
 
-        gbc.insets = new Insets(60,0,10,0);
-        gbc.gridy = 2; content.add(btnAlunos, gbc);
+        gbc.insets = new Insets(60, 0, 10, 0);
+        gbc.gridy = 2;
+        content.add(btnAlunos, gbc);
         gbc.insets = defaultInsets;
-        gbc.gridy = 3; content.add(btnProfessores,    gbc);
-        gbc.gridy = 4; content.add(btnPerguntas,    gbc);
-        gbc.gridy = 5; content.add(btnVoltar,    gbc);
+        gbc.gridy = 3;
+        content.add(btnProfessores, gbc);
+        gbc.gridy = 4;
+        content.add(btnPerguntas, gbc);
+        gbc.gridy = 5;
+        content.add(btnVoltar, gbc);
+
+        btnAlunos.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ((JFrame) SwingUtilities.getWindowAncestor(btnAlunos)).dispose();
+                try {
+                    new TelaCadastrarAlunoProfessor(null, coordenador).setVisible(true);
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+        btnProfessores.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ((JFrame) SwingUtilities.getWindowAncestor(btnProfessores)).dispose();
+                try {
+                    new TelaCadastroProfessor(coordenador).setVisible(true);
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+        btnPerguntas.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ((JFrame) SwingUtilities.getWindowAncestor(btnAlunos)).dispose();
+                try {
+                    new TelaCadastrarPerguntaProfessor(null, coordenador).setVisible(true);
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+        btnVoltar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ((JFrame) SwingUtilities.getWindowAncestor(btnVoltar)).dispose();
+                new TelaGerenciamentoProfessor(null, coordenador).setVisible(true);
+            }
+        });
 
         setContentPane(content);
         pack();
@@ -81,6 +135,9 @@ public class TelaCadastarDoAdm extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(TelaCadastarDoAdm::new);
+        SwingUtilities.invokeLater(() -> {
+            TelaCadastarDoAdm frame = new TelaCadastarDoAdm(null);
+            frame.setVisible(true);
+        });
     }
 }

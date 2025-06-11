@@ -6,14 +6,20 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
+import show_milhao.*;
 import telas.componentes.botoes.ButtonUtils;
 import telas.componentes.botoes.RoundedButton;
 import telas.componentes.campos.RoundedTextField;
@@ -23,7 +29,7 @@ import telas.componentes.util.IconUtils;
 public class TelaEditarProfessor extends JFrame {
     private static final Dimension NOTEBOOK_SIZE = new Dimension(1366, 768);
 
-    public TelaEditarProfessor() {
+    public TelaEditarProfessor(Coordenador coordenador) {
         super("Show do Milhão Acadêmico");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setIconImage(IconUtils.getAppIcon());
@@ -32,12 +38,10 @@ public class TelaEditarProfessor extends JFrame {
         Font textFont = FontUtils.interOrSans(26);
         Font fieldFont = FontUtils.interOrSans(22);
 
-        
-       
         JLabel lblEmail = new JLabel("Email");
         JLabel lblNome = new JLabel("Nome");
         JLabel lblSenha = new JLabel("Senha");
-        for (JLabel lbl : new JLabel[]{ lblEmail, lblNome, lblSenha}) {
+        for (JLabel lbl : new JLabel[] { lblEmail, lblNome, lblSenha }) {
             lbl.setFont(textFont);
         }
 
@@ -125,6 +129,50 @@ public class TelaEditarProfessor extends JFrame {
         gbc.insets = new Insets(0, 0, 0, 0);
         content.add(btnVoltar, gbc);
 
+        btnSalvar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String sql = "update Professor set email = ?, senha = ? where id_professor = ?";
+                try (Connection conexao = ConnectionFactory.obterConexao()) {
+                    Professor professor = new Professor(tfNome.getText());
+                    professor.atributosDB(tfNome.getText());
+                    PreparedStatement ps = conexao.prepareStatement(sql);
+                    ps.setString(1, tfEmail.getText());
+                    ps.setString(2, tfSenha.getText());
+                    ps.setInt(3, professor.getId_professor());
+                    ps.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "Professor atualizado");
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+        btnExcluir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String sql = "delete from Professor where id_professor = ?;";
+                try (Connection conexao = ConnectionFactory.obterConexao()) {
+                    Professor professor = new Professor(tfNome.getText());
+                    professor.atributosDB(tfNome.getText());
+                    PreparedStatement ps = conexao.prepareStatement(sql);
+                    ps.setInt(1, professor.getId_professor());
+                    ps.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "Professor excluido");
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+        btnVoltar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ((JFrame) SwingUtilities.getWindowAncestor(btnVoltar)).dispose();
+                new TelaEditarDoAdm(coordenador).setVisible(true);
+            }
+        });
+
         setContentPane(content);
         pack();
         setSize(NOTEBOOK_SIZE);
@@ -134,6 +182,9 @@ public class TelaEditarProfessor extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(TelaEditarProfessor::new);
+        SwingUtilities.invokeLater(() -> {
+            TelaEditarProfessor frame = new TelaEditarProfessor(null);
+            frame.setVisible(true);
+        });
     }
 }

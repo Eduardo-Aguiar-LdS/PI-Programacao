@@ -20,6 +20,7 @@ import telas.componentes.botoes.ButtonUtils;
 import telas.componentes.util.FontUtils;
 import telas.componentes.util.IconUtils;
 import telas.telas_aluno.TelaPrincipalAluno;
+import telas.telas_professor.TelaPrincipalAdmin;
 
 public class TelaJogar extends JFrame {
     private static final Dimension NOTEBOOK_SIZE = new Dimension(1366, 768);
@@ -38,12 +39,12 @@ public class TelaJogar extends JFrame {
         } else if (coordenador != null) {
             this.jogadorAtivo = coordenador;
         }
-        if(jogadorAtivo.isUsouPular()==true){
+        if (jogadorAtivo.isUsouPular() == true) {
             pontos = cont - 2;
-        } else{
+        } else {
             pontos = cont - 1;
         }
-        if (this.jogadorAtivo != null){
+        if (this.jogadorAtivo != null) {
             this.jogadorAtivo.setPontuacao(pontos);
         }
         try {
@@ -150,13 +151,19 @@ public class TelaJogar extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(null, "E a alternativa esta...");
                 JOptionPane.showMessageDialog(null, "Errada");
-                aluno.setRespostas_erradas(aluno.getRespostas_erradas() + 1);
+                jogadorAtivo.setRespostas_erradas(jogadorAtivo.getRespostas_erradas() + 1);
                 jogadorAtivo.atualizarEstatisticas();
                 JOptionPane.showMessageDialog(null,
                         "Pontuacao: " + jogadorAtivo.getPontuacao(), "Perdeu",
                         JOptionPane.INFORMATION_MESSAGE);
                 ((JFrame) SwingUtilities.getWindowAncestor(btnDois)).dispose();
-                new TelaPrincipalAluno(aluno).setVisible(true);
+                if (jogadorAtivo == aluno) {
+                    new TelaPrincipalAluno(jogadorAtivo).setVisible(true);
+                } else if (jogadorAtivo == professor) {
+                    new TelaPrincipalAdmin(professor, null).setVisible(true);
+                } else if (jogadorAtivo == coordenador) {
+                    new TelaPrincipalAdmin(null, coordenador).setVisible(true);
+                }
             }
         });
 
@@ -181,13 +188,19 @@ public class TelaJogar extends JFrame {
                 public void actionPerformed(ActionEvent e) {
                     JOptionPane.showMessageDialog(null, "E a alternativa esta...");
                     JOptionPane.showMessageDialog(null, "Errada");
-                    aluno.setRespostas_erradas(aluno.getRespostas_erradas() + 1);
+                    jogadorAtivo.setRespostas_erradas(jogadorAtivo.getRespostas_erradas() + 1);
                     jogadorAtivo.atualizarEstatisticas();
                     JOptionPane.showMessageDialog(null,
                             "Pontuacao: " + jogadorAtivo.getPontuacao(), "Perdeu",
                             JOptionPane.INFORMATION_MESSAGE);
                     ((JFrame) SwingUtilities.getWindowAncestor(btnTres)).dispose();
-                    new TelaPrincipalAluno(aluno).setVisible(true);
+                    if (jogadorAtivo == aluno) {
+                        new TelaPrincipalAluno(jogadorAtivo).setVisible(true);
+                    } else if (jogadorAtivo == professor) {
+                        new TelaPrincipalAdmin(professor, null).setVisible(true);
+                    } else if (jogadorAtivo == coordenador) {
+                        new TelaPrincipalAdmin(null, coordenador).setVisible(true);
+                    }
                 }
             });
 
@@ -196,13 +209,19 @@ public class TelaJogar extends JFrame {
                 public void actionPerformed(ActionEvent e) {
                     JOptionPane.showMessageDialog(null, "E a alternativa esta...");
                     JOptionPane.showMessageDialog(null, "Errada");
-                    aluno.setRespostas_erradas(aluno.getRespostas_erradas() + 1);
+                    jogadorAtivo.setRespostas_erradas(jogadorAtivo.getRespostas_erradas() + 1);
                     jogadorAtivo.atualizarEstatisticas();
                     JOptionPane.showMessageDialog(null,
                             "Pontuacao: " + jogadorAtivo.getPontuacao(), "Perdeu",
                             JOptionPane.INFORMATION_MESSAGE);
                     ((JFrame) SwingUtilities.getWindowAncestor(btnQuatro)).dispose();
-                    new TelaPrincipalAluno(aluno).setVisible(true);
+                    if (jogadorAtivo == aluno) {
+                        new TelaPrincipalAluno(jogadorAtivo).setVisible(true);
+                    } else if (jogadorAtivo == professor) {
+                        new TelaPrincipalAdmin(professor, null).setVisible(true);
+                    } else if (jogadorAtivo == coordenador) {
+                        new TelaPrincipalAdmin(null, coordenador).setVisible(true);
+                    }
                 }
             });
         }
@@ -221,7 +240,7 @@ public class TelaJogar extends JFrame {
         gbc.gridy = 6;
         gbc.insets = new Insets(20, 20, 0, 20);
 
-        if (aluno.isUsouDica() != true) {
+        if (jogadorAtivo.isUsouDica() != true) {
             RoundedButton dica = new RoundedButton("Dica");
             dica.setFont(btnFont);
             dica.setColumns(15);
@@ -234,10 +253,10 @@ public class TelaJogar extends JFrame {
                     JOptionPane.showMessageDialog(null,
                             "Usou dica ", "Dica",
                             JOptionPane.INFORMATION_MESSAGE);
-                    aluno.setUsouDica(true);
+                    jogadorAtivo.setUsouDica(true);
                     try {
                         ((JFrame) SwingUtilities.getWindowAncestor(dica)).dispose();
-                        new TelaJogar(aluno, null, null, cont, true).setVisible(true);
+                        new TelaJogar(jogadorAtivo, null, null, cont, true).setVisible(true);
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }

@@ -13,6 +13,7 @@ import telas.componentes.campos.RoundedTextField;
 import telas.componentes.combos.RoundedComboBox;
 import telas.componentes.util.FontUtils;
 import telas.componentes.util.IconUtils;
+import telas.telas_coordenador.TelaCadastarDoAdm;
 import telas.componentes.botoes.ButtonUtils;
 
 public class TelaCadastrarPerguntaProfessor extends JFrame {
@@ -83,7 +84,9 @@ public class TelaCadastrarPerguntaProfessor extends JFrame {
                 ((JFrame) SwingUtilities.getWindowAncestor(btnVoltar)).dispose();
                 if (professor!=null){
                     new TelaGerenciarCadastrarProfessor(professor).setVisible(true);
-                } // Coordenador
+                } else if (coordenador != null){
+                    new TelaCadastarDoAdm(coordenador).setVisible(true);
+                }
             }
         });
 

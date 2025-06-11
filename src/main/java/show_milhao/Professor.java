@@ -12,6 +12,9 @@ public class Professor extends Aluno {
     // Herda atributos, getters e setters dos alunos
 
     // Construtor
+    public Professor(String nome){
+        super(nome);
+    }
     public Professor(String email, String senha) {
         super(email, senha);
     }
@@ -63,6 +66,27 @@ public class Professor extends Aluno {
                     professor.setId_professor(rs.getInt("id_professor"));
                 }
                 return professor;
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Erro em trazer nome_professor do DB", "Erro",
+                        JOptionPane.ERROR_MESSAGE);
+                throw new RuntimeException("Erro em trazer nome_professor do DB");
+            }
+        }
+    }
+    
+    public Professor atributosDB(String nomeProfessor) throws Exception {
+        String sql = "select email, senha, id_professor from Professor where nome_professor = ?";
+        try (Connection conexao = ConnectionFactory.obterConexao();
+                PreparedStatement ps = conexao.prepareStatement(sql)) {
+            ps.setString(1, this.getNome());
+            try {
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    this.setEmail(rs.getString("email"));
+                    this.setSenha(rs.getString("senha"));
+                    this.setId_professor(rs.getInt("id_professor"));
+                }
+                return this;
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Erro em trazer nome_professor do DB", "Erro",
                         JOptionPane.ERROR_MESSAGE);

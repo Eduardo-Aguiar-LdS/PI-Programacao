@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 
 import javax.swing.JOptionPane;
 
-import telas.*;
 import telas.telas_gerais.TelaLogin;
 
 public class Coordenador extends Professor {
@@ -80,6 +79,7 @@ public class Coordenador extends Professor {
             ps.setString(3, professor.getSenha());
             try {
                 ps.execute();
+                JOptionPane.showMessageDialog(null, "Professor cadastrado");
             } catch (Exception e) {
                 throw new RuntimeException("Professor já possui cadastro");
             }

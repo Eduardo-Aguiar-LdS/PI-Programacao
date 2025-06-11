@@ -5,15 +5,17 @@ import java.net.URL;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+import show_milhao.Coordenador;
 import show_milhao.Professor;
+import telas.telas_coordenador.TelaCadastarDoAdm;
+import telas.telas_coordenador.TelaEditarDoAdm;
 
 import java.awt.event.*;
 
 public class TelaGerenciamentoProfessor extends JFrame {
-    private Professor professor_tela;
     private static final Dimension NOTEBOOK_SIZE = new Dimension(1366, 768);
 
-    public TelaGerenciamentoProfessor(Professor professor) {
+    public TelaGerenciamentoProfessor(Professor professor, Coordenador coordenador) {
         super("Show do Milhão Acadêmico");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -83,10 +85,10 @@ public class TelaGerenciamentoProfessor extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ((JFrame) SwingUtilities.getWindowAncestor(btnCadastrar)).dispose();
-                try {
+                if (professor != null) {
                     new TelaGerenciarCadastrarProfessor(professor).setVisible(true);
-                } catch (Exception e1) {
-                    e1.printStackTrace();
+                } else if (coordenador != null) {
+                    new TelaCadastarDoAdm(coordenador).setVisible(true);
                 }
             }
         });
@@ -95,10 +97,10 @@ public class TelaGerenciamentoProfessor extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ((JFrame) SwingUtilities.getWindowAncestor(btnEditar)).dispose();
-                try {
-                    new TelaGerenciarEditarProfessor(professor).setVisible(true);
-                } catch (Exception e1) {
-                    e1.printStackTrace();
+                if (professor != null) {
+                   new TelaGerenciarEditarProfessor(professor).setVisible(true);
+                } else if (coordenador != null) {
+                    new TelaEditarDoAdm(coordenador).setVisible(true);
                 }
             }
         });
@@ -156,7 +158,7 @@ public class TelaGerenciamentoProfessor extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            TelaGerenciamentoProfessor frame = new TelaGerenciamentoProfessor(null);
+            TelaGerenciamentoProfessor frame = new TelaGerenciamentoProfessor(null, null);
             frame.setVisible(true); 
         });
     }
